@@ -52,7 +52,7 @@ G4VPhysicalVolume *H4Detector::Construct () {
   G4LogicalVolume *box_log = new G4LogicalVolume(
     box,
     silver_mat,
-    "Envelope"
+    "Silver"
   );
 
   // Place the volumes
@@ -71,7 +71,7 @@ G4VPhysicalVolume *H4Detector::Construct () {
     0,
     G4ThreeVector(0, 0, 0),
     box_log,
-    "Physical World",
+    "Physical Silver Box",
     world_log,
     false,
     0,

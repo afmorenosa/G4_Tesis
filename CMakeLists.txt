@@ -42,3 +42,16 @@ target_link_libraries(VELO_Tesis
   detector
   physics_list
 )
+
+set(geant_scripts
+  init_vis.mac
+  vis.mac
+)
+
+foreach(script ${geant_scripts})
+  configure_file(
+    ${PROJECT_SOURCE_DIR}/${script}
+    ${PROJECT_BINARY_DIR}/${script}
+    COPYONLY
+  )
+endforeach()

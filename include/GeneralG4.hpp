@@ -29,6 +29,12 @@
 #include "G4EmStandardPhysics.hh"
 #include "G4EmParameters.hh"
 
+// Magnetic field
+#include "G4MagneticField.hh"
+#include "G4FieldManager.hh"
+#include "G4UniformMagField.hh"
+#include "G4TransportationManager.hh"
+
 // Particle to be used in the simulation
 // * Bosons
 #include "G4ChargedGeantino.hh"

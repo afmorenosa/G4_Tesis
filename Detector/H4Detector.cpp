@@ -78,6 +78,16 @@ G4VPhysicalVolume *H4Detector::Construct () {
     true
   );
 
+  G4MagneticField *magField;
+  magField = new G4UniformMagField(G4ThreeVector(0.,0., 10*kilogauss));
+
+  G4FieldManager* fieldMgr
+    = G4TransportationManager::GetTransportationManager()
+      ->GetFieldManager();
+  fieldMgr->SetDetectorField(magField);
+  fieldMgr->CreateChordFinder(magField);
+
+
   return world;
 }
 

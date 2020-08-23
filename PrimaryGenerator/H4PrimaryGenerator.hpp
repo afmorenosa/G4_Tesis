@@ -10,8 +10,8 @@ private:
 
 public:
   H4PrimaryGenerator (
-    G4String particle_name = "proton",
-    G4double energy = 1*GeV,
+    G4String particle_name = "gamma",
+    G4double energy = 1*MeV,
     G4ThreeVector position = G4ThreeVector(0.0*m, 0.0*m, -2.0*m),
     G4ThreeVector momentum_direction = G4ThreeVector(0.0, 0.0, 1.0)
   );

@@ -9,8 +9,11 @@ public:
   H4PhysicList ();
   virtual ~H4PhysicList ();
 
-  virtual void ConstructParticle();
-  virtual void ConstructProcess();
+  void ConstructParticle();
+  void ConstructProcess();
+
+private:
+  G4VPhysicsConstructor *em_physics_list;
 };
 
 #endif // H4PHYSICLIST_HG4

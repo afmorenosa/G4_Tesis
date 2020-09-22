@@ -41,7 +41,7 @@ G4VPhysicalVolume *H4Detector::Construct () {
   G4Box *world_box = new G4Box("World Box", 2*m, 2*m, 2*m);
 
   // Build a box
-  G4Box *box = new G4Box("Box", 10*cm, 10*cm, 10*cm);
+  G4Box *box = new G4Box("Box", 10*cm, 10*cm, .5*cm);
 
   // Build logical volumes
   G4LogicalVolume *world_log = new G4LogicalVolume(
@@ -67,16 +67,21 @@ G4VPhysicalVolume *H4Detector::Construct () {
     true
   );
 
-  new G4PVPlacement(
-    0,
-    G4ThreeVector(0, 0, 0),
-    box_log,
-    "Physical Silver Box",
-    world_log,
-    false,
-    0,
-    true
-  );
+  G4RotationMatrix *box_rotation = new G4RotationMatrix;
+  box_rotation->rotateZ(M_PI/4*rad);
+
+  for (size_t i = 0; i < 20; i++) {
+    new G4PVPlacement(
+      box_rotation,
+      G4ThreeVector(0, 0, -1*m + i * 10*cm + .5*cm),
+      box_log,
+      "Physical Silver Box",
+      world_log,
+      false,
+      0,
+      true
+    );
+  }
 
   G4MagneticField *magField;
   magField = new G4UniformMagField(G4ThreeVector(0.,0., 10*kilogauss));

@@ -10,10 +10,10 @@ private:
 
 public:
   H4PrimaryGenerator (
-    G4String particle_name = "e-",
+    G4String particle_name = "proton",
     G4double energy = 100*MeV,
     G4ThreeVector position = G4ThreeVector(0.0*m, 0.0*m, -2.0*m),
-    G4ThreeVector momentum_direction = G4ThreeVector(0.2, 0.2, 1.0)
+    G4ThreeVector momentum_direction = G4ThreeVector(0.0, 0.0, 1.0)
   );
   virtual ~H4PrimaryGenerator ();
 

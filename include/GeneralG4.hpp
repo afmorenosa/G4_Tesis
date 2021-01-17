@@ -16,6 +16,7 @@
 
 // Geometry
 #include "G4Box.hh"
+#include "G4Tubs.hh"
 
 // Elements and materials for the volumes
 #include "G4NistManager.hh"

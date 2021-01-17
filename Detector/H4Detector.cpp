@@ -28,31 +28,35 @@ H4Detector::~H4Detector () {}
 //                        //
 //************************//
 G4VPhysicalVolume *H4Detector::Construct () {
+
   // Manager for NIST db, for material searching
   G4NistManager *nist = G4NistManager::Instance();
+
+  // Define NIST materials
+  G4Material *H2O  = nist->FindOrBuildMaterial("G4_WATER");
+  G4Material *SiO2 = nist->FindOrBuildMaterial("G4_SILICON_DIOXIDE");
+
+  G4double a = 12.01*g/mole;
+  G4Element* el_carbon  = new G4Element("Carbon" , "C" , 6., a);
+
+  // Define aerogel.
+  G4double density = 0.200*g/cm3;
+  G4Material *aerog_mat = new G4Material("Aerogel", density, 3);
+  aerog_mat->AddMaterial(SiO2, 62.5*perCent);
+  aerog_mat->AddMaterial(H2O, 37.4*perCent);
+  aerog_mat->AddElement(el_carbon, 0.1*perCent);
 
   // Set the material of the world as air
   G4Material *world_mat = nist->FindOrBuildMaterial("G4_AIR");
 
-  // Get the definition of silver as a material
-  G4Material *silver_mat = nist->FindOrBuildMaterial("G4_Ag");
-
   // Build world geometry
-  G4Box *world_box = new G4Box("World Box", 2*m, 2*m, 2*m);
-
-  // Build a box
-  G4Box *box = new G4Box("Box", 10*cm, 10*cm, .5*cm);
+  G4Box *world_box = new G4Box("World Box", 1*m, 1*m, 1*m);
 
   // Build logical volumes
   G4LogicalVolume *world_log = new G4LogicalVolume(
     world_box,
     world_mat,
     "World"
-  );
-  G4LogicalVolume *box_log = new G4LogicalVolume(
-    box,
-    silver_mat,
-    "Silver"
   );
 
   // Place the volumes
@@ -67,21 +71,14 @@ G4VPhysicalVolume *H4Detector::Construct () {
     true
   );
 
-  G4RotationMatrix *box_rotation = new G4RotationMatrix;
-  box_rotation->rotateZ(M_PI/4*rad);
-
-  for (size_t i = 0; i < 20; i++) {
-    new G4PVPlacement(
-      box_rotation,
-      G4ThreeVector(0, 0, -1*m + i * 10*cm + .5*cm),
-      box_log,
-      "Physical Silver Box",
-      world_log,
-      false,
-      0,
-      true
-    );
-  }
+  PlacePbScPlates(
+    aerog_mat,
+    world_mat,
+    0,
+    G4ThreeVector(0., 0., 0.),
+    "Big Plate",
+    world_log
+  );
 
   G4MagneticField *magField;
   magField = new G4UniformMagField(G4ThreeVector(0.,0., 10*kilogauss));
@@ -95,6 +92,7 @@ G4VPhysicalVolume *H4Detector::Construct () {
 
   return world;
 }
+
 
 //
 // H4Detector.cpp end here

@@ -26,6 +26,9 @@
 // Particles Definition Class
 #include "G4ParticleDefinition.hh"
 
+// Use QGSP_BERT physiscs
+#include "QGSP_BERT.hh"
+
 // Electromagnetic physics definition
 #include "G4EmStandardPhysics.hh"
 #include "G4EmParameters.hh"

@@ -20,7 +20,11 @@ int main(int argc, char *argv[]) {
 
   // Set mandatory initialization  classes
   run_manager->SetUserInitialization(new H4Detector);
-  run_manager->SetUserInitialization(new H4PhysicList);
+
+  auto physicsList = new QGSP_BERT;
+  run_manager->SetUserInitialization(physicsList);
+  // run_manager->SetUserInitialization(new H4PhysicList);
+
   run_manager->SetUserInitialization(new H4Actions);
 
   // Initialize Genat 4 kernel

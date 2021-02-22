@@ -22,7 +22,7 @@ public:
     G4LogicalVolume *mother_logical,
     G4bool many = false,
     G4int copy_no = 0,
-    G4bool surf_chk = true
+    G4bool surf_chk = false
   );
 
   void PlaceLargePlate (
@@ -36,7 +36,7 @@ public:
     G4LogicalVolume *mother_logical,
     G4bool many = false,
     G4int copy_no = 0,
-    G4bool surf_chk = true
+    G4bool surf_chk = false
   );
 
   void PlacePbScPlates (
@@ -52,7 +52,49 @@ public:
     const G4String &sc_log_name = "Scintillator_Plate",
     G4bool many = false,
     G4int copy_no = 0,
-    G4bool surf_chk = true
+    G4bool surf_chk = false
+  );
+
+  void AddRecovery (
+    G4RotationMatrix *rot,
+    const G4ThreeVector &tlate,
+    const G4String &name,
+    G4LogicalVolume *mother_logical,
+    G4double pb_thickness = 1*mm,
+    G4double sc_thickness = 2*mm,
+    G4bool many = false,
+    G4int copy_no = 0,
+    G4bool surf_chk = false
+  );
+
+  void AddWLS (
+    G4Material *wls_mat,
+    G4RotationMatrix *rot,
+    const G4ThreeVector &tlate,
+    const G4String &name,
+    G4LogicalVolume *mother_logical,
+    G4double pb_thickness,
+    G4double sc_thickness,
+    G4bool many,
+    G4int copy_no,
+    G4bool surf_chk
+  );
+
+  void BuildModule (
+    G4Material *sc_plate_mat,
+    G4Material *hole_mat,
+    G4Material *wls_mat,
+    G4RotationMatrix *rot,
+    const G4ThreeVector &tlate,
+    const G4String &name,
+    G4LogicalVolume *mother_logical,
+    G4double pb_thickness = 1*mm,
+    G4double sc_thickness = 2*mm,
+    const G4String &pb_log_name = "Lead_Plate",
+    const G4String &sc_log_name = "Scintillator_Plate",
+    G4bool many = false,
+    G4int copy_no = 0,
+    G4bool surf_chk = false
   );
 
 };

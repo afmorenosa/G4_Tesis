@@ -49,6 +49,26 @@ G4VPhysicalVolume *H4Detector::Construct () {
   // Set the material of the world as air
   G4Material *world_mat = nist->FindOrBuildMaterial("G4_AIR");
 
+  //--------------------------------------------------
+  // WLSfiber PMMA
+  //--------------------------------------------------
+  std::vector<G4int> natoms;
+  std::vector<G4String> elements;
+
+  elements.push_back("C"); natoms.push_back(5);
+  elements.push_back("H"); natoms.push_back(8);
+  elements.push_back("O"); natoms.push_back(2);
+
+  density = 1.190*g/cm3;
+  G4Material *wls_mat = nist->ConstructNewMaterial(
+    "PMMA",
+    elements,
+    natoms, density
+  );
+
+  elements.clear();
+  natoms.clear();
+
   // Build world geometry
   G4Box *world_box = new G4Box("World Box", 1*m, 1*m, 1*m);
 
@@ -68,15 +88,26 @@ G4VPhysicalVolume *H4Detector::Construct () {
     0,
     false,
     0,
-    true
+    false
   );
 
-  PlacePbScPlates(
+  BuildModule(
     aerog_mat,
     world_mat,
+    wls_mat,
     0,
     G4ThreeVector(0., 0., 0.),
-    "Big Plate",
+    "Inner module A",
+    world_log
+  );
+
+  BuildModule(
+    aerog_mat,
+    world_mat,
+    wls_mat,
+    0,
+    G4ThreeVector(12.22*cm, 0., 0.),
+    "Inner module B",
     world_log
   );
 

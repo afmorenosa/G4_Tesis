@@ -18,6 +18,8 @@ int main(int argc, char *argv[]) {
   // Construct the default run manager
   G4RunManager *run_manager = new G4RunManager;
 
+  run_manager->SetVerboseLevel(0);
+
   // Set mandatory initialization  classes
   run_manager->SetUserInitialization(new H4Detector);
 
@@ -37,7 +39,7 @@ int main(int argc, char *argv[]) {
   UI->ApplyCommand("/tracking/verbose 1");
 
   // Start a run
-  int number_of_events = 1;
+  int number_of_events = 50;
   run_manager->BeamOn(number_of_events);
 
   // Get the pointer to the User Interface manager

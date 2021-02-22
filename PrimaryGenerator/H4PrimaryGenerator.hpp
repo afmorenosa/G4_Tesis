@@ -10,10 +10,10 @@ private:
 
 public:
   H4PrimaryGenerator (
-    G4String particle_name = "pi0",
-    G4double energy = 20*GeV,
-    G4ThreeVector position = G4ThreeVector(0.1*m, 0.0*m, -2.0*m),
-    G4ThreeVector momentum_direction = G4ThreeVector(0.0, 0.0, 1.0)
+    G4String particle_name = "e-",
+    G4double energy = 2*GeV,
+    G4ThreeVector position = G4ThreeVector(0.01*m, 0.0*m, -1.0*m),
+    G4ThreeVector momentum_direction = G4ThreeVector(0.0, 0.00, 1.0)
   );
   virtual ~H4PrimaryGenerator ();
 

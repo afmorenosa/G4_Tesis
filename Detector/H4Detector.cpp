@@ -12,6 +12,7 @@
 H4Detector::H4Detector () : G4VUserDetectorConstruction() {
   m_inner_section_builder = new H4InnerSection();
   m_middle_section_builder = new H4MiddleSection();
+  m_outer_section_builder = new H4OuterSection();
 }
 
 //************************//
@@ -26,6 +27,7 @@ H4Detector::H4Detector () : G4VUserDetectorConstruction() {
 H4Detector::~H4Detector () {
   delete m_inner_section_builder;
   delete m_middle_section_builder;
+  delete m_outer_section_builder;
 }
 
 //************************//
@@ -106,7 +108,7 @@ G4VPhysicalVolume *H4Detector::Construct () {
     wls_mat,
     0,
     G4ThreeVector(0., 0., 0.),
-    "Inner module A",
+    "Inner module",
     world_log
   );
 
@@ -115,8 +117,18 @@ G4VPhysicalVolume *H4Detector::Construct () {
     world_mat,
     wls_mat,
     0,
-    G4ThreeVector(12.22*cm, 0., 0.),
-    "Inner module B",
+    G4ThreeVector(12.32*cm, 0., 0.),
+    "Middle module",
+    world_log
+  );
+
+  m_outer_section_builder->BuildModule(
+    aerog_mat,
+    world_mat,
+    wls_mat,
+    0,
+    G4ThreeVector(24.64*cm, 0., 0.),
+    "Outer module",
     world_log
   );
 

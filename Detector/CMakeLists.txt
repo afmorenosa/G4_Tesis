@@ -10,5 +10,12 @@ configure_file(H4MiddleSection.hpp
   ${CMAKE_BINARY_DIR}/include/H4MiddleSection.hpp
 )
 
-file(GLOB SOURCES H4Detector.cpp H4InnerSection.cpp H4MiddleSection.cpp)
+configure_file(H4OuterSection.hpp
+  ${CMAKE_BINARY_DIR}/include/H4OuterSection.hpp
+)
+
+file(GLOB SOURCES
+  H4Detector.cpp H4InnerSection.cpp H4MiddleSection.cpp H4OuterSection.cpp
+)
+
 add_library(detector ${SOURCES})

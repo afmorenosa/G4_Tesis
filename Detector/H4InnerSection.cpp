@@ -340,7 +340,7 @@ void H4InnerSection::AddRecovery (
     rot,
     tlate + G4ThreeVector(0.05*cm + 6.06*cm, 0., 0.),
     vertical_log,
-    name + "- cover left",
+    name + " - cover left",
     mother_logical,
     many,
     copy_no,
@@ -351,7 +351,7 @@ void H4InnerSection::AddRecovery (
     rot,
     tlate + G4ThreeVector(-0.05*cm - 6.06*cm, 0., 0.),
     vertical_log,
-    name + "- cover right",
+    name + " - cover right",
     mother_logical,
     many,
     copy_no,
@@ -363,7 +363,7 @@ void H4InnerSection::AddRecovery (
     rot,
     tlate + G4ThreeVector(0., 0.05*cm + 6.06*cm, 0.),
     horizontal_log,
-    name + "- cover top",
+    name + " - cover top",
     mother_logical,
     many,
     copy_no,
@@ -374,7 +374,7 @@ void H4InnerSection::AddRecovery (
     rot,
     tlate + G4ThreeVector(0., -0.05*cm - 6.06*cm, 0.),
     horizontal_log,
-    name + "- cover bottom",
+    name + " - cover bottom",
     mother_logical,
     many,
     copy_no,
@@ -420,7 +420,7 @@ void H4InnerSection::AddWLS (
         tlate +
         G4ThreeVector((i-1) * 4.04 * cm, (j-1) * 4.04 * cm, 0.0),
         wire_log,
-        name + "- Plate - row: " + std::to_string(i) + " - col: " +
+        name + " - Plate - row: " + std::to_string(i) + " - col: " +
         std::to_string(j) + " - wire - middle",
         mother_logical,
         false,
@@ -441,7 +441,7 @@ void H4InnerSection::AddWLS (
               0
             ),
             wire_log,
-            name + "- Plate - row: " + std::to_string(i) + " - col: " +
+            name + " - Plate - row: " + std::to_string(i) + " - col: " +
             std::to_string(j) + " - wire - row_hole: " + std::to_string(I) +
             " - col_hole: " + std::to_string(J),
             mother_logical,

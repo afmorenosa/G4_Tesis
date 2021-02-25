@@ -5,6 +5,7 @@
 #include "G4VUserDetectorConstruction.hh"
 
 #include "H4InnerSection.hpp"
+#include "H4MiddleSection.hpp"
 
 class H4Detector : public G4VUserDetectorConstruction {
 public:
@@ -15,6 +16,7 @@ public:
 
 private:
   H4InnerSection *m_inner_section_builder;
+  H4MiddleSection *m_middle_section_builder;
 };
 
 #endif // H4DETECTOR_HG4

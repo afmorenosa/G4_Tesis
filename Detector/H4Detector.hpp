@@ -13,6 +13,8 @@ public:
 
   virtual G4VPhysicalVolume *Construct();
 
+private:
+  H4InnerSection *m_inner_section_builder;
 };
 
 #endif // H4DETECTOR_HG4

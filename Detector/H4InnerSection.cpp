@@ -7,7 +7,7 @@
 //       Do nothing           //
 //                            //
 //****************************//
-H4InnerSection::H4InnerSection () { }
+H4InnerSection::H4InnerSection () {}
 
 //****************************//
 // H4InnerSection destructor  //
@@ -153,8 +153,8 @@ void H4InnerSection::PlaceHolePlate (
       new G4PVPlacement(
         0,
         G4ThreeVector(
-          -2.02*cm + (1 + i) * (4.04 / 5)*cm,
-          -2.02*cm + (1 + j) * (4.04 / 5)*cm,
+          -2.02*cm + (0.5 + i) * 1.01*cm,
+          -2.02*cm + (0.5 + j) * 1.01*cm,
           0
         ),
         hole_log,
@@ -436,8 +436,8 @@ void H4InnerSection::AddWLS (
             tlate +
             G4ThreeVector((i-1) * 4.04 * cm, (j-1) * 4.04 * cm, 0.0) +
             G4ThreeVector(
-              -2.02*cm + (1 + I) * (4.04 / 5)*cm,
-              -2.02*cm + (1 + J) * (4.04 / 5)*cm,
+              -2.02*cm + (0.5 + I) * 1.01*cm,
+              -2.02*cm + (0.5 + J) * 1.01*cm,
               0
             ),
             wire_log,

@@ -91,7 +91,9 @@ G4VPhysicalVolume *H4Detector::Construct () {
     false
   );
 
-  BuildModule(
+  H4InnerSection *inner_section_builder = new H4InnerSection();
+
+  inner_section_builder->BuildModule(
     aerog_mat,
     world_mat,
     wls_mat,
@@ -101,7 +103,7 @@ G4VPhysicalVolume *H4Detector::Construct () {
     world_log
   );
 
-  BuildModule(
+  inner_section_builder->BuildModule(
     aerog_mat,
     world_mat,
     wls_mat,

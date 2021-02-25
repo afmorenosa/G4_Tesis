@@ -1,11 +1,97 @@
-#include "H4Detector.hpp"
+#include "H4InnerSection.hpp"
+
+//****************************//
+// H4InnerSection constructor //
+//----------------------------//
+//                            //
+//       Do nothing           //
+//                            //
+//****************************//
+H4InnerSection::H4InnerSection () { }
+
+//****************************//
+// H4InnerSection destructor  //
+//----------------------------//
+//                            //
+//       Do nothing           //
+//                            //
+//****************************//
+H4InnerSection::~H4InnerSection () {}
+
+//**************************************//
+//                                      //
+// Build the complete module            //
+//                                      //
+//**************************************//
+void H4InnerSection::BuildModule (
+  G4Material *sc_plate_mat,
+  G4Material *hole_mat,
+  G4Material *wls_mat,
+  G4RotationMatrix *rot,
+  const G4ThreeVector &tlate,
+  const G4String &name,
+  G4LogicalVolume *mother_logical,
+  G4double pb_thickness,
+  G4double sc_thickness,
+  const G4String &pb_log_name,
+  const G4String &sc_log_name,
+  G4bool many,
+  G4int copy_no,
+  G4bool surf_chk
+) {
+
+  // Build plates
+  PlacePbScPlates(
+    sc_plate_mat,
+    hole_mat,
+    rot,
+    tlate,
+    name,
+    mother_logical,
+    pb_thickness,
+    sc_thickness,
+    pb_log_name,
+    sc_log_name,
+    many,
+    copy_no,
+    surf_chk
+  );
+
+  // Build Recovery
+  AddRecovery (
+    rot,
+    tlate,
+    name,
+    mother_logical,
+    pb_thickness,
+    sc_thickness,
+    many,
+    copy_no,
+    surf_chk
+  );
+
+  // Build WLS wire
+  AddWLS (
+    wls_mat,
+    rot,
+    tlate,
+    name,
+    mother_logical,
+    pb_thickness,
+    sc_thickness,
+    many,
+    copy_no,
+    surf_chk
+  );
+
+}
 
 //**************************************//
 //                                      //
 // Construct a squared panel with holes //
 //                                      //
 //**************************************//
-void H4Detector::PlaceHolePlate (
+void H4InnerSection::PlaceHolePlate (
   G4Material *plate_mat,
   G4Material *hole_mat,
   G4double thickness,
@@ -91,7 +177,7 @@ void H4Detector::PlaceHolePlate (
 // little hole panels                   //
 //                                      //
 //**************************************//
-void H4Detector::PlaceLargePlate (
+void H4InnerSection::PlaceLargePlate (
   G4Material *plate_mat,
   G4Material *hole_mat,
   G4double thickness,
@@ -134,7 +220,7 @@ void H4Detector::PlaceLargePlate (
 // little hole panels                   //
 //                                      //
 //**************************************//
-void H4Detector::PlacePbScPlates (
+void H4InnerSection::PlacePbScPlates (
   G4Material *sc_plate_mat,
   G4Material *hole_mat,
   G4RotationMatrix *rot,
@@ -207,7 +293,7 @@ void H4Detector::PlacePbScPlates (
 // Add steel recovery for the module    //
 //                                      //
 //**************************************//
-void H4Detector::AddRecovery (
+void H4InnerSection::AddRecovery (
   G4RotationMatrix *rot,
   const G4ThreeVector &tlate,
   const G4String &name,
@@ -302,7 +388,7 @@ void H4Detector::AddRecovery (
 // Add WLS wires //
 //               //
 //***************//
-void H4Detector::AddWLS (
+void H4InnerSection::AddWLS (
   G4Material *wls_mat,
   G4RotationMatrix *rot,
   const G4ThreeVector &tlate,
@@ -372,74 +458,6 @@ void H4Detector::AddWLS (
 
 }
 
-//**************************************//
-//                                      //
-// Build the complete module            //
-//                                      //
-//**************************************//
-void H4Detector::BuildModule (
-  G4Material *sc_plate_mat,
-  G4Material *hole_mat,
-  G4Material *wls_mat,
-  G4RotationMatrix *rot,
-  const G4ThreeVector &tlate,
-  const G4String &name,
-  G4LogicalVolume *mother_logical,
-  G4double pb_thickness,
-  G4double sc_thickness,
-  const G4String &pb_log_name,
-  const G4String &sc_log_name,
-  G4bool many,
-  G4int copy_no,
-  G4bool surf_chk
-) {
-
-  // Build plates
-  PlacePbScPlates(
-    sc_plate_mat,
-    hole_mat,
-    rot,
-    tlate,
-    name,
-    mother_logical,
-    pb_thickness,
-    sc_thickness,
-    pb_log_name,
-    sc_log_name,
-    many,
-    copy_no,
-    surf_chk
-  );
-
-  // Build Recovery
-  AddRecovery (
-    rot,
-    tlate,
-    name,
-    mother_logical,
-    pb_thickness,
-    sc_thickness,
-    many,
-    copy_no,
-    surf_chk
-  );
-
-  // Build WLS wire
-  AddWLS (
-    wls_mat,
-    rot,
-    tlate,
-    name,
-    mother_logical,
-    pb_thickness,
-    sc_thickness,
-    many,
-    copy_no,
-    surf_chk
-  );
-
-}
-
 //
-// H4Module.cpp end here
+// H4InnerSection.cpp end here
 //

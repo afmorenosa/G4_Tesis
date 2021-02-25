@@ -115,7 +115,7 @@ void H4InnerSection::PlaceHolePlate (
   );
 
   // Holes tube.
-  G4Tubs *hole_tube = new G4Tubs("Hole", 0, .6*mm, thickness, 0.*deg, 360.*deg);
+  G4Tubs *hole_tube = new G4Tubs("Hole", 0, .7*mm, thickness, 0.*deg, 360.*deg);
 
   G4LogicalVolume *hole_log = new G4LogicalVolume(
     hole_tube,
@@ -402,7 +402,7 @@ void H4InnerSection::AddWLS (
 ) {
 
   // Wire tube.
-  G4Tubs *wire_tube = new G4Tubs("Hole", 0, .5*mm,
+  G4Tubs *wire_tube = new G4Tubs("Hole", 0, .6*mm,
   sc_thickness * 67 + pb_thickness * 66, 0.*deg, 360.*deg);
 
   // Wire logical volume.

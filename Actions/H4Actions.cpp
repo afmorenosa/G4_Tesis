@@ -27,5 +27,5 @@ void H4Actions::Build () const {
 }
 
 //
-// H4Actions.cpp end here
+// H4Actions.cpp ends here.
 //

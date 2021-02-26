@@ -4,9 +4,8 @@
 // H4Detector constructor //
 //------------------------//
 //                        //
-//       Initialize       //
-//       modules          //
-//       pointers         //
+// Initialize modules     //
+// pointers               //
 //                        //
 //************************//
 H4Detector::H4Detector () : G4VUserDetectorConstruction() {
@@ -19,9 +18,8 @@ H4Detector::H4Detector () : G4VUserDetectorConstruction() {
 // H4Detector destructor  //
 //------------------------//
 //                        //
-//       Delete           //
-//       modules          //
-//       pointer          //
+// Delete modules         //
+// pointer                //
 //                        //
 //************************//
 H4Detector::~H4Detector () {
@@ -40,10 +38,10 @@ H4Detector::~H4Detector () {
 //************************//
 G4VPhysicalVolume *H4Detector::Construct () {
 
-  // Manager for NIST db, for material searching
+  // Manager for NIST db, for material searching.
   G4NistManager *nist = G4NistManager::Instance();
 
-  // Define NIST materials
+  // Define NIST materials for the construction of aerogel.
   G4Material *H2O  = nist->FindOrBuildMaterial("G4_WATER");
   G4Material *SiO2 = nist->FindOrBuildMaterial("G4_SILICON_DIOXIDE");
 
@@ -57,12 +55,10 @@ G4VPhysicalVolume *H4Detector::Construct () {
   aerog_mat->AddMaterial(H2O, 37.4*perCent);
   aerog_mat->AddElement(el_carbon, 0.1*perCent);
 
-  // Set the material of the world as air
+  // Set the material of the world as air.
   G4Material *world_mat = nist->FindOrBuildMaterial("G4_AIR");
 
-  //--------------------------------------------------
-  // WLSfiber PMMA
-  //--------------------------------------------------
+  // Materials for the WLSfiber (PMMA).
   std::vector<G4int> natoms;
   std::vector<G4String> elements;
 
@@ -80,17 +76,17 @@ G4VPhysicalVolume *H4Detector::Construct () {
   elements.clear();
   natoms.clear();
 
-  // Build world geometry
+  // Build world geometry.
   G4Box *world_box = new G4Box("World Box", 1*m, 1*m, 1*m);
 
-  // Build logical volumes
+  // Build world logical volumes.
   G4LogicalVolume *world_log = new G4LogicalVolume(
     world_box,
     world_mat,
     "World"
   );
 
-  // Place the volumes
+  // Place the world volumes.
   G4VPhysicalVolume *world = new G4PVPlacement(
     0,
     G4ThreeVector(0, 0, 0),
@@ -102,6 +98,7 @@ G4VPhysicalVolume *H4Detector::Construct () {
     false
   );
 
+  // Build an inner module.
   m_inner_section_builder->BuildModule(
     aerog_mat,
     world_mat,
@@ -112,6 +109,7 @@ G4VPhysicalVolume *H4Detector::Construct () {
     world_log
   );
 
+  // Build an middle module.
   m_middle_section_builder->BuildModule(
     aerog_mat,
     world_mat,
@@ -122,6 +120,7 @@ G4VPhysicalVolume *H4Detector::Construct () {
     world_log
   );
 
+  // Build an outer module.
   m_outer_section_builder->BuildModule(
     aerog_mat,
     world_mat,
@@ -132,6 +131,7 @@ G4VPhysicalVolume *H4Detector::Construct () {
     world_log
   );
 
+  // Add a magnetic field.
   G4MagneticField *magField;
   magField = new G4UniformMagField(G4ThreeVector(0.,0., 10*kilogauss));
 
@@ -141,11 +141,11 @@ G4VPhysicalVolume *H4Detector::Construct () {
   fieldMgr->SetDetectorField(magField);
   fieldMgr->CreateChordFinder(magField);
 
-
+  // Return the world.
   return world;
 }
 
 
 //
-// H4Detector.cpp end here
+// H4Detector.cpp ends here.
 //

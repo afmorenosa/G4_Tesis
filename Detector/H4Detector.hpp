@@ -8,6 +8,13 @@
 #include "H4MiddleSection.hpp"
 #include "H4OuterSection.hpp"
 
+//**********************************//
+// Class: H4Detector                //
+//----------------------------------//
+//                                  //
+// This class build the Detector    //
+//                                  //
+//**********************************//
 class H4Detector : public G4VUserDetectorConstruction {
 public:
   H4Detector ();
@@ -16,6 +23,7 @@ public:
   virtual G4VPhysicalVolume *Construct();
 
 private:
+  // Section pointer for modules placing.
   H4InnerSection *m_inner_section_builder;
   H4MiddleSection *m_middle_section_builder;
   H4OuterSection *m_outer_section_builder;

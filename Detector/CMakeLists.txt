@@ -4,7 +4,12 @@ configure_file(H4Detector.hpp
   ${CMAKE_BINARY_DIR}/include/H4Detector.hpp
 )
 
-# The headers for the inner, middle and outer modules
+# The header for the modules class.
+configure_file(H4Module.hpp
+  ${CMAKE_BINARY_DIR}/include/H4Module.hpp
+)
+
+# The headers for the inner, middle and outer modules.
 configure_file(H4InnerSection.hpp
   ${CMAKE_BINARY_DIR}/include/H4InnerSection.hpp
 )
@@ -17,7 +22,9 @@ configure_file(H4OuterSection.hpp
 
 # Add Detector sources.
 file(GLOB SOURCES
-  H4Detector.cpp H4InnerSection.cpp H4MiddleSection.cpp H4OuterSection.cpp
+  H4Detector.cpp
+  H4Module.cpp
+  H4InnerSection.cpp H4MiddleSection.cpp H4OuterSection.cpp
 )
 
 # Add the Detector lib.

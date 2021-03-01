@@ -3,7 +3,6 @@
 
 // Geant Headers.
 #include "GeneralG4.hpp"
-#include "G4VUserDetectorConstruction.hh"
 
 //**********************************//
 // Class: H4InnerSection            //

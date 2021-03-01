@@ -1,5 +1,6 @@
 # Create an OpenGL view
 /vis/open OGL
+/vis/ogl/set/displayListLimit 10000000
 
 # Disable auto refresh and quieten vis messages whilst scene and
 # trajectories are established
@@ -10,13 +11,13 @@
 /vis/drawVolume
 
 # Specify view angle:
-/vis/viewer/set/viewpointVector -1 -1 0
-/vis/viewer/set/lightsVector -1 .5 -1
+/vis/viewer/set/viewpointVector 0 0 -5
+/vis/viewer/set/lightsVector -5 .5 -5
 
 # Specify style (surface, wireframe, auxiliary edges,...)
 /vis/viewer/set/style wireframe
 /vis/viewer/set/auxiliaryEdge true
-/vis/viewer/set/lineSegmentsPerCircle 50
+/vis/viewer/set/lineSegmentsPerCircle 100
 
 # Draw smooth trajectories at end of event, showing trajectory points
 # as markers 2 pixels wide
@@ -31,18 +32,17 @@
 # Frame
 /vis/set/colour cyan
 /vis/set/lineWidth 2
-/vis/scene/add/frame   # Simple frame around the view
 
 # "World" is transparent gray to represent air
-/vis/geometry/set/colour World 0 0.6 0.6 1 .1
-/vis/geometry/set/colour Hole_Log 0 0.6 0.6 1 1
-/vis/geometry/set/colour Lead_Plate 0 0.75 1 0.75 .7
-/vis/geometry/set/colour Scintillator_Plate 0 0.65 0.65 0.95 .7
-/vis/geometry/set/colour Cover_Sheet 0 0.75 0.75 0.75 .8
-/vis/geometry/set/colour WLS 0 0.0 1.0 0.0 .8
-/vis/viewer/set/style surface
-/vis/viewer/set/hiddenMarker false
-/vis/viewer/set/viewpointThetaPhi 120 150
+# /vis/geometry/set/colour World 0 0.6 0.6 1 .1
+# # /vis/geometry/set/colour Hole_Log 0 0.6 0.6 1 1
+# /vis/geometry/set/colour Lead_Plate 0 0.75 1 0.75 .7
+# /vis/geometry/set/colour Scintillator_Plate 0 0.65 0.65 0.95 .7
+# /vis/geometry/set/colour Cover_Sheet 0 0.75 0.75 0.75 .8
+# /vis/geometry/set/colour WLS 0 0.0 1.0 0.0 .8
+# /vis/viewer/set/styles/urface
+# /vis/viewer/set/hiddenMarker false
+# /vis/viewer/set/viewpointThetaPhi 120 150
 
 # Re-establish auto refreshing and verbosity
 /vis/viewer/set/autoRefresh true

@@ -1,9 +1,18 @@
 #ifndef H4OUTER_SECTION_HG4
 #define H4OUTER_SECTION_HG4
 
+// Geant Headers.
 #include "GeneralG4.hpp"
 #include "G4VUserDetectorConstruction.hh"
 
+//**********************************//
+// Class: H4OuterSection            //
+//----------------------------------//
+//                                  //
+// This class build the outer       //
+// modules of the detector.         //
+//                                  //
+//**********************************//
 class H4OuterSection {
 public:
 

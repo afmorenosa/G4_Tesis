@@ -1,9 +1,18 @@
 #ifndef H4INNER_SECTION_HG4
 #define H4INNER_SECTION_HG4
 
+// Geant Headers.
 #include "GeneralG4.hpp"
 #include "G4VUserDetectorConstruction.hh"
 
+//**********************************//
+// Class: H4InnerSection            //
+//----------------------------------//
+//                                  //
+// This class build the inner       //
+// modules of the detector.         //
+//                                  //
+//**********************************//
 class H4InnerSection {
 public:
 

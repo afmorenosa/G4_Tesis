@@ -4,7 +4,7 @@
 // H4Actions constructor  //
 //------------------------//
 //                        //
-//       Do nothing       //
+//       Do nothing.      //
 //                        //
 //************************//
 H4Actions::H4Actions () : G4VUserActionInitialization() {}
@@ -13,15 +13,15 @@ H4Actions::H4Actions () : G4VUserActionInitialization() {}
 //  H4Actions destructor  //
 //------------------------//
 //                        //
-//       Do nothing       //
+//       Do nothing.      //
 //                        //
 //************************//
 H4Actions::~H4Actions () {}
 
-//*******************//
-// Build the primary //
-// generator actions //
-//*******************//
+//********************//
+// Build the primary  //
+// generator actions. //
+//********************//
 void H4Actions::Build () const {
   SetUserAction(new H4PrimaryGenerator);
 }

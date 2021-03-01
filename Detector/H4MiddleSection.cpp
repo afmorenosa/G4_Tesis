@@ -1,28 +1,28 @@
 #include "H4MiddleSection.hpp"
 
-//****************************//
+//*****************************//
 // H4MiddleSection constructor //
-//----------------------------//
-//                            //
-//       Do nothing           //
-//                            //
-//****************************//
+//-----------------------------//
+//                             //
+//       Do nothing.           //
+//                             //
+//*****************************//
 H4MiddleSection::H4MiddleSection () {}
 
-//****************************//
+//*****************************//
 // H4MiddleSection destructor  //
-//----------------------------//
-//                            //
-//       Do nothing           //
-//                            //
-//****************************//
+//-----------------------------//
+//                             //
+//       Do nothing.           //
+//                             //
+//*****************************//
 H4MiddleSection::~H4MiddleSection () {}
 
-//**************************************//
-//                                      //
-// Build the complete module            //
-//                                      //
-//**************************************//
+//****************************//
+//                            //
+// Build the complete module. //
+//                            //
+//****************************//
 void H4MiddleSection::BuildModule (
   G4Material *sc_plate_mat,
   G4Material *hole_mat,
@@ -40,7 +40,7 @@ void H4MiddleSection::BuildModule (
   G4bool surf_chk
 ) {
 
-  // Build plates
+  // Build plates.
   PlacePbScPlates(
     sc_plate_mat,
     hole_mat,
@@ -57,7 +57,7 @@ void H4MiddleSection::BuildModule (
     surf_chk
   );
 
-  // Build Recovery
+  // Build Recovery.
   AddRecovery (
     rot,
     tlate,
@@ -70,7 +70,7 @@ void H4MiddleSection::BuildModule (
     surf_chk
   );
 
-  // Build WLS wire
+  // Build WLS wire.
   AddWLS (
     wls_mat,
     rot,
@@ -86,11 +86,11 @@ void H4MiddleSection::BuildModule (
 
 }
 
-//**************************************//
-//                                      //
-// Construct a squared panel with holes //
-//                                      //
-//**************************************//
+//***************************************//
+//                                       //
+// Construct a squared panel with holes. //
+//                                       //
+//***************************************//
 void H4MiddleSection::PlaceHolePlate (
   G4Material *plate_mat,
   G4Material *hole_mat,
@@ -123,7 +123,7 @@ void H4MiddleSection::PlaceHolePlate (
     "Hole_Log"
   );
 
-  // Place the volumes
+  // Place the volumes of the plate.
   new G4PVPlacement(
     rot,
     tlate,
@@ -135,7 +135,7 @@ void H4MiddleSection::PlaceHolePlate (
     surf_chk
   );
 
-  // Place the volumes
+  // Place the volume for the hole in the middle.
   new G4PVPlacement(
     0,
     G4ThreeVector(0, 0, 0),
@@ -147,6 +147,7 @@ void H4MiddleSection::PlaceHolePlate (
     surf_chk
   );
 
+  // Place the volumes for the holes, 36 in total.
   for (int i = 0; i < 6; i++) {
     for (int j = 0; j < 6; j++) {
 
@@ -173,7 +174,7 @@ void H4MiddleSection::PlaceHolePlate (
 
 //**************************************//
 //                                      //
-// Construct a squared panel of nine    //
+// Construct a squared panel of four    //
 // little hole panels                   //
 //                                      //
 //**************************************//
@@ -192,6 +193,7 @@ void H4MiddleSection::PlaceLargePlate (
 ) {
 
 
+  // Place the hole panels, four in total.
   for (int i = 0; i < 2; i++) {
     for (int j = 0; j < 2; j++) {
 
@@ -216,8 +218,8 @@ void H4MiddleSection::PlaceLargePlate (
 
 //**************************************//
 //                                      //
-// Construct a squared panel of nine    //
-// little hole panels                   //
+// Place the module panels of lead and  //
+// scintillator.                        //
 //                                      //
 //**************************************//
 void H4MiddleSection::PlacePbScPlates (
@@ -236,12 +238,13 @@ void H4MiddleSection::PlacePbScPlates (
   G4bool surf_chk
 ) {
 
-  // Manager for NIST db, for material searching
+  // Manager for NIST db, for material searching.
   G4NistManager *nist = G4NistManager::Instance();
 
-  // Get the definition of lead as a material
+  // Get the definition of lead as a material.
   G4Material *lead_mat = nist->FindOrBuildMaterial("G4_Pb");
 
+  // Place the scintillator plates, 67 in total
   for (int i = 0; i < 67; i++) {
 
     PlaceLargePlate (
@@ -264,6 +267,7 @@ void H4MiddleSection::PlacePbScPlates (
 
   }
 
+  // Place the lead plates, 66 in total.
   for (int i = 0; i < 66; i++) {
 
     PlaceLargePlate (
@@ -305,21 +309,15 @@ void H4MiddleSection::AddRecovery (
   G4bool surf_chk
 ) {
 
-  // Manager for NIST db, for material searching
+  // Manager for NIST db, for material searching.
   G4NistManager *nist = G4NistManager::Instance();
 
-  // Get the definition of lead as a material
+  // Get the definition of lead as a material.
   G4Material *steel_mat = nist->FindOrBuildMaterial("G4_STAINLESS-STEEL");
 
   // Vertical box.
   G4Box *vertical_box = new G4Box(
     "Main Box", 0.05*cm, 6.06*cm,
-    sc_thickness * 67 + pb_thickness * 66
-  );
-
-  // Horizontal box.
-  G4Box *horizontal_box = new G4Box(
-    "Main Box", 6.06*cm, 0.05*cm,
     sc_thickness * 67 + pb_thickness * 66
   );
 
@@ -329,13 +327,19 @@ void H4MiddleSection::AddRecovery (
     "Cover_Sheet"
   );
 
+  // Horizontal box.
+  G4Box *horizontal_box = new G4Box(
+    "Main Box", 6.06*cm, 0.05*cm,
+    sc_thickness * 67 + pb_thickness * 66
+  );
+
   G4LogicalVolume *horizontal_log = new G4LogicalVolume(
     horizontal_box,
     steel_mat,
     "Cover_Sheet"
   );
 
-  // Place the volumes
+  // Place the vertical recovery.
   new G4PVPlacement(
     rot,
     tlate + G4ThreeVector(0.05*cm + 6.06*cm, 0., 0.),
@@ -358,7 +362,7 @@ void H4MiddleSection::AddRecovery (
     surf_chk
   );
 
-  // Place the volumes
+  // Place the horizontal recovery.
   new G4PVPlacement(
     rot,
     tlate + G4ThreeVector(0., 0.05*cm + 6.06*cm, 0.),
@@ -412,6 +416,7 @@ void H4MiddleSection::AddWLS (
     "WLS"
   );
 
+  // Add the WLS wire according the holes of the plates.
   for (int i = 0; i < 2; i++) {
     for (int j = 0; j < 2; j++) {
 
@@ -459,5 +464,5 @@ void H4MiddleSection::AddWLS (
 }
 
 //
-// H4MiddleSection.cpp end here
+// H4MiddleSection.cpp ends here.
 //

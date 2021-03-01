@@ -1,11 +1,11 @@
 #ifndef H4ACTIONS_HG4
 #define H4ACTIONS_HG4
 
-// Geant Headers
+// Geant Headers.
 #include "GeneralG4.hpp"
 #include "G4VUserActionInitialization.hh"
 
-// Project Headers
+// Project Headers.
 #include "H4PrimaryGenerator.hpp"
 
 //**********************************//
@@ -13,7 +13,7 @@
 //----------------------------------//
 //                                  //
 // This class add the Primary      //
-// Generator                        //
+// Generator.                       //
 //                                  //
 //**********************************//
 class H4Actions : public G4VUserActionInitialization {

@@ -1,9 +1,18 @@
 #ifndef H4MIDDLE_SECTION_HG4
 #define H4MIDDLE_SECTION_HG4
 
+// Geant Headers.
 #include "GeneralG4.hpp"
 #include "G4VUserDetectorConstruction.hh"
 
+//**********************************//
+// Class: H4MiddleSection           //
+//----------------------------------//
+//                                  //
+// This class build the middle      //
+// modules of the detector.         //
+//                                  //
+//**********************************//
 class H4MiddleSection {
 public:
 

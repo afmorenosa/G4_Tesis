@@ -5,7 +5,7 @@
 //------------------------//
 //                        //
 // Initialize modules     //
-// pointers               //
+// pointers.              //
 //                        //
 //************************//
 H4Detector::H4Detector () : G4VUserDetectorConstruction() {
@@ -19,7 +19,7 @@ H4Detector::H4Detector () : G4VUserDetectorConstruction() {
 //------------------------//
 //                        //
 // Delete modules         //
-// pointer                //
+// pointer.               //
 //                        //
 //************************//
 H4Detector::~H4Detector () {
@@ -33,7 +33,7 @@ H4Detector::~H4Detector () {
 //------------------------//
 //                        //
 // @return the detector   //
-// constructed            //
+// constructed.           //
 //                        //
 //************************//
 G4VPhysicalVolume *H4Detector::Construct () {

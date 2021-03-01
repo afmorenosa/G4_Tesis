@@ -4,7 +4,7 @@
 // H4OuterSection constructor //
 //----------------------------//
 //                            //
-//       Do nothing           //
+//       Do nothing.          //
 //                            //
 //****************************//
 H4OuterSection::H4OuterSection () {}
@@ -13,16 +13,16 @@ H4OuterSection::H4OuterSection () {}
 // H4OuterSection destructor  //
 //----------------------------//
 //                            //
-//       Do nothing           //
+//       Do nothing.          //
 //                            //
 //****************************//
 H4OuterSection::~H4OuterSection () {}
 
-//**************************************//
-//                                      //
-// Build the complete module            //
-//                                      //
-//**************************************//
+//****************************//
+//                            //
+// Build the complete module. //
+//                            //
+//****************************//
 void H4OuterSection::BuildModule (
   G4Material *sc_plate_mat,
   G4Material *hole_mat,
@@ -40,7 +40,7 @@ void H4OuterSection::BuildModule (
   G4bool surf_chk
 ) {
 
-  // Build plates
+  // Build plates.
   PlacePbScPlates(
     sc_plate_mat,
     hole_mat,
@@ -57,7 +57,7 @@ void H4OuterSection::BuildModule (
     surf_chk
   );
 
-  // Build Recovery
+  // Build Recovery.
   AddRecovery (
     rot,
     tlate,
@@ -70,7 +70,7 @@ void H4OuterSection::BuildModule (
     surf_chk
   );
 
-  // Build WLS wire
+  // Build WLS wire.
   AddWLS (
     wls_mat,
     rot,
@@ -86,11 +86,11 @@ void H4OuterSection::BuildModule (
 
 }
 
-//**************************************//
-//                                      //
-// Construct a squared panel with holes //
-//                                      //
-//**************************************//
+//***************************************//
+//                                       //
+// Construct a squared panel with holes. //
+//                                       //
+//***************************************//
 void H4OuterSection::PlaceHolePlate (
   G4Material *plate_mat,
   G4Material *hole_mat,
@@ -123,7 +123,7 @@ void H4OuterSection::PlaceHolePlate (
     "Hole_Log"
   );
 
-  // Place the volumes
+  // Place the volume of the plate.
   new G4PVPlacement(
     rot,
     tlate,
@@ -135,7 +135,7 @@ void H4OuterSection::PlaceHolePlate (
     surf_chk
   );
 
-  // Place the volumes
+  // Place the volume for the hole in the middle.
   new G4PVPlacement(
     0,
     G4ThreeVector(0, 0, 0),
@@ -147,6 +147,7 @@ void H4OuterSection::PlaceHolePlate (
     surf_chk
   );
 
+  // Place the volumes for the holes, 64 in total.
   for (int i = 0; i < 8; i++) {
     for (int j = 0; j < 8; j++) {
 
@@ -173,7 +174,7 @@ void H4OuterSection::PlaceHolePlate (
 
 //**************************************//
 //                                      //
-// Construct a squared panel of nine    //
+// Construct a squared panel of one     //
 // little hole panels                   //
 //                                      //
 //**************************************//
@@ -191,6 +192,7 @@ void H4OuterSection::PlaceLargePlate (
   G4bool surf_chk
 ) {
 
+  // Place the hole panels, one in total.
   PlaceHolePlate (
     plate_mat,
     hole_mat,
@@ -209,8 +211,8 @@ void H4OuterSection::PlaceLargePlate (
 
 //**************************************//
 //                                      //
-// Construct a squared panel of nine    //
-// little hole panels                   //
+// Place the module panels of lead and  //
+// scintillator.                        //
 //                                      //
 //**************************************//
 void H4OuterSection::PlacePbScPlates (
@@ -229,12 +231,13 @@ void H4OuterSection::PlacePbScPlates (
   G4bool surf_chk
 ) {
 
-  // Manager for NIST db, for material searching
+  // Manager for NIST db, for material searching.
   G4NistManager *nist = G4NistManager::Instance();
 
-  // Get the definition of lead as a material
+  // Get the definition of lead as a material.
   G4Material *lead_mat = nist->FindOrBuildMaterial("G4_Pb");
 
+  // Place the scintillator plates, 67 in total
   for (int i = 0; i < 67; i++) {
 
     PlaceLargePlate (
@@ -257,6 +260,7 @@ void H4OuterSection::PlacePbScPlates (
 
   }
 
+  // Place the lead plates, 66 in total.
   for (int i = 0; i < 66; i++) {
 
     PlaceLargePlate (
@@ -281,11 +285,11 @@ void H4OuterSection::PlacePbScPlates (
 
 }
 
-//**************************************//
-//                                      //
-// Add steel recovery for the module    //
-//                                      //
-//**************************************//
+//************************************//
+//                                    //
+// Add steel recovery for the module. //
+//                                    //
+//************************************//
 void H4OuterSection::AddRecovery (
   G4RotationMatrix *rot,
   const G4ThreeVector &tlate,
@@ -298,21 +302,15 @@ void H4OuterSection::AddRecovery (
   G4bool surf_chk
 ) {
 
-  // Manager for NIST db, for material searching
+  // Manager for NIST db, for material searching.
   G4NistManager *nist = G4NistManager::Instance();
 
-  // Get the definition of lead as a material
+  // Get the definition of lead as a material.
   G4Material *steel_mat = nist->FindOrBuildMaterial("G4_STAINLESS-STEEL");
 
   // Vertical box.
   G4Box *vertical_box = new G4Box(
     "Main Box", 0.05*cm, 6.06*cm,
-    sc_thickness * 67 + pb_thickness * 66
-  );
-
-  // Horizontal box.
-  G4Box *horizontal_box = new G4Box(
-    "Main Box", 6.06*cm, 0.05*cm,
     sc_thickness * 67 + pb_thickness * 66
   );
 
@@ -322,13 +320,19 @@ void H4OuterSection::AddRecovery (
     "Cover_Sheet"
   );
 
+  // Horizontal box.
+  G4Box *horizontal_box = new G4Box(
+    "Main Box", 6.06*cm, 0.05*cm,
+    sc_thickness * 67 + pb_thickness * 66
+  );
+
   G4LogicalVolume *horizontal_log = new G4LogicalVolume(
     horizontal_box,
     steel_mat,
     "Cover_Sheet"
   );
 
-  // Place the volumes
+  // Place the vertical recovery.
   new G4PVPlacement(
     rot,
     tlate + G4ThreeVector(0.05*cm + 6.06*cm, 0., 0.),
@@ -351,7 +355,7 @@ void H4OuterSection::AddRecovery (
     surf_chk
   );
 
-  // Place the volumes
+  // Place the horizontal recovery.
   new G4PVPlacement(
     rot,
     tlate + G4ThreeVector(0., 0.05*cm + 6.06*cm, 0.),
@@ -405,7 +409,7 @@ void H4OuterSection::AddWLS (
     "WLS"
   );
 
-
+  // Add the WLS wire according the holes of the plates.
   new G4PVPlacement(
     rot,
     tlate,
@@ -443,5 +447,5 @@ void H4OuterSection::AddWLS (
 }
 
 //
-// H4OuterSection.cpp end here
+// H4OuterSection.cpp ends here.
 //

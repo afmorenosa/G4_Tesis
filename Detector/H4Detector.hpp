@@ -1,9 +1,11 @@
 #ifndef H4DETECTOR_HG4
 #define H4DETECTOR_HG4
 
+// Geant Headers.
 #include "GeneralG4.hpp"
 #include "G4VUserDetectorConstruction.hh"
 
+// Project Headers.
 #include "H4InnerSection.hpp"
 #include "H4MiddleSection.hpp"
 #include "H4OuterSection.hpp"
@@ -12,7 +14,7 @@
 // Class: H4Detector                //
 //----------------------------------//
 //                                  //
-// This class build the Detector    //
+// This class build the Detector.   //
 //                                  //
 //**********************************//
 class H4Detector : public G4VUserDetectorConstruction {

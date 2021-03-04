@@ -1,4 +1,4 @@
-# Add the headers Files.
+# Add the headers files.
 # The header for the Detector Geometry.
 configure_file(H4Detector.hpp
   ${CMAKE_BINARY_DIR}/include/H4Detector.hpp

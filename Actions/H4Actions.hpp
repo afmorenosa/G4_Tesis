@@ -12,7 +12,7 @@
 // Class: H4Actions                 //
 //----------------------------------//
 //                                  //
-// This class add the Primary      //
+// This class add the Primary       //
 // Generator.                       //
 //                                  //
 //**********************************//

@@ -4,6 +4,14 @@
 #include "GeneralG4.hpp"
 #include "G4VUserPrimaryGeneratorAction.hh"
 
+//**********************************//
+// Class: H4PrimaryGenerator        //
+//----------------------------------//
+//                                  //
+// This class add the Primary       //
+// Generator.                       //
+//                                  //
+//**********************************//
 class H4PrimaryGenerator : public G4VUserPrimaryGeneratorAction {
 private:
   G4ParticleGun *particle_gun;

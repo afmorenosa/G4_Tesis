@@ -5,7 +5,7 @@
 //--------------------------//
 //                          //
 // Add electromagnetic      //
-// physics list             //
+// physics list.            //
 //                          //
 //**************************//
 H4PhysicList::H4PhysicList () :
@@ -37,7 +37,7 @@ em_physics_list(nullptr) {
 // H4PhysicList destructor  //
 //--------------------------//
 //                          //
-//        Do nothing        //
+//        Do nothing.       //
 //                          //
 //**************************//
 H4PhysicList::~H4PhysicList () {}
@@ -45,7 +45,7 @@ H4PhysicList::~H4PhysicList () {}
 //*******************//
 // Construct all the //
 // particles for the //
-// simulation        //
+// simulation.       //
 //*******************//
 void H4PhysicList::ConstructParticle () {
   // pseudo-particles
@@ -98,7 +98,7 @@ void H4PhysicList::ConstructParticle () {
 //*******************//
 // Construct all the //
 // process for the   //
-// simulation        //
+// simulation.       //
 //*******************//
 void H4PhysicList::ConstructProcess () {
   // Construct transportation event
@@ -109,5 +109,5 @@ void H4PhysicList::ConstructProcess () {
 }
 
 //
-// H4PhysicList.cpp end here
+// H4PhysicList.cpp ends here.
 //

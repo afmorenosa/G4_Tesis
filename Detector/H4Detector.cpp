@@ -137,7 +137,7 @@ void H4Detector::BuildCalorimeter (G4LogicalVolume *mother_logical) {
 
   // Move the coordinates to the first module.
   G4ThreeVector new_coords_tlate =
-  G4ThreeVector(-(12.32 * 33)*cm, -(12.32 * 27)*cm, 0.);
+  G4ThreeVector(-(12.32 * 31.5)*cm, -(12.32 * 25.5)*cm, 0.);
 
   for (G4int i = 0; i < 64; i++) {
     for (G4int j = 0; j < 52; j++) {

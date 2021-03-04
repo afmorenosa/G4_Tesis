@@ -33,6 +33,9 @@
 /vis/set/colour cyan
 /vis/set/lineWidth 2
 
+# Add axes
+# /vis/scene/add/axes
+
 # "World" is transparent gray to represent air
 # /vis/geometry/set/colour World 0 0.6 0.6 1 .1
 # # /vis/geometry/set/colour Hole_Log 0 0.6 0.6 1 1

@@ -46,15 +46,6 @@ void H4MiddleSection::PlaceHolePlate (
     log_name
   );
 
-  // // Holes tube.
-  // G4Tubs *hole_tube = new G4Tubs("Hole", 0, .7*mm, thickness, 0.*deg, 360.*deg);
-  //
-  // G4LogicalVolume *hole_log = new G4LogicalVolume(
-  //   hole_tube,
-  //   hole_mat,
-  //   "Hole_Log"
-  // );
-
   // Place the volumes of the plate.
   new G4PVPlacement(
     rot,
@@ -66,41 +57,6 @@ void H4MiddleSection::PlaceHolePlate (
     copy_no,
     surf_chk
   );
-
-  // // Place the volume for the hole in the middle.
-  // new G4PVPlacement(
-  //   0,
-  //   G4ThreeVector(0, 0, 0),
-  //   hole_log,
-  //   name + " - middle hole",
-  //   plate_log,
-  //   many,
-  //   copy_no,
-  //   surf_chk
-  // );
-  //
-  // // Place the volumes for the holes, 36 in total.
-  // for (int i = 0; i < 6; i++) {
-  //   for (int j = 0; j < 6; j++) {
-  //
-  //     new G4PVPlacement(
-  //       0,
-  //       G4ThreeVector(
-  //         -3.03*cm + (0.5 + i) * 1.01*cm,
-  //         -3.03*cm + (0.5 + j) * 1.01*cm,
-  //         0
-  //       ),
-  //       hole_log,
-  //       name + " - hole - row_hole: " + std::to_string(i) +
-  //       " - col_hole: " + std::to_string(j),
-  //       plate_log,
-  //       many,
-  //       copy_no,
-  //       surf_chk
-  //     );
-  //
-  //   }
-  // }
 
 }
 

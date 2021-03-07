@@ -8,6 +8,7 @@
 // Project Libraries.
 #include "H4Detector.hpp"
 #include "H4Actions.hpp"
+#include "H4TrackingAction.hpp"
 
 int main(int argc, char *argv[]) {
 
@@ -26,6 +27,8 @@ int main(int argc, char *argv[]) {
   run_manager->SetUserInitialization(physicsList);
 
   run_manager->SetUserInitialization(new H4Actions);
+
+  run_manager->SetUserAction(new H4TrackingAction);
 
   // Initialize Genat 4 kernel.
   run_manager->Initialize();

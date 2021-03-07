@@ -29,18 +29,16 @@ add_subdirectory(include)
 add_subdirectory(PrimaryGenerator)
 add_subdirectory(Actions)
 add_subdirectory(Detector)
-add_subdirectory(PhysicList)
 
 ### Add an executable.
-add_executable(VELO_Tesis main.cpp)
+add_executable(calo_ECAL main.cpp)
 
 ### Link libraries.
-target_link_libraries(VELO_Tesis
+target_link_libraries(calo_ECAL
   ${Geant4_LIBRARIES}
   primary_generator
   actions
   detector
-  physics_list
 )
 
 set(geant_scripts

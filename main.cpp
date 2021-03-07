@@ -7,7 +7,6 @@
 
 // Project Libraries.
 #include "H4Detector.hpp"
-#include "H4PhysicList.hpp"
 #include "H4Actions.hpp"
 
 int main(int argc, char *argv[]) {
@@ -25,7 +24,6 @@ int main(int argc, char *argv[]) {
 
   auto physicsList = new QGSP_BERT;
   run_manager->SetUserInitialization(physicsList);
-  // run_manager->SetUserInitialization(new H4PhysicList);
 
   run_manager->SetUserInitialization(new H4Actions);
 

@@ -14,7 +14,7 @@
 //**********************************//
 class H4PrimaryGenerator : public G4VUserPrimaryGeneratorAction {
 private:
-  G4ParticleGun *particle_gun;
+  G4ParticleGun *m_particle_gun;
 
 public:
   H4PrimaryGenerator (

@@ -41,7 +41,7 @@ G4VPhysicalVolume *H4Detector::Construct () {
   BuildMaterials();
 
   // Build world geometry.
-  G4Box *world_box = new G4Box("World Box", 5*m, 5*m, 1*m);
+  G4Box *world_box = new G4Box("World Box", 5*m, 5*m, 8*m);
 
   // Build world logical volumes.
   G4LogicalVolume *world_log = new G4LogicalVolume(
@@ -137,7 +137,7 @@ void H4Detector::BuildCalorimeter (G4LogicalVolume *mother_logical) {
 
   // Move the coordinates to the first module.
   G4ThreeVector new_coords_tlate =
-  G4ThreeVector(-(12.32 * 31.5)*cm, -(12.32 * 25.5)*cm, 0.);
+  G4ThreeVector(-(12.32 * 31.5)*cm, -(12.32 * 25.5)*cm, 6.0*m);
 
   for (G4int i = 24; i < 40; i++) {
     for (G4int j = 20; j < 32; j++) {

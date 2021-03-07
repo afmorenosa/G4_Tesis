@@ -1,6 +1,7 @@
 #ifndef H4PRIMARYGENERATOR_HG4
 #define H4PRIMARYGENERATOR_HG4
 
+// Geant Headers.
 #include "GeneralG4.hpp"
 #include "G4VUserPrimaryGeneratorAction.hh"
 

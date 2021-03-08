@@ -24,8 +24,8 @@ H4InnerSection::~H4InnerSection () {}
 //                                       //
 //***************************************//
 void H4InnerSection::PlaceHolePlate (
+  G4bool is_scintillator,
   G4Material *plate_mat,
-  G4Material *hole_mat,
   G4double thickness,
   G4RotationMatrix *rot,
   const G4ThreeVector &tlate,
@@ -37,6 +37,33 @@ void H4InnerSection::PlaceHolePlate (
   G4bool surf_chk
 ) {
 
+  // Lead tale.
+  if (!is_scintillator) {
+
+    // Main box.
+    G4Box *main_box = new G4Box("Main Box", 6.06*cm, 6.06*cm, thickness);
+
+    G4LogicalVolume *plate_log = new G4LogicalVolume(
+      main_box,
+      plate_mat,
+      log_name
+    );
+
+    // Place the volume of the plate.
+    new G4PVPlacement(
+      rot,
+      tlate,
+      plate_log,
+      name,
+      mother_logical,
+      many,
+      copy_no,
+      surf_chk
+    );
+
+    return;
+  }
+
   // Main box.
   G4Box *main_box = new G4Box("Main Box", 2.02*cm, 2.02*cm, thickness);
 
@@ -45,15 +72,6 @@ void H4InnerSection::PlaceHolePlate (
     plate_mat,
     log_name
   );
-
-  // // Holes tube.
-  // G4Tubs *hole_tube = new G4Tubs("Hole", 0, .7*mm, thickness, 0.*deg, 360.*deg);
-  //
-  // G4LogicalVolume *hole_log = new G4LogicalVolume(
-  //   hole_tube,
-  //   hole_mat,
-  //   "Hole_Log"
-  // );
 
   // Place the volume of the plate.
   new G4PVPlacement(
@@ -67,41 +85,6 @@ void H4InnerSection::PlaceHolePlate (
     surf_chk
   );
 
-  // // Place the volume for the hole in the middle.
-  // new G4PVPlacement(
-  //   0,
-  //   G4ThreeVector(0, 0, 0),
-  //   hole_log,
-  //   name + " - middle hole",
-  //   plate_log,
-  //   many,
-  //   copy_no,
-  //   surf_chk
-  // );
-  //
-  // // Place the volumes for the holes, 16 in total.
-  // for (int i = 0; i < 4; i++) {
-  //   for (int j = 0; j < 4; j++) {
-  //
-  //     new G4PVPlacement(
-  //       0,
-  //       G4ThreeVector(
-  //         -2.02*cm + (0.5 + i) * 1.01*cm,
-  //         -2.02*cm + (0.5 + j) * 1.01*cm,
-  //         0
-  //       ),
-  //       hole_log,
-  //       name + " - hole - row_hole: " + std::to_string(i) +
-  //       " - col_hole: " + std::to_string(j),
-  //       plate_log,
-  //       many,
-  //       copy_no,
-  //       surf_chk
-  //     );
-  //
-  //   }
-  // }
-
 }
 
 //**************************************//
@@ -111,8 +94,8 @@ void H4InnerSection::PlaceHolePlate (
 //                                      //
 //**************************************//
 void H4InnerSection::PlaceLargePlate (
+  G4bool is_scintillator,
   G4Material *plate_mat,
-  G4Material *hole_mat,
   G4double thickness,
   G4RotationMatrix *rot,
   const G4ThreeVector &tlate,
@@ -124,13 +107,32 @@ void H4InnerSection::PlaceLargePlate (
   G4bool surf_chk
 ) {
 
+  // Place the lead tile.
+  if (!is_scintillator) {
+    PlaceHolePlate (
+      is_scintillator,
+      plate_mat,
+      thickness,
+      rot,
+      tlate,
+      name,
+      log_name,
+      mother_logical,
+      many,
+      copy_no,
+      surf_chk
+    );
+
+    return;
+  }
+
   // Place the hole panels, nine in total.
   for (int i = 0; i < 3; i++) {
     for (int j = 0; j < 3; j++) {
 
       PlaceHolePlate (
+        is_scintillator,
         plate_mat,
-        hole_mat,
         thickness,
         rot,
         tlate + G4ThreeVector((i-1) * 4.04 * cm, (j-1) * 4.04 * cm, 0.0),

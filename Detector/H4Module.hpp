@@ -20,7 +20,6 @@ public:
 
   void BuildModule (
     G4Material *sc_plate_mat,
-    G4Material *hole_mat,
     G4Material *wls_mat,
     G4RotationMatrix *rot,
     const G4ThreeVector &tlate,
@@ -37,7 +36,6 @@ public:
 
   void PlacePbScPlates (
     G4Material *sc_plate_mat,
-    G4Material *hole_mat,
     G4RotationMatrix *rot,
     const G4ThreeVector &tlate,
     const G4String &name,
@@ -66,8 +64,8 @@ public:
 private:
 
   virtual void PlaceHolePlate (
+    G4bool is_scintillator,
     G4Material *plate_mat,
-    G4Material *hole_mat,
     G4double thickness,
     G4RotationMatrix *rot,
     const G4ThreeVector &tlate,
@@ -80,8 +78,8 @@ private:
   ) = 0;
 
   virtual void PlaceLargePlate (
+    G4bool is_scintillator,
     G4Material *plate_mat,
-    G4Material *hole_mat,
     G4double thickness,
     G4RotationMatrix *rot,
     const G4ThreeVector &tlate,

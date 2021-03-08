@@ -24,8 +24,8 @@ public:
 private:
 
   void PlaceHolePlate (
+    G4bool is_scintillator,
     G4Material *plate_mat,
-    G4Material *hole_mat,
     G4double thickness,
     G4RotationMatrix *rot,
     const G4ThreeVector &tlate,
@@ -38,8 +38,8 @@ private:
   ) override;
 
   void PlaceLargePlate (
+    G4bool is_scintillator,
     G4Material *plate_mat,
-    G4Material *hole_mat,
     G4double thickness,
     G4RotationMatrix *rot,
     const G4ThreeVector &tlate,

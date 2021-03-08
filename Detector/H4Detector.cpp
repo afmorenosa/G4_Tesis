@@ -155,7 +155,6 @@ void H4Detector::BuildCalorimeter (G4LogicalVolume *mother_logical) {
         // Place the inner modules.
         m_inner_section_builder->BuildModule(
           m_aerog_mat,
-          m_world_mat,
           m_wls_mat,
           0,
           new_coords_tlate + module_position,
@@ -168,7 +167,6 @@ void H4Detector::BuildCalorimeter (G4LogicalVolume *mother_logical) {
         // Place the middle modules.
         m_middle_section_builder->BuildModule(
           m_aerog_mat,
-          m_world_mat,
           m_wls_mat,
           0,
           new_coords_tlate + module_position,
@@ -181,7 +179,6 @@ void H4Detector::BuildCalorimeter (G4LogicalVolume *mother_logical) {
         // Place the outer modules.
         m_outer_section_builder->BuildModule(
           m_aerog_mat,
-          m_world_mat,
           m_wls_mat,
           0,
           new_coords_tlate + module_position,

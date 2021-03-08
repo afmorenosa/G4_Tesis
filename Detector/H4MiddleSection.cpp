@@ -24,8 +24,8 @@ H4MiddleSection::~H4MiddleSection () {}
 //                                       //
 //***************************************//
 void H4MiddleSection::PlaceHolePlate (
+  G4bool is_scintillator,
   G4Material *plate_mat,
-  G4Material *hole_mat,
   G4double thickness,
   G4RotationMatrix *rot,
   const G4ThreeVector &tlate,
@@ -36,6 +36,33 @@ void H4MiddleSection::PlaceHolePlate (
   G4int copy_no,
   G4bool surf_chk
 ) {
+
+  // Lead tile.
+  if (!is_scintillator) {
+
+    // Main box.
+    G4Box *main_box = new G4Box("Main Box", 6.06*cm, 6.06*cm, thickness);
+
+    G4LogicalVolume *plate_log = new G4LogicalVolume(
+      main_box,
+      plate_mat,
+      log_name
+    );
+
+    // Place the volume of the plate.
+    new G4PVPlacement(
+      rot,
+      tlate,
+      plate_log,
+      name,
+      mother_logical,
+      many,
+      copy_no,
+      surf_chk
+    );
+
+    return;
+  }
 
   // Main box.
   G4Box *main_box = new G4Box("Main Box", 3.03*cm, 3.03*cm, thickness);
@@ -67,8 +94,8 @@ void H4MiddleSection::PlaceHolePlate (
 //                                      //
 //**************************************//
 void H4MiddleSection::PlaceLargePlate (
+  G4bool is_scintillator,
   G4Material *plate_mat,
-  G4Material *hole_mat,
   G4double thickness,
   G4RotationMatrix *rot,
   const G4ThreeVector &tlate,
@@ -80,14 +107,32 @@ void H4MiddleSection::PlaceLargePlate (
   G4bool surf_chk
 ) {
 
+  // Place the lead tile.
+  if (!is_scintillator) {
+    PlaceHolePlate (
+      is_scintillator,
+      plate_mat,
+      thickness,
+      rot,
+      tlate,
+      name,
+      log_name,
+      mother_logical,
+      many,
+      copy_no,
+      surf_chk
+    );
+
+    return;
+  }
 
   // Place the hole panels, four in total.
   for (int i = 0; i < 2; i++) {
     for (int j = 0; j < 2; j++) {
 
       PlaceHolePlate (
+        is_scintillator,
         plate_mat,
-        hole_mat,
         thickness,
         rot,
         tlate + G4ThreeVector((i-0.5) * 6.06 * cm, (j-0.5) * 6.06 * cm, 0.0),

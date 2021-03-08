@@ -25,7 +25,6 @@ H4Module::~H4Module () {}
 //****************************//
 void H4Module::BuildModule (
   G4Material *sc_plate_mat,
-  G4Material *hole_mat,
   G4Material *wls_mat,
   G4RotationMatrix *rot,
   const G4ThreeVector &tlate,
@@ -43,7 +42,6 @@ void H4Module::BuildModule (
   // Build plates.
   PlacePbScPlates(
     sc_plate_mat,
-    hole_mat,
     rot,
     tlate,
     name,
@@ -94,7 +92,6 @@ void H4Module::BuildModule (
 //**************************************//
 void H4Module::PlacePbScPlates (
   G4Material *sc_plate_mat,
-  G4Material *hole_mat,
   G4RotationMatrix *rot,
   const G4ThreeVector &tlate,
   const G4String &name,
@@ -118,8 +115,8 @@ void H4Module::PlacePbScPlates (
   for (int i = 0; i < 67; i++) {
 
     PlaceLargePlate (
+      true,
       sc_plate_mat,
-      hole_mat,
       sc_thickness,
       rot,
       tlate + G4ThreeVector(
@@ -141,8 +138,8 @@ void H4Module::PlacePbScPlates (
   for (int i = 0; i < 66; i++) {
 
     PlaceLargePlate (
+      false,
       lead_mat,
-      hole_mat,
       pb_thickness,
       rot,
       tlate + G4ThreeVector(

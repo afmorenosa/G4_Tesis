@@ -24,8 +24,8 @@ H4OuterSection::~H4OuterSection () {}
 //                                       //
 //***************************************//
 void H4OuterSection::PlaceHolePlate (
+  G4bool is_scintillator,
   G4Material *plate_mat,
-  G4Material *hole_mat,
   G4double thickness,
   G4RotationMatrix *rot,
   const G4ThreeVector &tlate,
@@ -67,8 +67,8 @@ void H4OuterSection::PlaceHolePlate (
 //                                      //
 //**************************************//
 void H4OuterSection::PlaceLargePlate (
+  G4bool is_scintillator,
   G4Material *plate_mat,
-  G4Material *hole_mat,
   G4double thickness,
   G4RotationMatrix *rot,
   const G4ThreeVector &tlate,
@@ -82,8 +82,8 @@ void H4OuterSection::PlaceLargePlate (
 
   // Place the hole panels, one in total.
   PlaceHolePlate (
+    is_scintillator,
     plate_mat,
-    hole_mat,
     thickness,
     rot,
     tlate,

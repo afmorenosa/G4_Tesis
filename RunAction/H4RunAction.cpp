@@ -13,14 +13,27 @@ H4RunAction::H4RunAction () : G4UserRunAction() {
 
   G4RootAnalysisManager *analysis_manager = G4RootAnalysisManager::Instance();
 
-  // Create histograms directories.
+  // Create histograms directory.
   analysis_manager->SetHistoDirectoryName("histograms");
+
+  // Set NTuples directory.
+  analysis_manager->SetNtupleDirectoryName("ntuple");
 
   // Set verbose.
   analysis_manager->SetVerboseLevel(0);
 
   // Create histograms.
   analysis_manager->CreateH2("Photons", "Photons", 32, 0, 17, 24, 0, 13);
+
+  // Create NTuples
+  analysis_manager->CreateNtuple("Photons", "Coordinates of photons");
+  analysis_manager->CreateNtupleIColumn("X");
+  analysis_manager->CreateNtupleIColumn("Y");
+  analysis_manager->CreateNtupleIColumn("Z");
+  analysis_manager->CreateNtupleIColumn("r");
+  analysis_manager->CreateNtupleIColumn("c");
+  analysis_manager->FinishNtuple();
+
 }
 
 //***********************************//
@@ -40,9 +53,6 @@ H4RunAction::~H4RunAction () {
 //                         //
 //*************************//
 void H4RunAction::BeginOfRunAction (const G4Run* run) {
-  std::cout << "/==================================================================================================================================================/" << '\n';
-  std::cout << "/ Begin of the run" << '\n';
-  std::cout << "/==================================================================================================================================================/" << '\n';
 
   // Get the analysis manager.
   G4RootAnalysisManager *analysis_manager = G4RootAnalysisManager::Instance();
@@ -58,9 +68,6 @@ void H4RunAction::BeginOfRunAction (const G4Run* run) {
 //                        //
 //************************//
 void H4RunAction::EndOfRunAction (const G4Run* run) {
-  std::cout << "/==================================================================================================================================================/" << '\n';
-  std::cout << "/ Begin of the run" << '\n';
-  std::cout << "/==================================================================================================================================================/" << '\n';
 
   // Get the analysis manager.
   G4RootAnalysisManager *analysis_manager = G4RootAnalysisManager::Instance();

@@ -4,6 +4,7 @@
 // Geant Headers.
 #include "GeneralG4.hpp"
 #include "G4UserTrackingAction.hh"
+#include "g4root.hh"
 
 // Project Headers.
 #include <regex>
@@ -14,7 +15,7 @@
 //                                  //
 // This class manage the actions    //
 // that are done in all the         //
-// trackings                        //
+// trackings.                       //
 //                                  //
 //**********************************//
 class H4TrackingAction : public G4UserTrackingAction {

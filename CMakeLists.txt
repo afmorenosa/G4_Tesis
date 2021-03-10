@@ -26,10 +26,11 @@ include_directories(${CMAKE_BINARY_DIR}/include)
 
 ### Add subdirectories.
 add_subdirectory(include)
-add_subdirectory(PrimaryGenerator)
-add_subdirectory(TrackingAction)
 add_subdirectory(Actions)
 add_subdirectory(Detector)
+add_subdirectory(PrimaryGenerator)
+add_subdirectory(TrackingAction)
+add_subdirectory(RunAction)
 
 ### Add an executable.
 add_executable(calo_ECAL main.cpp)
@@ -37,10 +38,11 @@ add_executable(calo_ECAL main.cpp)
 ### Link libraries.
 target_link_libraries(calo_ECAL
   ${Geant4_LIBRARIES}
-  tracking_action
-  primary_generator
-  actions
   detector
+  actions
+  primary_generator
+  tracking_action
+  run_action
 )
 
 set(geant_scripts

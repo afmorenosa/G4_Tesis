@@ -9,6 +9,7 @@
 #include "H4Detector.hpp"
 #include "H4Actions.hpp"
 #include "H4TrackingAction.hpp"
+#include "H4RunAction.hpp"
 
 int main(int argc, char *argv[]) {
 
@@ -20,14 +21,23 @@ int main(int argc, char *argv[]) {
 
   run_manager->SetVerboseLevel(0);
 
-  // Set mandatory initialization  classes.
+  //** Set mandatory initialization  classes.
+  // Detector Geometry.
   run_manager->SetUserInitialization(new H4Detector);
 
+  // Physics List.
   auto physicsList = new QGSP_BERT;
   run_manager->SetUserInitialization(physicsList);
 
+  // Actions Initialization.
   run_manager->SetUserInitialization(new H4Actions);
 
+  // Set actions.
+
+  // Run Actions.
+  run_manager->SetUserAction(new H4RunAction);
+
+  // Tracking Actions.
   run_manager->SetUserAction(new H4TrackingAction);
 
   // Initialize Genat 4 kernel.

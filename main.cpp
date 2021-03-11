@@ -11,9 +11,6 @@
 
 int main(int argc, char *argv[]) {
 
-  G4String aaa = "asd";
-  G4String bbb = " qwerty";
-
   // Construct the default run manager.
   G4RunManager *run_manager = new G4RunManager;
 

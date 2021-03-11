@@ -51,13 +51,13 @@ void H4TrackingAction::PreUserTrackingAction (const G4Track* track) {
       volume_name = number.suffix().str();
     }
 
-    analysis_manager->FillH2(0, 40 - coordinates[0], coordinates[1] - 32);
+    analysis_manager->FillH2(0, 40 - coordinates[0], coordinates[1] - 20);
 
-    analysis_manager->FillNtupleDColumn(0, coordinates[0]);
-    analysis_manager->FillNtupleDColumn(1, coordinates[1]);
-    analysis_manager->FillNtupleDColumn(2, coordinates[2]);
-    analysis_manager->FillNtupleDColumn(3, coordinates[3]);
-    analysis_manager->FillNtupleDColumn(4, coordinates[4]);
+    analysis_manager->FillNtupleIColumn(0, 40 - coordinates[0]);
+    analysis_manager->FillNtupleIColumn(1, coordinates[1] - 20);
+    analysis_manager->FillNtupleIColumn(2, coordinates[2]);
+    analysis_manager->FillNtupleIColumn(3, coordinates[3]);
+    analysis_manager->FillNtupleIColumn(4, coordinates[4]);
     analysis_manager->AddNtupleRow();
 
   }

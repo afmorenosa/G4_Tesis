@@ -50,7 +50,7 @@ int main(int argc, char *argv[]) {
   UI->ApplyCommand("/tracking/verbose 1");
 
   // Start a run.
-  int number_of_events = 1;
+  int number_of_events = 5;
   run_manager->BeamOn(number_of_events);
 
   // Get the pointer to the User Interface manager.

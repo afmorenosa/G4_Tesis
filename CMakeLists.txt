@@ -58,3 +58,9 @@ foreach(script ${geant_scripts})
     COPYONLY
   )
 endforeach()
+
+configure_file(
+  ${PROJECT_SOURCE_DIR}/ROOT_scripts/analysis_ntuples.C
+  ${PROJECT_BINARY_DIR}/ROOT_scripts/analysis_ntuples.C
+  COPYONLY
+)

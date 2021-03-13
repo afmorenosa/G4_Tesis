@@ -38,6 +38,12 @@ void analysis_ntuples() {
     32, 0, 17, 24, 0, 13
   );
 
+  TH3I *calo_photons_counter_3 = new TH3I(
+    "Photons Counter",
+    "Photons",
+    32, 0, 17, 24, 0, 13, 67, 0, 67
+  );
+
   int nentries, nbytes;
   nentries = (Int_t)tree->GetEntries();
 
@@ -45,10 +51,15 @@ void analysis_ntuples() {
     nbytes = tree->GetEntry(i);
 
     calo_photons_counter->Fill(X, Y);
+    calo_photons_counter_3->Fill(X, Y, Z);
 
   }
 
   calo_photons_counter->Draw("COL");
   canvas->Print("calo_photons_counter.svg");
+  canvas->Clear();
+
+  calo_photons_counter_3->Draw("BOX");
+  canvas->Print("calo_photons_counter_3.root");
   canvas->Clear();
 }

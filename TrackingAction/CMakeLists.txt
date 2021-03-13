@@ -8,3 +8,6 @@ file(GLOB SOURCES H4TrackingAction.cpp)
 
 # Add Tracking Action lib.
 add_library(tracking_action ${SOURCES})
+
+# Link the event generator lib.
+target_link_libraries(tracking_action event_action)

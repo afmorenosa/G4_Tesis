@@ -31,6 +31,7 @@ add_subdirectory(Detector)
 add_subdirectory(PrimaryGenerator)
 add_subdirectory(TrackingAction)
 add_subdirectory(RunAction)
+add_subdirectory(EventAction)
 
 ### Add an executable.
 add_executable(calo_ECAL main.cpp)
@@ -43,6 +44,7 @@ target_link_libraries(calo_ECAL
   primary_generator
   tracking_action
   run_action
+  event_action
 )
 
 set(geant_scripts

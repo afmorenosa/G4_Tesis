@@ -7,6 +7,7 @@
 #include "g4root.hh"
 
 // Project Headers.
+#include "H4EventAction.hpp"
 #include <regex>
 
 //************************************//
@@ -21,11 +22,14 @@
 //************************************//
 class H4RunAction : public G4UserRunAction {
 public:
-  H4RunAction ();
+  H4RunAction (H4EventAction *event_action);
   virtual ~H4RunAction ();
 
-  virtual void BeginOfRunAction(const G4Run* run);
-  virtual void EndOfRunAction(const G4Run* run);
+  virtual void BeginOfRunAction(const G4Run *run);
+  virtual void EndOfRunAction(const G4Run *run);
+
+private:
+  H4EventAction *m_event_action;
 };
 
 #endif // H4RUNACTION_HG4

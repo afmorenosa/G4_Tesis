@@ -4,9 +4,9 @@
 // Geant Headers.
 #include "GeneralG4.hpp"
 #include "G4UserTrackingAction.hh"
-#include "g4root.hh"
 
 // Project Headers.
+#include "H4EventAction.hpp"
 #include <regex>
 
 //**********************************//
@@ -20,10 +20,13 @@
 //**********************************//
 class H4TrackingAction : public G4UserTrackingAction {
 public:
-  H4TrackingAction ();
+  H4TrackingAction (H4EventAction *event_action);
   virtual ~H4TrackingAction ();
 
-  virtual void PreUserTrackingAction(const G4Track* track);
+  virtual void PreUserTrackingAction(const G4Track *track);
+
+private:
+  H4EventAction *m_event_action;
 };
 
 #endif // H4TRACKINGACTION_HG4

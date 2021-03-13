@@ -7,7 +7,9 @@
 //          Do nothing.             //
 //                                  //
 //**********************************//
-H4TrackingAction::H4TrackingAction () : G4UserTrackingAction() { }
+H4TrackingAction::H4TrackingAction (H4EventAction *event_action)
+: G4UserTrackingAction(),
+m_event_action(event_action) { }
 
 //**********************************//
 // H4TrackingAction constructor     //
@@ -23,7 +25,7 @@ H4TrackingAction::~H4TrackingAction () { }
 // Actions before the tracking. //
 //                              //
 //******************************//
-void H4TrackingAction::PreUserTrackingAction (const G4Track* track) {
+void H4TrackingAction::PreUserTrackingAction (const G4Track *track) {
 
   if (
     track->GetParticleDefinition()->GetParticleName() == "gamma" &&
@@ -33,9 +35,6 @@ void H4TrackingAction::PreUserTrackingAction (const G4Track* track) {
       "scintillator tile: [0-9]{1,2} - row: [0-9]{1,2} - col: [0-9]{1,2}")
     )
   ) {
-
-    // Get the analysis manager.
-    G4RootAnalysisManager *analysis_manager = G4RootAnalysisManager::Instance();
 
     std::string volume_name = track->GetVolume()->GetName();
     std::smatch number;
@@ -51,14 +50,11 @@ void H4TrackingAction::PreUserTrackingAction (const G4Track* track) {
       volume_name = number.suffix().str();
     }
 
-    analysis_manager->FillH2(0, 40 - coordinates[0], coordinates[1] - 20);
-
-    analysis_manager->FillNtupleIColumn(0, 40 - coordinates[0]);
-    analysis_manager->FillNtupleIColumn(1, coordinates[1] - 20);
-    analysis_manager->FillNtupleIColumn(2, coordinates[2]);
-    analysis_manager->FillNtupleIColumn(3, coordinates[3]);
-    analysis_manager->FillNtupleIColumn(4, coordinates[4]);
-    analysis_manager->AddNtupleRow();
+    m_event_action->AppendXVal(40 - coordinates[0]);
+    m_event_action->AppendYVal(coordinates[1] - 20);
+    m_event_action->AppendZVal(coordinates[2]);
+    m_event_action->AppendrVal(coordinates[3]);
+    m_event_action->AppendcVal(coordinates[4]);
 
   }
 

@@ -12,11 +12,11 @@ void analysis_ntuples() {
   TTree *tree = (TTree*) dir_ntup->Get("Photons");
   tree->Print();
 
-  Int_t X = -1;
-  Int_t Y = -1;
-  Int_t Z = -1;
-  Int_t r = -1;
-  Int_t c = -1;
+  vector<int> *X = {};
+  vector<int> *Y = {};
+  vector<int> *Z = {};
+  vector<int> *r = {};
+  vector<int> *c = {};
 
   tree->SetBranchAddress("X", &X);
   tree->SetBranchAddress("Y", &Y);
@@ -50,8 +50,11 @@ void analysis_ntuples() {
   for (int i = 0; i < nentries; i++) {
     nbytes = tree->GetEntry(i);
 
-    calo_photons_counter->Fill(X, Y);
-    calo_photons_counter_3->Fill(X, Y, Z);
+    for (size_t j = 0; j < X->size(); j++) {
+
+      calo_photons_counter->Fill(X->at(i), Y->at(i));
+      calo_photons_counter_3->Fill(X->at(i), Y->at(i), Z->at(i));
+    }
 
   }
 

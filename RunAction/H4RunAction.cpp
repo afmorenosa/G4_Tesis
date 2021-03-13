@@ -8,7 +8,10 @@
 // analysis instance.                //
 //                                   //
 //***********************************//
-H4RunAction::H4RunAction () : G4UserRunAction() {
+H4RunAction::H4RunAction (H4EventAction *event_action)
+: G4UserRunAction(),
+m_event_action(event_action) {
+
   // Create the analysis manager.
 
   G4RootAnalysisManager *analysis_manager = G4RootAnalysisManager::Instance();
@@ -27,11 +30,12 @@ H4RunAction::H4RunAction () : G4UserRunAction() {
 
   // Create NTuples
   analysis_manager->CreateNtuple("Photons", "Coordinates of photons");
-  analysis_manager->CreateNtupleIColumn("X");
-  analysis_manager->CreateNtupleIColumn("Y");
-  analysis_manager->CreateNtupleIColumn("Z");
-  analysis_manager->CreateNtupleIColumn("r");
-  analysis_manager->CreateNtupleIColumn("c");
+
+  analysis_manager->CreateNtupleIColumn("X", event_action->GetX());
+  analysis_manager->CreateNtupleIColumn("Y", event_action->GetY());
+  analysis_manager->CreateNtupleIColumn("Z", event_action->GetZ());
+  analysis_manager->CreateNtupleIColumn("r", event_action->Getr());
+  analysis_manager->CreateNtupleIColumn("c", event_action->Getc());
   analysis_manager->FinishNtuple();
 
 }
@@ -52,7 +56,7 @@ H4RunAction::~H4RunAction () {
 // Actions before the run. //
 //                         //
 //*************************//
-void H4RunAction::BeginOfRunAction (const G4Run* run) {
+void H4RunAction::BeginOfRunAction (const G4Run *run) {
 
   // Get the analysis manager.
   G4RootAnalysisManager *analysis_manager = G4RootAnalysisManager::Instance();
@@ -67,7 +71,7 @@ void H4RunAction::BeginOfRunAction (const G4Run* run) {
 // Actions after the run. //
 //                        //
 //************************//
-void H4RunAction::EndOfRunAction (const G4Run* run) {
+void H4RunAction::EndOfRunAction (const G4Run *run) {
 
   // Get the analysis manager.
   G4RootAnalysisManager *analysis_manager = G4RootAnalysisManager::Instance();

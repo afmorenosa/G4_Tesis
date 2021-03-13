@@ -8,8 +8,6 @@
 // Project Libraries.
 #include "H4Detector.hpp"
 #include "H4Actions.hpp"
-#include "H4TrackingAction.hpp"
-#include "H4RunAction.hpp"
 
 int main(int argc, char *argv[]) {
 
@@ -28,14 +26,6 @@ int main(int argc, char *argv[]) {
 
   // Actions Initialization.
   run_manager->SetUserInitialization(new H4Actions);
-
-  // Set actions.
-
-  // Run Actions.
-  run_manager->SetUserAction(new H4RunAction);
-
-  // Tracking Actions.
-  run_manager->SetUserAction(new H4TrackingAction);
 
   // Initialize Genat 4 kernel.
   run_manager->Initialize();

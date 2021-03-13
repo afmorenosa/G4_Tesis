@@ -31,6 +31,8 @@ m_event_action(event_action) {
   // Create NTuples
   analysis_manager->CreateNtuple("Photons", "Coordinates of photons");
 
+  analysis_manager->CreateNtupleIColumn("primary");
+
   analysis_manager->CreateNtupleIColumn("X", event_action->GetX());
   analysis_manager->CreateNtupleIColumn("Y", event_action->GetY());
   analysis_manager->CreateNtupleIColumn("Z", event_action->GetZ());

@@ -45,6 +45,13 @@ private:
   std::vector<int> m_Z;
   std::vector<int> m_r;
   std::vector<int> m_c;
+
+  std::map< std::string, int > m_particlesID = {
+    {"gamma", 0},
+    {"pi0", 1},
+    {"e-", 2}
+  };
+
 };
 
 #endif // H4EVENTACTION_HG4

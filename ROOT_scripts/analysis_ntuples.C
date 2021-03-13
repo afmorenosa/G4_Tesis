@@ -12,12 +12,14 @@ void analysis_ntuples() {
   TTree *tree = (TTree*) dir_ntup->Get("Photons");
   tree->Print();
 
+  Int_t primary = -1;
   vector<int> *X = {};
   vector<int> *Y = {};
   vector<int> *Z = {};
   vector<int> *r = {};
   vector<int> *c = {};
 
+  tree->SetBranchAddress("primary", &primary);
   tree->SetBranchAddress("X", &X);
   tree->SetBranchAddress("Y", &Y);
   tree->SetBranchAddress("Z", &Z);
@@ -30,6 +32,12 @@ void analysis_ntuples() {
     "ECAL",
     800,
     600
+  );
+
+  TH1I *particle_counter = new TH1I(
+    "Primary poarticle",
+    "Primary",
+    5, -1, 5
   );
 
   TH2I *calo_photons_counter = new TH2I(
@@ -50,6 +58,8 @@ void analysis_ntuples() {
   for (int i = 0; i < nentries; i++) {
     nbytes = tree->GetEntry(i);
 
+    particle_counter->Fill(primary);
+
     for (size_t j = 0; j < X->size(); j++) {
 
       calo_photons_counter->Fill(X->at(i), Y->at(i));
@@ -57,6 +67,10 @@ void analysis_ntuples() {
     }
 
   }
+
+  particle_counter->Draw();
+  canvas->Print("particles.svg");
+  canvas->Clear();
 
   calo_photons_counter->Draw("COL");
   canvas->Print("calo_photons_counter.svg");

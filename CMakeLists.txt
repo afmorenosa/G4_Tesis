@@ -48,8 +48,9 @@ target_link_libraries(calo_ECAL
 )
 
 set(geant_scripts
-  init_vis.mac
-  vis.mac
+  G4Macros/init_vis.mac
+  G4Macros/vis.mac
+  G4Macros/gen_dataset.mac
 )
 
 ### Add macro files.

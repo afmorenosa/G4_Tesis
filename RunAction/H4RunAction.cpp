@@ -64,7 +64,9 @@ void H4RunAction::BeginOfRunAction (const G4Run *run) {
   G4RootAnalysisManager *analysis_manager = G4RootAnalysisManager::Instance();
 
   // Open output file.
-  G4String file_name = "calo_Ecal";
+  G4String file_name = "calo_Ecal_";
+  file_name += std::to_string(run->GetRunID());
+
   analysis_manager->OpenFile(file_name);
 }
 

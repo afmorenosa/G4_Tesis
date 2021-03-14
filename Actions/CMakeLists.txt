@@ -10,4 +10,9 @@ file(GLOB SOURCES H4Actions.cpp)
 add_library(actions ${SOURCES})
 
 # Link the event generator lib.
-target_link_libraries(actions primary_generator)
+target_link_libraries(actions
+  primary_generator
+  tracking_action
+  run_action
+  event_action
+)

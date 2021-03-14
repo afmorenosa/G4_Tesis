@@ -29,59 +29,11 @@
 // Use QGSP_BERT physiscs.
 #include "QGSP_BERT.hh"
 
-// Electromagnetic physics definition.
-#include "G4EmStandardPhysics.hh"
-#include "G4EmParameters.hh"
-
 // Magnetic field.
 #include "G4MagneticField.hh"
 #include "G4FieldManager.hh"
 #include "G4UniformMagField.hh"
 #include "G4TransportationManager.hh"
-
-// Particle to be used in the simulation.
-// * Bosons.
-#include "G4ChargedGeantino.hh"
-#include "G4Geantino.hh"
-#include "G4Gamma.hh"
-#include "G4OpticalPhoton.hh"
-
-// * leptons.
-#include "G4MuonPlus.hh"
-#include "G4MuonMinus.hh"
-#include "G4NeutrinoMu.hh"
-#include "G4AntiNeutrinoMu.hh"
-
-#include "G4Electron.hh"
-#include "G4Positron.hh"
-#include "G4NeutrinoE.hh"
-#include "G4AntiNeutrinoE.hh"
-
-// * Mesons.
-#include "G4PionPlus.hh"
-#include "G4PionMinus.hh"
-#include "G4PionZero.hh"
-#include "G4Eta.hh"
-#include "G4EtaPrime.hh"
-
-#include "G4KaonPlus.hh"
-#include "G4KaonMinus.hh"
-#include "G4KaonZero.hh"
-#include "G4AntiKaonZero.hh"
-#include "G4KaonZeroLong.hh"
-#include "G4KaonZeroShort.hh"
-
-// * Baryons.
-#include "G4Proton.hh"
-#include "G4AntiProton.hh"
-#include "G4Neutron.hh"
-#include "G4AntiNeutron.hh"
-
-// * Nuclei.
-#include "G4Deuteron.hh"
-#include "G4Triton.hh"
-#include "G4Alpha.hh"
-#include "G4GenericIon.hh"
 
 // Table with all the particles.
 #include "G4ParticleTable.hh"

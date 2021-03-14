@@ -1,14 +1,19 @@
 // Geant 4.
-#include "G4RunManager.hh"
 #include "G4UImanager.hh"
 // Visual Interface.
 #include "G4UIExecutive.hh"
 #include "G4VisExecutive.hh"
+#include "g4root.hh"
+
+#ifdef G4MULTITHREADED
+#include "G4MTRunManager.hh"
+#else
+#include "G4RunManager.hh"
+#endif
 
 // Project Libraries.
 #include "H4Detector.hpp"
 #include "H4Actions.hpp"
-
 
 namespace {
   void PrintUsage() {
@@ -55,7 +60,19 @@ int main(int argc, char **argv) {
   }
 
   // Construct the default run manager.
+#ifdef G4MULTITHREADED
+  std::cout << "INFO: Multithreaded" << '\n';
+
+  G4MTRunManager *run_manager = new G4MTRunManager;
+
+  G4RootAnalysisManager::Instance();
+  // if ( nThreads > 0 ) {
+
+  //   runManager->SetNumberOfThreads(nThreads);
+  // }
+#else
   G4RunManager *run_manager = new G4RunManager;
+#endif
 
   run_manager->SetVerboseLevel(0);
 

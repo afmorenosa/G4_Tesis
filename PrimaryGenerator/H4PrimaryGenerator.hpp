@@ -5,6 +5,9 @@
 #include "GeneralG4.hpp"
 #include "G4VUserPrimaryGeneratorAction.hh"
 
+// Project Headers.
+#include <cstdlib>
+
 //**********************************//
 // Class: H4PrimaryGenerator        //
 //----------------------------------//
@@ -17,13 +20,10 @@ class H4PrimaryGenerator : public G4VUserPrimaryGeneratorAction {
 private:
   G4ParticleGun *m_particle_gun;
 
+  G4double m_px_min, m_py_min, m_px_max, m_py_max, m_pz;
+
 public:
-  H4PrimaryGenerator (
-    G4String particle_name = "e-",
-    G4double energy = 2*GeV,
-    G4ThreeVector position = G4ThreeVector(0.01*m, 0.0*m, -1.0*m),
-    G4ThreeVector momentum_direction = G4ThreeVector(0.0, 0.00, 1.0)
-  );
+  H4PrimaryGenerator ();
   virtual ~H4PrimaryGenerator ();
 
   virtual void GeneratePrimaries(G4Event* an_event);

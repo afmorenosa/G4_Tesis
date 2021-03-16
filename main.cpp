@@ -41,7 +41,7 @@ namespace {
   }
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char **argv) {
   // Evaluate arguments
   //
   if ( argc > 5 ) {
@@ -193,6 +193,7 @@ int main(int argc, char *argv[]) {
   G4MTRunManager *run_manager = new G4MTRunManager;
 
   G4RootAnalysisManager::Instance();
+
   if ( n_threads > 0 ) {
 
     run_manager->SetNumberOfThreads(n_threads);
@@ -204,12 +205,15 @@ int main(int argc, char *argv[]) {
 
   run_manager->SetVerboseLevel(0);
 
-  // Set mandatory initialization  classes.
+  //** Set mandatory initialization  classes.
+  // Detector Geometry.
   run_manager->SetUserInitialization(new H4Detector);
 
+  // Physics List.
   auto physicsList = new QGSP_BERT;
   run_manager->SetUserInitialization(physicsList);
 
+  // Actions Initialization.
   run_manager->SetUserInitialization(new H4Actions);
 
   // Initialize Genat 4 kernel.

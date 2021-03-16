@@ -140,13 +140,13 @@ void H4Detector::BuildCalorimeter (G4LogicalVolume *mother_logical) {
   G4ThreeVector(-(12.32 * 31.5)*cm, -(12.32 * 25.5)*cm, 6.0*m);
 
   for (G4int i = 24; i < 40; i++) {
-    for (G4int j = 20; j < 32; j++) {
+    for (G4int j = 24; j < 32; j++) {
 
       // Set the position of the module.
       G4ThreeVector module_position =
       G4ThreeVector((12.32 * i)*cm, (12.32 * j)*cm, 0.);
 
-      if (i > 29 && i < 34 && j > 23 && j < 28) {
+      if ( (i > 29 && i < 34 && j > 23 && j < 28) || (i <= 29 && j < 28) ) {
         // First check if the coordinates correspond to the middle hole of the
         // calorimeter. If so, continue.
         continue;

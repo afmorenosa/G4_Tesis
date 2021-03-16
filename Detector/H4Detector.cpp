@@ -94,7 +94,7 @@ void H4Detector::BuildMaterials () {
   std::vector<G4String> elements;
 
   // Set the material of the world as air.
-  m_world_mat = nist->FindOrBuildMaterial("G4_AIR");
+  m_world_mat = nist->FindOrBuildMaterial("G4_Galactic");
 
   // Define NIST materials for the construction of aerogel.
   G4Material *H2O  = nist->FindOrBuildMaterial("G4_WATER");

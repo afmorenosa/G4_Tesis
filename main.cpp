@@ -33,7 +33,7 @@ namespace {
   }
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char **argv) {
   // Evaluate arguments
   //
   if (
@@ -65,11 +65,14 @@ int main(int argc, char *argv[]) {
 
   G4MTRunManager *run_manager = new G4MTRunManager;
 
-  G4RootAnalysisManager::Instance();
-  // if ( nThreads > 0 ) {
+  G4int nThreads = 8;
 
-  //   runManager->SetNumberOfThreads(nThreads);
-  // }
+  G4RootAnalysisManager::Instance();
+  if ( nThreads > 0 ) {
+
+    run_manager->SetNumberOfThreads(nThreads);
+
+  }
 #else
   G4RunManager *run_manager = new G4RunManager;
 #endif

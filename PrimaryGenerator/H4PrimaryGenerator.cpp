@@ -33,8 +33,8 @@ m_particle_gun(0) {
   m_px_min = 0.2424;
   m_py_min = 0.2424;
 
-  m_px_max = 0.7272;
-  m_py_max = 0.9696;
+  m_px_max = 0.9696;
+  m_py_max = 0.7272;
 
   m_pz = 13;
 
@@ -67,14 +67,14 @@ void H4PrimaryGenerator::GeneratePrimaries (G4Event* an_event) {
 
   px = m_px_max * (2 * index[0] - 1);
 
-  if (std::abs(px) < m_px_min) {
+  if (px < m_px_min) {
     py = (m_py_max - m_py_min) * index[1] + m_py_min;
   } else {
-    py = m_py_max * (2 * index[1] - 1);
+    py = (m_py_max + m_py_min) * index[1] - m_py_min;
   }
 
   // Set the energy of the particle.
-  m_particle_gun->SetParticleEnergy(18 + (4 *  index[2]) *GeV);
+  m_particle_gun->SetParticleEnergy(18 + (4 *  index[2]) * GeV);
 
   // Set the direction in which the particle will be shooted.
   m_particle_gun->SetParticleMomentumDirection(

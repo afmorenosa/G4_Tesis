@@ -6,7 +6,7 @@
 /run/beamOn 1000
 
 # Runs for pions 0.
-/gun/particle pi
+/gun/particle pi0
 /run/beamOn 1000
 
 # Runs for electrons.

@@ -66,7 +66,7 @@ G4VPhysicalVolume *H4Detector::Construct () {
   BuildCalorimeter(world_log);
 
   // Add the magnetic field.
-  AddMagneticField();
+  // AddMagneticField();
 
   // Deleting modules pointers.
   delete m_inner_section_builder;

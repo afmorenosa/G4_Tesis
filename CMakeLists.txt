@@ -26,9 +26,12 @@ include_directories(${CMAKE_BINARY_DIR}/include)
 
 ### Add subdirectories.
 add_subdirectory(include)
-add_subdirectory(PrimaryGenerator)
 add_subdirectory(Actions)
 add_subdirectory(Detector)
+add_subdirectory(PrimaryGenerator)
+add_subdirectory(TrackingAction)
+add_subdirectory(RunAction)
+add_subdirectory(EventAction)
 
 ### Add an executable.
 add_executable(calo_ECAL main.cpp)
@@ -36,14 +39,18 @@ add_executable(calo_ECAL main.cpp)
 ### Link libraries.
 target_link_libraries(calo_ECAL
   ${Geant4_LIBRARIES}
-  primary_generator
-  actions
   detector
+  actions
+  primary_generator
+  tracking_action
+  run_action
+  event_action
 )
 
 set(geant_scripts
-  init_vis.mac
-  vis.mac
+  G4Macros/init_vis.mac
+  G4Macros/vis.mac
+  G4Macros/gen_dataset.mac
 )
 
 ### Add macro files.
@@ -54,3 +61,9 @@ foreach(script ${geant_scripts})
     COPYONLY
   )
 endforeach()
+
+configure_file(
+  ${PROJECT_SOURCE_DIR}/ROOT_scripts/analysis_ntuples.C
+  ${PROJECT_BINARY_DIR}/ROOT_scripts/analysis_ntuples.C
+  COPYONLY
+)

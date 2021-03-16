@@ -1,0 +1,14 @@
+# The macro to create a dataset for the interacction with the particfles and the
+# detector.
+
+# Runs for photons.
+/gun/particle gamma
+/run/beamOn 500
+
+# Runs for pions 0.
+/gun/particle pi0
+/run/beamOn 500
+
+# Runs for electrons.
+/gun/particle e-
+/run/beamOn 500

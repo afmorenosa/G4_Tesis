@@ -21,10 +21,14 @@
 //**********************************//
 class H4Actions : public G4VUserActionInitialization {
 public:
-  H4Actions ();
+  H4Actions (G4String output_path);
   virtual ~H4Actions ();
 
   virtual void Build() const;
+
+private:
+
+  G4String m_output_path;
 };
 
 #endif // H4ACTIONS_HG4

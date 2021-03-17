@@ -14,42 +14,41 @@
 // Project Libraries.
 #include "H4Detector.hpp"
 #include "H4Actions.hpp"
+#include <filesystem>
 #include <regex>
 
 namespace {
   void PrintUsage() {
     G4cerr << G4endl;
     G4cerr << " Usage: " << G4endl;
-    G4cerr << " exampleB4a [run mode] [options]" << G4endl;
+    G4cerr << " calo_ECAL [run mode] [options]" << G4endl;
     G4cerr << G4endl;
     G4cerr << "   Run mode:" << G4endl;
     G4cerr << "      -c, --compiled\t Run whit the configuration given by the"
-    << " compiled program [default]" << G4endl;
-    G4cerr << "      -g, --graphics\t Run with the graphical interface"
+    << " compiled program [default]." << G4endl;
+    G4cerr << "      -g, --graphics\t Run with the graphical interface."
     << G4endl;
-    G4cerr << "      -m, --macro [macro]\t Run a macro" << G4endl;
+    G4cerr << "      -m, --macro [macro]\t Run a macro." << G4endl;
     G4cerr << G4endl;
     G4cerr << "Just use one run mode per run." << G4endl;
     G4cerr << G4endl;
     G4cerr << G4endl;
     G4cerr << "   Options:" << G4endl;
     G4cerr << "      -t, --threads [number of threads]\t Set the number of"
-    << " threads" << G4endl;
-    G4cerr << "      -h, --help\t Print the usage" << G4endl;
+    << " threads." << G4endl;
+    G4cerr << "      -d, --dir [output directory]\t Set the output directory."
+    << G4endl;
+    G4cerr << "      -l, --label [output label]\t Set the output label."
+    << G4endl;
+    G4cerr << "      -h, --help\t Print the usage." << G4endl;
     G4cerr << G4endl;
 
   }
 }
 
-int main(int argc, char **argv) {
-  // Evaluate arguments
-  //
-  if ( argc > 5 ) {
+namespace fs = std::filesystem;
 
-    PrintUsage();
-    return 1;
-
-  }
+int main(int argc, char *argv[]) {
 
   // Number of threads.
   G4int n_threads = 1;
@@ -63,28 +62,33 @@ int main(int argc, char **argv) {
   // Macro file name, in case of macro run mode.
   G4String macro_file = "";
 
+  // Output file config.
+  fs::path output_dir(".");
+  fs::path output_label("calo_Ecal_");
+
   for (int arg_index = 1; arg_index < argc; arg_index++) {
     if ( G4String(argv[arg_index]) == "-h" ||
     G4String(argv[arg_index]) == "--help" ) {
 
+      // Print help.
       PrintUsage();
       return 0;
 
     } else if ( G4String(argv[arg_index]) == "-t" ||
     G4String(argv[arg_index]) == "--threads" ) {
 
-
+      // Set number of threads.
       if (arg_index + 1 >= argc) {
 
         G4cerr << G4endl;
-        G4cerr << "Error Threads: give the number of thread."
+        G4cerr << "ERROR\t Threads: give the number of thread."
         << G4endl << G4endl;
 
         return 1;
       } else if (G4String(argv[arg_index + 1][0]) == "-") {
 
         G4cerr << G4endl;
-        G4cerr << "Error Threads: give the number of thread."
+        G4cerr << "ERROR\t Threads: give the number of thread."
         << G4endl << G4endl;
 
         return 1;
@@ -94,11 +98,11 @@ int main(int argc, char **argv) {
 
       if ( std::regex_match(
         G4String(argv[arg_index + 1][0]),
-        std::regex("[^0-9]")
-      ) ) {
+        std::regex("[^0-9]") )
+       ) {
 
         G4cerr << G4endl;
-        G4cerr << "Error Threads: give a number."
+        G4cerr << "ERROR\t Threads: give a number."
         << G4endl << G4endl;
 
         return 1;
@@ -107,19 +111,77 @@ int main(int argc, char **argv) {
 
       arg_index++;
 
+    } else if ( G4String(argv[arg_index]) == "-d" ||
+    G4String(argv[arg_index]) == "--dir" ) {
+
+      // Set output directory.
+      if (arg_index + 1 >= argc) {
+
+        G4cerr << G4endl;
+        G4cerr << "ERROR\t Output Directory: give the name of the directory."
+        << G4endl << G4endl;
+
+        return 1;
+      } else if (G4String(argv[arg_index + 1][0]) == "-") {
+
+        G4cerr << G4endl;
+        G4cerr << "ERROR\t Output Directory: give the name of the directory."
+        << G4endl << G4endl;
+
+        return 1;
+      }
+
+      output_dir = fs::path(argv[arg_index + 1]);
+
+      if ( !fs::exists(output_dir) ) {
+
+        G4cerr << G4endl;
+        G4cerr << "ERROR\t Output Directory: give the name of an existing"
+        << " directory." << G4endl << G4endl;
+
+        return 1;
+
+      }
+
+      arg_index++;
+
+    } else if ( G4String(argv[arg_index]) == "-l" ||
+    G4String(argv[arg_index]) == "--label" ) {
+
+      // Set output label for the root files.
+      if (arg_index + 1 >= argc) {
+
+        G4cerr << G4endl;
+        G4cerr << "ERROR\t Output Label: give the name of the label."
+        << G4endl << G4endl;
+
+        return 1;
+      } else if (G4String(argv[arg_index + 1][0]) == "-") {
+
+        G4cerr << G4endl;
+        G4cerr << "ERROR\t Output Label: give the name of the label."
+        << G4endl << G4endl;
+
+        return 1;
+      }
+
+      output_label = fs::path(argv[arg_index + 1]);
+      arg_index++;
+
     } else if ( G4String(argv[arg_index]) == "-c" ||
     G4String(argv[arg_index]) == "--compiled" ) {
 
       if ( mode ) {
 
         G4cerr << G4endl;
-        G4cerr << "Error Runner: two methods give, select just one." << G4endl;
+        G4cerr << "ERROR\t Runner: two methods give, select just one." << G4endl;
 
         PrintUsage();
         return 1;
 
       } else {
 
+        std::cout << "INFO\t Running with compiled sequence.\n";
         mode = true;
 
       }
@@ -130,13 +192,14 @@ int main(int argc, char **argv) {
       if ( mode ) {
 
         G4cerr << G4endl;
-        G4cerr << "Error Runner: two methods give, select just one." << G4endl;
+        G4cerr << "ERROR\t Runner: two methods give, select just one." << G4endl;
 
         PrintUsage();
         return 1;
 
       } else {
 
+        std::cout << "INFO\t Running with graph interface.\n";
         mode = is_graphics = true;
         is_compiled = false;
 
@@ -148,7 +211,7 @@ int main(int argc, char **argv) {
       if ( mode ) {
 
         G4cerr << G4endl;
-        G4cerr << "Error Runner: two methods give, select just one." << G4endl;
+        G4cerr << "ERROR\t Runner: two methods give, select just one." << G4endl;
 
         PrintUsage();
         return 1;
@@ -156,6 +219,8 @@ int main(int argc, char **argv) {
       } else {
 
         try {
+
+          std::cout << "INFO\t Running from a macro file.\n";
           mode = is_macro = true;
           is_compiled = false;
 
@@ -165,7 +230,7 @@ int main(int argc, char **argv) {
         } catch (...) {
 
           G4cerr << G4endl;
-          G4cerr << "Error Macro: there is a problem with the macro file name."
+          G4cerr << "ERROR\t Macro: there is a problem with the macro file name."
           << G4endl << G4endl;
 
           return 1;
@@ -177,7 +242,7 @@ int main(int argc, char **argv) {
     } else {
 
         G4cerr << G4endl;
-        G4cerr << "Error Option: option not recognized." << G4endl;
+        G4cerr << "ERROR\t Option: option not recognized." << G4endl;
 
         PrintUsage();
         return 1;
@@ -186,9 +251,11 @@ int main(int argc, char **argv) {
 
   }
 
+  fs::path output_path = output_dir / output_label;
+
   // Construct the default run manager.
 #ifdef G4MULTITHREADED
-  std::cout << "INFO: Multithreaded, threads=" << n_threads << '\n';
+  std::cout << "INFO\t Multithreaded, threads=" << n_threads << '\n';
 
   G4MTRunManager *run_manager = new G4MTRunManager;
 
@@ -214,7 +281,7 @@ int main(int argc, char **argv) {
   run_manager->SetUserInitialization(physicsList);
 
   // Actions Initialization.
-  run_manager->SetUserInitialization(new H4Actions);
+  run_manager->SetUserInitialization(new H4Actions(output_path.c_str()));
 
   // Initialize Genat 4 kernel.
   run_manager->Initialize();

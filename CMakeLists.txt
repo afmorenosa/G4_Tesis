@@ -12,7 +12,7 @@ endif()
 project(calo_ECAL VERSION 0.1.0)
 
 ### Sets C++ 11 standard.
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 ### Find Geant4 Library with UI and Vis drivers.

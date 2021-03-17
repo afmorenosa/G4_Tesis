@@ -7,7 +7,9 @@
 //       Do nothing.      //
 //                        //
 //************************//
-H4Actions::H4Actions () : G4VUserActionInitialization() {}
+H4Actions::H4Actions (G4String output_path)
+: G4VUserActionInitialization() ,
+m_output_path(output_path){}
 
 //************************//
 //  H4Actions destructor  //
@@ -36,7 +38,7 @@ void H4Actions::Build () const {
   SetUserAction(new H4TrackingAction(event_action));
 
   // Run Actions.
-  SetUserAction(new H4RunAction(event_action));
+  SetUserAction(new H4RunAction(event_action, m_output_path));
 }
 
 //

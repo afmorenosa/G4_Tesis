@@ -23,7 +23,7 @@
 //************************************//
 class H4RunAction : public G4UserRunAction {
 public:
-  H4RunAction (H4EventAction *event_action);
+  H4RunAction (H4EventAction *event_action, G4String output_path);
   virtual ~H4RunAction ();
 
   virtual void BeginOfRunAction(const G4Run *run);
@@ -31,6 +31,8 @@ public:
 
 private:
   H4EventAction *m_event_action;
+
+  G4String m_output_path;
 };
 
 #endif // H4RUNACTION_HG4

@@ -65,7 +65,7 @@ void H4RunAction::BeginOfRunAction (const G4Run *run) {
   G4RootAnalysisManager *analysis_manager = G4RootAnalysisManager::Instance();
 
   // Open output file.
-  G4String output_file = m_output_path + std::to_string(run->GetRunID());
+  G4String output_file = m_output_path + std::to_string(run->GetRunID()) + ".root";
 
   analysis_manager->OpenFile(output_file);
 }

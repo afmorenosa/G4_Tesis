@@ -8,9 +8,10 @@
 // analysis instance.                //
 //                                   //
 //***********************************//
-H4RunAction::H4RunAction (H4EventAction *event_action)
+H4RunAction::H4RunAction (H4EventAction *event_action, G4String output_path)
 : G4UserRunAction(),
-m_event_action(event_action) {
+m_event_action(event_action),
+m_output_path(output_path) {
 
   // Create the analysis manager.
 
@@ -64,10 +65,9 @@ void H4RunAction::BeginOfRunAction (const G4Run *run) {
   G4RootAnalysisManager *analysis_manager = G4RootAnalysisManager::Instance();
 
   // Open output file.
-  G4String file_name = "calo_Ecal_";
-  file_name += std::to_string(run->GetRunID());
+  m_output_path += std::to_string(run->GetRunID());
 
-  analysis_manager->OpenFile(file_name);
+  analysis_manager->OpenFile(m_output_path);
 }
 
 //************************//

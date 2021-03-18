@@ -1,9 +1,31 @@
+#include <filesystem>
 #include <iostream>
+#include <vector>
 #include <string>
 
-void analysis_ntuples() {
+#include "TTree.h"
+#include "TFile.h"
+#include "TDirectory.h"
+#include "TCanvas.h"
+#include "TH1.h"
+#include "TH2.h"
+#include "TH3.h"
+
+namespace fs = std::filesystem;
+
+void analysis_ntuples(char *input_dir, char *output_path);
+
+int main(int argc, char *argv[]) {
+
+  merge_ntuples(argv[1], argv[2]);
+
+  return 0;
+}
+
+void analysis_ntuples(char *input_file, char *output_path) {
+
   // Open de Root File
-  TFile *file = TFile::Open("calo_Ecal.root");
+  TFile *file = TFile::Open(input_file);
 
   // Get the directory of the ntuples.
   TDirectory *dir_ntup = file->GetDirectory("ntuple");
@@ -13,11 +35,11 @@ void analysis_ntuples() {
   tree->Print();
 
   Int_t primary = -1;
-  vector<int> *X = {};
-  vector<int> *Y = {};
-  vector<int> *Z = {};
-  vector<int> *r = {};
-  vector<int> *c = {};
+  std::vector<int> *X = {};
+  std::vector<int> *Y = {};
+  std::vector<int> *Z = {};
+  std::vector<int> *r = {};
+  std::vector<int> *c = {};
 
   tree->SetBranchAddress("primary", &primary);
   tree->SetBranchAddress("X", &X);
@@ -62,21 +84,36 @@ void analysis_ntuples() {
 
     for (size_t j = 0; j < X->size(); j++) {
 
-      calo_photons_counter->Fill(X->at(i), Y->at(i));
-      calo_photons_counter_3->Fill(X->at(i), Y->at(i), Z->at(i));
+      calo_photons_counter->Fill(X->at(j), Y->at(j));
+      calo_photons_counter_3->Fill(X->at(j), Y->at(j), Z->at(j));
+
     }
 
   }
 
+  std::string output_file;
+
   particle_counter->Draw();
-  canvas->Print("particles.svg");
+  output_file =
+  std::string(output_path) + "particles.svg";
+
+  canvas->Print(output_file.c_str());
   canvas->Clear();
+
 
   calo_photons_counter->Draw("COL");
-  canvas->Print("calo_photons_counter.svg");
+  output_file =
+  std::string(output_path) + "calo_photons_counter.svg";
+
+  canvas->Print(output_file.c_str());
   canvas->Clear();
 
+
   calo_photons_counter_3->Draw("BOX");
-  canvas->Print("calo_photons_counter_3.root");
+  output_file =
+  std::string(output_path) + "calo_photons_counter_3.root";
+
+  canvas->Print(output_file.c_str());
   canvas->Clear();
+
 }

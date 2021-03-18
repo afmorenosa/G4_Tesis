@@ -80,6 +80,8 @@ void H4RunAction::EndOfRunAction (const G4Run *run) {
   // Get the analysis manager.
   G4RootAnalysisManager *analysis_manager = G4RootAnalysisManager::Instance();
 
+  std::cout << "INFO\t data written to: " << analysis_manager->GetFileName() << '\n';
+
   // Write histograms.
   analysis_manager->Write();
   analysis_manager->CloseFile();

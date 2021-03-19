@@ -17,7 +17,7 @@ void analysis_ntuples(char *input_dir, char *output_path);
 
 int main(int argc, char *argv[]) {
 
-  merge_ntuples(argv[1], argv[2]);
+  analysis_ntuples(argv[1], argv[2]);
 
   return 0;
 }

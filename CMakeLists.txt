@@ -56,7 +56,7 @@ target_link_libraries(calo_ECAL
 )
 
 ### Add an executable.
-add_executable(root_Analysis ROOT_scripts/analysis_ntuples.C)
+add_executable(root_Analysis ROOT_scripts/analysis_ntuples.cpp)
 
 ### Link libraries.
 target_link_libraries(root_Analysis
@@ -78,8 +78,8 @@ foreach(script ${geant_scripts})
   )
 endforeach()
 
-configure_file(
-  ${PROJECT_SOURCE_DIR}/ROOT_scripts/analysis_ntuples.C
-  ${PROJECT_BINARY_DIR}/ROOT_scripts/analysis_ntuples.C
-  COPYONLY
-)
+# configure_file(
+#   ${PROJECT_SOURCE_DIR}/ROOT_scripts/analysis_ntuples.C
+#   ${PROJECT_BINARY_DIR}/ROOT_scripts/analysis_ntuples.C
+#   COPYONLY
+# )

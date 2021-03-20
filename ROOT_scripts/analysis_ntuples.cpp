@@ -13,16 +13,16 @@
 
 namespace fs = std::filesystem;
 
-void analysis_ntuples(char *input_dir, char *output_path);
+void print_histograms(char *input_dir, char *output_path);
 
 int main(int argc, char *argv[]) {
 
-  analysis_ntuples(argv[1], argv[2]);
+  print_histograms(argv[1], argv[2]);
 
   return 0;
 }
 
-void analysis_ntuples(char *input_file, char *output_path) {
+void print_histograms(char *input_file, char *output_path) {
 
   // Open de Root File
   TFile *file = TFile::Open(input_file);
@@ -34,6 +34,7 @@ void analysis_ntuples(char *input_file, char *output_path) {
   TTree *tree = (TTree*) dir_ntup->Get("Photons");
   tree->Print();
 
+  // Initialize variables.
   Int_t primary = -1;
   std::vector<int> *X = {};
   std::vector<int> *Y = {};
@@ -56,6 +57,7 @@ void analysis_ntuples(char *input_file, char *output_path) {
     600
   );
 
+  // Create histograms.
   TH1I *particle_counter = new TH1I(
     "Primary poarticle",
     "Primary",
@@ -77,6 +79,7 @@ void analysis_ntuples(char *input_file, char *output_path) {
   int nentries, nbytes;
   nentries = (Int_t)tree->GetEntries();
 
+  // Fill histograms.
   for (int i = 0; i < nentries; i++) {
     nbytes = tree->GetEntry(i);
 
@@ -91,6 +94,7 @@ void analysis_ntuples(char *input_file, char *output_path) {
 
   }
 
+  // Save histograms.
   std::string output_file;
 
   particle_counter->Draw();

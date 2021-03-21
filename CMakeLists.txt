@@ -78,9 +78,17 @@ foreach(script ${geant_scripts})
   )
 endforeach()
 
+### Add bash scripts.
 configure_file(
   ${PROJECT_SOURCE_DIR}/bash_scripts/merge_ntuples.sh
   ${PROJECT_BINARY_DIR}/bash_scripts/merge_ntuples.sh
+  COPYONLY
+)
+
+### Add python scripts.
+configure_file(
+  ${PROJECT_SOURCE_DIR}/python_scripts/ia_train.py
+  ${PROJECT_BINARY_DIR}/python_scripts/ia_train.py
   COPYONLY
 )
 

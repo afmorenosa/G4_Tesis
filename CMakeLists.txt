@@ -56,7 +56,7 @@ target_link_libraries(calo_ECAL
 )
 
 ### Add an executable.
-add_executable(root_Analysis ROOT_scripts/analysis_ntuples.cpp)
+add_executable(root_Analysis ROOT_source/analysis_ntuples.cpp)
 
 ### Link libraries.
 target_link_libraries(root_Analysis

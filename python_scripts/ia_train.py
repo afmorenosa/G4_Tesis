@@ -26,13 +26,46 @@ parser.add_argument("-ts", "--test", type=str, metavar="test_file", nargs="+",
 args = parser.parse_args()
 
 
-def get_data(files_list):
+def get_nentries(files_list):
+    """Get the total number of entries in the root files.
+
+    Args:
+    ----
+        files_list: Tupple or list with string of the paths to the
+        root files.
+
+    Retrutns:
+    --------
+        The total nomber of entries in the given root files.
+
+    """
+    # Set .
+    nentries = 0
+
+    for file_name in files_list:
+        # Open root file.
+        root_file = TFile.Open(file_name)
+
+        # Get Photons TTree.
+        photons_branch = root_file.GetDirectory("ntuple").Get("Photons")
+
+        # Get number of non-empty entries.
+        for entry in photons_branch:
+            if len(entry.X):
+                nentries += 1
+
+    return nentries
+
+
+def get_data(files_list, nentries, array_file="temp.dat"):
     """Extract data from a set of files.
 
     Args:
     ----
-        files_list: Tupple or list with the paths to the
+        files_list: Tupple or list with string of the paths to the
         root files.
+        nentries: Int of the total nomber of entries in the given root files.
+        array_file: String of the file where the data is stored.
 
     Retrutns:
     --------
@@ -40,9 +73,12 @@ def get_data(files_list):
         scintillator and the primary particle.
 
     """
-    # Create the testing variable.
-    X_set = []
+    # Create the variables to store the data.
+    X_set = np.memmap(array_file, dtype=np.int64, mode="w+",
+                      shape=(nentries, 77184))
     y_set = []
+
+    index = 0
 
     for file_name in files_list:
 
@@ -60,8 +96,9 @@ def get_data(files_list):
 
             # Print percentage of progress.
             print(f"[{i/photons_branch.GetEntries()*100:.2f}%]",
-                  f"gettin data from: {file_name} - entry: {i} of: " +
+                  f"gettin data from: {file_name} - entry: {i}, of: " +
                   f"{photons_branch.GetEntries()}",
+                  f"Non-emtpy data: {index}, of: {nentries}",
                   end="\r")
 
             if len(entry.X) == 0:
@@ -75,8 +112,10 @@ def get_data(files_list):
                     for z in entry.Z:
                         photons_counter[x, y, z] += 1
             # Add data.
-            X_set.append(photons_counter.flatten())
+            X_set[index] = photons_counter.flatten()
             y_set.append(entry.primary)
+
+            index += 1
 
         # Close root file.
         root_file.Close()
@@ -90,16 +129,28 @@ def get_data(files_list):
 clf = MLPClassifier(solver='adam', alpha=1e-5,
                     hidden_layer_sizes=(5, 7, 9, 4, 3), random_state=1)
 
-# Create the training variables.
-X_train, y_train = get_data(args.train)
+# Get the number of entries.
+nentries = get_nentries(args.train)
+
+# Get the training variables.
+X_train, y_train = get_data(args.train, nentries)
 
 # Train the data.
 print("\nTraining", f"Total of data: {len(X_train)}")
 clf.fit(X_train, y_train)
 print("Trained\n")
 
-X_test, y_test = get_data(args.test)
+# Delete train data.
+del X_train, y_train
+
+# Get the number of entries.
+nentries = get_nentries(args.test)
+
+# Get the test variables.
+X_test, y_test = get_data(args.test, nentries)
 
 # Print results of the test.
 print("\n")
 print(f"Results {clf.score(X_test, y_test)}")
+
+del X_test, y_test

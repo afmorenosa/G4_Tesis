@@ -67,11 +67,10 @@ void H4PrimaryGenerator::GeneratePrimaries (G4Event* an_event) {
 
   px = m_px_max * (2 * index[0] - 1);
 
-  if (std::abs(px) < m_px_min) {
-    py = ((rand() % 2 ) * 2 - 1) * ((m_py_max - m_py_min) * index[1] +
-    m_py_min);
+  if (px < m_px_min) {
+    py = (m_py_max - m_py_min) * index[1] + m_py_min;
   } else {
-    py = m_py_max * (2 * index[1] - 1);
+    py = (m_py_max + m_py_min) * index[1] - m_py_min;
   }
 
   // Set the energy of the particle.

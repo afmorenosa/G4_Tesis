@@ -3,12 +3,12 @@
 
 # Runs for photons.
 /gun/particle gamma
-/run/beamOn 500
+/run/beamOn 10000
 
 # Runs for pions 0.
 /gun/particle pi0
-/run/beamOn 500
+/run/beamOn 10000
 
 # Runs for electrons.
 /gun/particle e-
-/run/beamOn 500
+/run/beamOn 10000

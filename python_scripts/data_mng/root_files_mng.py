@@ -49,7 +49,7 @@ def get_data(files_list, nentries, x_array_file="x_temp.data",
     """
     # Create the variables to store the data.
     X_set = np.memmap(x_array_file, mode="w+",
-                      shape=(nentries, 77184))
+                      shape=(nentries, 14472))
     y_set = np.memmap(y_array_file, mode="w+", shape=(nentries))
 
     index = 0
@@ -77,13 +77,15 @@ def get_data(files_list, nentries, x_array_file="x_temp.data",
 
             if len(entry.X) == 0:
                 continue
-            photons_counter = np.zeros((16*3, 8*3, 67))
+            photons_counter = np.zeros((6*3, 4*3, 67))
 
             # Set a zeros matrix.
             for x in entry.X:
                 for y in entry.Y:
                     for z in entry.Z:
-                        photons_counter[x, y, z] += 1
+                        for c in entry.c:
+                            for r in entry.r:
+                                photons_counter[x + c, y + r, z] += 1
             # Add data.
             X_set[index] = photons_counter.flatten()
             y_set[index] = entry.primary
@@ -130,13 +132,15 @@ def train_data(files_list, classification_method):
 
             if len(entry.X) == 0:
                 continue
-            photons_counter = np.zeros((16*3, 8*3, 67))
+            photons_counter = np.zeros((6*3, 4*3, 67))
 
             # Set a zeros matrix.
             for x in entry.X:
                 for y in entry.Y:
                     for z in entry.Z:
-                        photons_counter[x, y, z] += 1
+                        for c in entry.c:
+                            for r in entry.r:
+                                photons_counter[x + c, y + r, z] += 1
             # Add data.
             X_set.append(photons_counter.flatten())
             y_set.append(entry.primary)

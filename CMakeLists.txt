@@ -40,6 +40,7 @@ add_subdirectory(PrimaryGenerator)
 add_subdirectory(TrackingAction)
 add_subdirectory(RunAction)
 add_subdirectory(EventAction)
+add_subdirectory(python_scripts)
 
 ### Add an executable.
 add_executable(calo_ECAL main.cpp)
@@ -82,13 +83,6 @@ endforeach()
 configure_file(
   ${PROJECT_SOURCE_DIR}/bash_scripts/merge_ntuples.sh
   ${PROJECT_BINARY_DIR}/bash_scripts/merge_ntuples.sh
-  COPYONLY
-)
-
-### Add python scripts.
-configure_file(
-  ${PROJECT_SOURCE_DIR}/python_scripts/ia_train.py
-  ${PROJECT_BINARY_DIR}/python_scripts/ia_train.py
   COPYONLY
 )
 

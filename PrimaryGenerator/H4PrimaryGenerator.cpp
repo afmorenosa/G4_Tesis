@@ -67,11 +67,7 @@ void H4PrimaryGenerator::GeneratePrimaries (G4Event* an_event) {
 
   px = m_px_max * (2 * index[0] - 1);
 
-  if (px < m_px_min) {
-    py = (m_py_max - m_py_min) * index[1] + m_py_min;
-  } else {
-    py = (m_py_max + m_py_min) * index[1] - m_py_min;
-  }
+  py = (m_py_max - m_py_min) * index[1] + m_py_min;
 
   // Set the energy of the particle.
   m_particle_gun->SetParticleEnergy(18 + (4 *  index[2]) * GeV);

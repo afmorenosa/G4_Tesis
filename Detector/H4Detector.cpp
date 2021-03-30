@@ -139,8 +139,8 @@ void H4Detector::BuildCalorimeter (G4LogicalVolume *mother_logical) {
   G4ThreeVector new_coords_tlate =
   G4ThreeVector(-(12.32 * 31.5)*cm, -(12.32 * 25.5)*cm, 6.0*m);
 
-  for (G4int i = 24; i < 40; i++) {
-    for (G4int j = 28; j < 32; j++) {
+  for (G4int i = 34; i < 40; i++) {
+    for (G4int j = 20; j < 24; j++) {
 
       // Set the position of the module.
       G4ThreeVector module_position =

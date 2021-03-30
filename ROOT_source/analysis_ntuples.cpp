@@ -61,19 +61,19 @@ void print_histograms(char *input_file, char *output_path) {
   TH1I *particle_counter = new TH1I(
     "Primary poarticle",
     "Primary",
-    5, -1, 5
+    5, -1, 4
   );
 
   TH2I *calo_photons_counter = new TH2I(
     "Photons Counter",
     "Photons",
-    32, 0, 17, 24, 0, 13
+    6, 0, 6, 4, 0, 4
   );
 
   TH3I *calo_photons_counter_3 = new TH3I(
     "Photons Counter",
     "Photons",
-    32, 0, 17, 24, 0, 13, 67, 0, 67
+    6, 0, 6, 4, 0, 4, 67, 0, 67
   );
 
   int nentries, nbytes;
@@ -99,7 +99,7 @@ void print_histograms(char *input_file, char *output_path) {
 
   particle_counter->Draw();
   output_file =
-  std::string(output_path) + "particles.svg";
+  std::string(output_path) + "particles.root";
 
   canvas->Print(output_file.c_str());
   canvas->Clear();
@@ -107,7 +107,7 @@ void print_histograms(char *input_file, char *output_path) {
 
   calo_photons_counter->Draw("COL");
   output_file =
-  std::string(output_path) + "calo_photons_counter.svg";
+  std::string(output_path) + "calo_photons_counter.root";
 
   canvas->Print(output_file.c_str());
   canvas->Clear();

@@ -50,7 +50,7 @@ void H4TrackingAction::PreUserTrackingAction (const G4Track *track) {
       volume_name = number.suffix().str();
     }
 
-    m_event_action->AppendXVal(40 - coordinates[0]);
+    m_event_action->AppendXVal(39 - coordinates[0]);
     m_event_action->AppendYVal(coordinates[1] - 20);
     m_event_action->AppendZVal(coordinates[2]);
     m_event_action->AppendrVal(coordinates[3]);

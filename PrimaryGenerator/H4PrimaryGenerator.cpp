@@ -60,7 +60,7 @@ void H4PrimaryGenerator::GeneratePrimaries (G4Event* an_event) {
   std::vector< float > index(3, 0.0);
 
   for (size_t i = 0; i < index.size(); i++) {
-    index[i] = (float)rand() / (float)RAND_MAX;
+    index[i] = (float)rand() / (float)RAND_MAX * 0.50 + 0.25;
   }
 
   double px, py;
@@ -75,7 +75,7 @@ void H4PrimaryGenerator::GeneratePrimaries (G4Event* an_event) {
   }
 
   // Set the energy of the particle.
-  m_particle_gun->SetParticleEnergy(18 + (4 *  index[2]) * GeV);
+  m_particle_gun->SetParticleEnergy(18 * GeV + (4 *  index[2]) * GeV);
 
   // Set the direction in which the particle will be shooted.
   m_particle_gun->SetParticleMomentumDirection(

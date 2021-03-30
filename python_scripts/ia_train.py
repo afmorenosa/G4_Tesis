@@ -57,7 +57,7 @@ nentries = root_files_mng.get_nentries(args.test)
 
 # Get the test variables.
 root_files_mng.get_data(args.test, nentries)
-X_test = np.memmap("x_temp.data", shape=(nentries, 77184))
+X_test = np.memmap("x_temp.data", shape=(nentries, 14472))
 y_test = np.memmap("y_temp.data", shape=(nentries))
 
 # Print results of the test.

@@ -75,7 +75,7 @@ void H4PrimaryGenerator::GeneratePrimaries (G4Event* an_event) {
   }
 
   // Set the energy of the particle.
-  m_particle_gun->SetParticleEnergy(18 + (4 *  index[2]) * GeV);
+  m_particle_gun->SetParticleEnergy(18 * GeV + (4 *  index[2]) * GeV);
 
   // Set the direction in which the particle will be shooted.
   m_particle_gun->SetParticleMomentumDirection(

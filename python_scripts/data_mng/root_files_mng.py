@@ -72,7 +72,7 @@ def get_data(files_list, nentries, x_array_file="x_temp.data",
             print(f"[{i/photons_branch.GetEntries()*100:.2f}%]",
                   f"getting data from: {file_name} - entry: {i}, of: " +
                   f"{photons_branch.GetEntries()}",
-                  f"Non-emtpy data: {index}, of: {nentries}",
+                  f"Non-emtpy data: {index + 1}, of: {nentries}",
                   end="\r")
 
             if len(entry.X) == 0:
@@ -80,12 +80,11 @@ def get_data(files_list, nentries, x_array_file="x_temp.data",
             photons_counter = np.zeros((6*3, 4*3, 67))
 
             # Set a zeros matrix.
-            for x in entry.X:
-                for y in entry.Y:
-                    for z in entry.Z:
-                        for c in entry.c:
-                            for r in entry.r:
-                                photons_counter[x + c, y + r, z] += 1
+            for photon in range(len(entry.X)):
+                photons_counter[entry.X[photon] + entry.c[photon],
+                                entry.Y[photon] + entry.r[photon],
+                                entry.Z[photon]] += 1
+
             # Add data.
             X_set[index] = photons_counter.flatten()
             y_set[index] = entry.primary
@@ -135,12 +134,11 @@ def train_data(files_list, classification_method):
             photons_counter = np.zeros((6*3, 4*3, 67))
 
             # Set a zeros matrix.
-            for x in entry.X:
-                for y in entry.Y:
-                    for z in entry.Z:
-                        for c in entry.c:
-                            for r in entry.r:
-                                photons_counter[x + c, y + r, z] += 1
+            for photon in range(len(entry.X)):
+                photons_counter[entry.X[photon] + entry.c[photon],
+                                entry.Y[photon] + entry.r[photon],
+                                entry.Z[photon]] += 1
+
             # Add data.
             X_set.append(photons_counter.flatten())
             y_set.append(entry.primary)

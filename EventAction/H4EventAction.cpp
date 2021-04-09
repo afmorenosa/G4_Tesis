@@ -54,11 +54,16 @@ void H4EventAction::EndOfEventAction (const G4Event *event) {
   event->GetPrimaryVertex()->GetPrimary()
   ->GetParticleDefinition()->GetParticleName();
 
+  G4double energy =
+  event->GetPrimaryVertex()->GetPrimary()->GetTotalEnergy();
+
   for (int i = 0; i < m_X.size(); i++) {
     analysis_manager->FillH2(0, 40 - m_X[0], m_Y[1] - 20);
   }
 
   analysis_manager->FillNtupleIColumn(0, m_particlesID[particle]);
+  analysis_manager->FillNtupleIColumn(1, energy / GeV);
+
   // Add tupple row.
   analysis_manager->AddNtupleRow();
 

@@ -24,8 +24,6 @@ include(${Geant4_USE_FILE})
 ### Find Root Library.
 find_package(ROOT 6.22 REQUIRED COMPONENTS Core Graf3d Graf RIO Net Geom)
 
-message(${ROOT_USE_FILE})
-
 ### Include Root Use file.
 include(${ROOT_USE_FILE})
 

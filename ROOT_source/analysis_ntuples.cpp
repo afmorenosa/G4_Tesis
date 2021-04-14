@@ -2,27 +2,118 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <regex>
+#include <map>
 
-#include "TTree.h"
-#include "TFile.h"
 #include "TDirectory.h"
 #include "TCanvas.h"
+#include "TTree.h"
+#include "TFile.h"
 #include "TH1.h"
 #include "TH2.h"
 #include "TH3.h"
 
 namespace fs = std::filesystem;
 
-void print_histograms(char *input_dir, char *output_path);
+void print_usage() {
+  std::cerr << std::endl;
+  std::cerr << " Usage: " << std::endl;
+  std::cerr << " plot_histo <input_root_file> [-l label]" << std::endl;
+  std::cerr << std::endl;
+  std::cerr << "   Options:" << std::endl;
+  std::cerr << "-l, --label output_label\t Set a label for the output files. "
+  << "If none if given,\n the inputfile name will be used as label."
+  << std::endl;
+  std::cerr << "      -h, --help\t Print the usage." << std::endl;
+  std::cerr << std::endl;
+}
+
+std::map<const char *, const char *> parse_args(int argc, char *argv[]);
+void print_histograms(const char *input_dir, const char *output_path);
 
 int main(int argc, char *argv[]) {
 
-  print_histograms(argv[1], argv[2]);
+  std::map<const char *, const char *> arguments = parse_args(argc, argv);
+
+  if (arguments.find("error") != arguments.end()) {
+    std::cerr << arguments["error"] << '\n';
+    return 1;
+  } else if (arguments.find("help") != arguments.end()) {
+    print_usage();
+    return 0;
+  }
+
+  print_histograms(arguments["file"], arguments["label"]);
 
   return 0;
 }
 
-void print_histograms(char *input_file, char *output_path) {
+std::map<const char *, const char *> parse_args(int argc, char *argv[]) {
+
+  std::map<const char *, const char *> arguments;
+
+  for (int i = 1; i < argc; i++) {
+    if (
+      std::regex_match(argv[i], std::regex("-h")) ||
+      std::regex_match(argv[i], std::regex("--help"))
+    ) {
+
+      arguments["help"] = "";
+      return arguments;
+
+    } else if (
+      std::regex_match(argv[i], std::regex("^-l(=.+)?")) ||
+      std::regex_match(argv[i], std::regex("^--label(=.+)?"))
+    ) {
+
+      if (arguments.find("label") != arguments.end()) {
+        arguments["error"] = "\nError: Label already given.\n";
+        return arguments;
+      }
+
+      if (TString(argv[i]).Contains("=")) {
+        size_t pos_eq = std::string(argv[i]).find('=');
+
+        arguments["label"] = std::string(argv[i]).substr(pos_eq + 1).c_str();
+
+      } else {
+
+        if ( i+1 >= argc || std::regex_match(argv[i+1], std::regex("^-.+")) ) {
+          arguments["error"] = "\nError: No valid label given.\n";
+          return arguments;
+        }
+
+        arguments["label"] = argv[i + 1];
+        i++;
+      }
+
+    } else {
+
+      if (arguments.find("file") != arguments.end()) {
+        arguments["error"] = "\nError: Multiple input files given, just one "
+        "shuld be given.\n";
+        return arguments;
+      }
+
+      arguments["file"] = argv[i];
+
+    }
+  }
+
+  if (arguments.find("file") == arguments.end()) {
+    arguments["error"] = "\nError: No input file given.\n";
+    return arguments;
+  }
+
+  if (arguments.find("label") == arguments.end()) {
+    arguments["label"] = arguments["label"];
+  }
+
+  return arguments;
+
+}
+
+void print_histograms(const char *input_file, const char *output_path) {
 
   // Open de Root File
   TFile *file = TFile::Open(input_file);

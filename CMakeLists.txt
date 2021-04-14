@@ -55,10 +55,10 @@ target_link_libraries(calo_ECAL
 )
 
 ### Add an executable.
-add_executable(root_Analysis ROOT_source/analysis_ntuples.cpp)
+add_executable(plot_histo ROOT_source/analysis_ntuples.cpp)
 
 ### Link libraries.
-target_link_libraries(root_Analysis
+target_link_libraries(plot_histo
   ${ROOT_LIBRARIES} ${ROOT_EXE_LINKER_FLAGS}
 )
 

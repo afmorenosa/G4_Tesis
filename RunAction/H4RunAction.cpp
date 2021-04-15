@@ -33,13 +33,159 @@ m_output_path(output_path) {
   analysis_manager->CreateNtuple("Photons", "Coordinates of photons");
 
   analysis_manager->CreateNtupleIColumn("primary");
-  analysis_manager->CreateNtupleIColumn("E");
 
-  analysis_manager->CreateNtupleIColumn("X", event_action->GetX());
-  analysis_manager->CreateNtupleIColumn("Y", event_action->GetY());
-  analysis_manager->CreateNtupleIColumn("Z", event_action->GetZ());
-  analysis_manager->CreateNtupleIColumn("r", event_action->Getr());
-  analysis_manager->CreateNtupleIColumn("c", event_action->Getc());
+  //<><><><><><><><><><><><><><><><>//
+  //  Counter of photons production //
+  //<><><><><><><><><><><><><><><><>//
+
+  // Counters of the photons created in the scintillator plates.
+  analysis_manager->CreateNtupleIColumn(
+    "X_photons_scintillator",
+    event_action->GetXGammaScintillator()
+  );
+  analysis_manager->CreateNtupleIColumn(
+    "Y_photons_scintillator",
+    event_action->GetYGammaScintillator()
+  );
+  analysis_manager->CreateNtupleIColumn(
+    "Z_photons_scintillator",
+    event_action->GetZGammaScintillator()
+  );
+  analysis_manager->CreateNtupleIColumn(
+    "r_photons_scintillator",
+    event_action->GetrGammaScintillator()
+  );
+  analysis_manager->CreateNtupleIColumn(
+    "c_photons_scintillator",
+    event_action->GetcGammaScintillator()
+  );
+
+  // Counters of the photons created in the lead plates.
+  analysis_manager->CreateNtupleIColumn(
+    "X_photons_lead",
+    event_action->GetXGammaLead()
+  );
+  analysis_manager->CreateNtupleIColumn(
+    "Y_photons_lead",
+    event_action->GetYGammaLead()
+  );
+  analysis_manager->CreateNtupleIColumn(
+    "Z_photons_lead",
+    event_action->GetZGammaLead()
+  );
+  analysis_manager->CreateNtupleIColumn(
+    "r_photons_lead",
+    event_action->GetrGammaLead()
+  );
+  analysis_manager->CreateNtupleIColumn(
+    "c_photons_lead",
+    event_action->GetcGammaLead()
+  );
+
+  //<><><><><><><><><><><><><><><><><>//
+  //  Counter of electrons production //
+  //<><><><><><><><><><><><><><><><><>//
+
+  // Counters of the electrons created in the scintillator plates.
+  analysis_manager->CreateNtupleIColumn(
+    "X_electrons_scintillator",
+    event_action->GetXElectronScintillator()
+  );
+  analysis_manager->CreateNtupleIColumn(
+    "Y_electrons_scintillator",
+    event_action->GetYElectronScintillator()
+  );
+  analysis_manager->CreateNtupleIColumn(
+    "Z_electrons_scintillator",
+    event_action->GetZElectronScintillator()
+  );
+  analysis_manager->CreateNtupleIColumn(
+    "r_electrons_scintillator",
+    event_action->GetrElectronScintillator()
+  );
+  analysis_manager->CreateNtupleIColumn(
+    "c_electrons_scintillator",
+    event_action->GetcElectronScintillator()
+  );
+
+  // Counters of the electrons created in the lead plates.
+  analysis_manager->CreateNtupleIColumn(
+    "X_electrons_lead",
+    event_action->GetXElectronLead()
+  );
+  analysis_manager->CreateNtupleIColumn(
+    "Y_electrons_lead",
+    event_action->GetYElectronLead()
+  );
+  analysis_manager->CreateNtupleIColumn(
+    "Z_electrons_lead",
+    event_action->GetZElectronLead()
+  );
+  analysis_manager->CreateNtupleIColumn(
+    "r_electrons_lead",
+    event_action->GetrElectronLead()
+  );
+  analysis_manager->CreateNtupleIColumn(
+    "c_electrons_lead",
+    event_action->GetcElectronLead()
+  );
+
+  //<><><><><><><><><><><><><><><>//
+  // Counter of energy deposition //
+  //<><><><><><><><><><><><><><><>//
+
+  // Counters of the energy created in the scintillator plates.
+  analysis_manager->CreateNtupleIColumn(
+    "X_energy_scintillator",
+    event_action->GetXEnergyScintillator()
+  );
+  analysis_manager->CreateNtupleIColumn(
+    "Y_energy_scintillator",
+    event_action->GetYEnergyScintillator()
+  );
+  analysis_manager->CreateNtupleIColumn(
+    "Z_energy_scintillator",
+    event_action->GetZEnergyScintillator()
+  );
+  analysis_manager->CreateNtupleIColumn(
+    "r_energy_scintillator",
+    event_action->GetrEnergyScintillator()
+  );
+  analysis_manager->CreateNtupleIColumn(
+    "c_energy_scintillator",
+    event_action->GetcEnergyScintillator()
+  );
+  analysis_manager->CreateNtupleIColumn(
+    "E_energy_scintillator",
+    event_action->GetEEnergyScintillator()
+  );
+
+  // Counters of the energy created in the lead plates.
+  analysis_manager->CreateNtupleIColumn(
+    "X_energy_lead",
+    event_action->GetXEnergyLead()
+  );
+  analysis_manager->CreateNtupleIColumn(
+    "Y_energy_lead",
+    event_action->GetYEnergyLead()
+  );
+  analysis_manager->CreateNtupleIColumn(
+    "Z_energy_lead",
+    event_action->GetZEnergyLead()
+  );
+  analysis_manager->CreateNtupleIColumn(
+    "r_energy_lead",
+    event_action->GetrEnergyLead()
+  );
+  analysis_manager->CreateNtupleIColumn(
+    "c_energy_lead",
+    event_action->GetcEnergyLead()
+  );
+  analysis_manager->CreateNtupleIColumn(
+    "E_energy_lead",
+    event_action->GetEEnergyLead()
+  );
+
   analysis_manager->FinishNtuple();
 
 }
@@ -66,7 +212,8 @@ void H4RunAction::BeginOfRunAction (const G4Run *run) {
   G4RootAnalysisManager *analysis_manager = G4RootAnalysisManager::Instance();
 
   // Open output file.
-  G4String output_file = m_output_path + std::to_string(run->GetRunID()) + ".root";
+  G4String output_file = m_output_path +
+  std::to_string(run->GetRunID()) + ".root";
 
   analysis_manager->OpenFile(output_file);
 }
@@ -80,8 +227,6 @@ void H4RunAction::EndOfRunAction (const G4Run *run) {
 
   // Get the analysis manager.
   G4RootAnalysisManager *analysis_manager = G4RootAnalysisManager::Instance();
-
-  std::cout << "INFO\t data written to: " << analysis_manager->GetFileName() << '\n';
 
   // Write histograms.
   analysis_manager->Write();

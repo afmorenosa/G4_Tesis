@@ -33,11 +33,61 @@ H4EventAction::~H4EventAction () {
 //***************************//
 void H4EventAction::BeginOfEventAction (const G4Event *event) {
 
-  m_X.clear();
-  m_Y.clear();
-  m_Z.clear();
-  m_r.clear();
-  m_c.clear();
+  //<><><><><><><><><><><><><><><><><><><>//
+  // Clear counters of photons production //
+  //<><><><><><><><><><><><><><><><><><><>//
+
+  // Counters for scintillator plates.
+  m_XGammaScintillator.clear();
+  m_YGammaScintillator.clear();
+  m_ZGammaScintillator.clear();
+  m_rGammaScintillator.clear();
+  m_cGammaScintillator.clear();
+
+  // Counters for lead plates.
+  m_XGammaLead.clear();
+  m_YGammaLead.clear();
+  m_ZGammaLead.clear();
+  m_rGammaLead.clear();
+  m_cGammaLead.clear();
+
+  //<><><><><><><><><><><><><><><><><><><><>//
+  // Clear counters of electrons production //
+  //<><><><><><><><><><><><><><><><><><><><>//
+
+  // Counters for scintillator plates.
+  m_XElectronScintillator.clear();
+  m_YElectronScintillator.clear();
+  m_ZElectronScintillator.clear();
+  m_rElectronScintillator.clear();
+  m_cElectronScintillator.clear();
+
+  // Counters for lead plates.
+  m_XElectronLead.clear();
+  m_YElectronLead.clear();
+  m_ZElectronLead.clear();
+  m_rElectronLead.clear();
+  m_cElectronLead.clear();
+
+  //<><><><><><><><><><><><><><><><><><><>//
+  //  Clear counters of energy deposition //
+  //<><><><><><><><><><><><><><><><><><><>//
+
+  // Counters for scintillator plates.
+  m_XEnergyScintillator.clear();
+  m_YEnergyScintillator.clear();
+  m_ZEnergyScintillator.clear();
+  m_rEnergyScintillator.clear();
+  m_cEnergyScintillator.clear();
+  m_EEnergyScintillator.clear();
+
+  // Counters for lead plates.
+  m_XEnergyLead.clear();
+  m_YEnergyLead.clear();
+  m_ZEnergyLead.clear();
+  m_rEnergyLead.clear();
+  m_cEnergyLead.clear();
+  m_EEnergyLead.clear();
 
 }
 
@@ -62,7 +112,6 @@ void H4EventAction::EndOfEventAction (const G4Event *event) {
   }
 
   analysis_manager->FillNtupleIColumn(0, m_particlesID[particle]);
-  analysis_manager->FillNtupleIColumn(1, energy / GeV);
 
   // Add tupple row.
   analysis_manager->AddNtupleRow();

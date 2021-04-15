@@ -29,7 +29,7 @@ void print_usage() {
 }
 
 std::map<const char *, const char *> parse_args(int argc, char *argv[]);
-void print_histograms(const char *input_dir, const char *output_path);
+void print_histograms(const char *input_dir, const char *output_label);
 
 int main(int argc, char *argv[]) {
 
@@ -41,6 +41,12 @@ int main(int argc, char *argv[]) {
   } else if (arguments.find("help") != arguments.end()) {
     print_usage();
     return 0;
+  }
+
+  if( !fs::exists(fs::path(arguments["file"])) ) {
+    std::cerr << "\nError: input file " << arguments["file"] <<
+    " does not exist.\n" << '\n';
+    return 1;
   }
 
   print_histograms(arguments["file"], arguments["label"]);
@@ -113,7 +119,7 @@ std::map<const char *, const char *> parse_args(int argc, char *argv[]) {
 
 }
 
-void print_histograms(const char *input_file, const char *output_path) {
+void print_histograms(const char *input_file, const char *output_label) {
 
   // Open de Root File
   TFile *file = TFile::Open(input_file);
@@ -190,7 +196,7 @@ void print_histograms(const char *input_file, const char *output_path) {
 
   particle_counter->Draw();
   output_file =
-  std::string(output_path) + "particles.root";
+  std::string(output_label) + "particles.root";
 
   canvas->Print(output_file.c_str());
   canvas->Clear();
@@ -198,7 +204,7 @@ void print_histograms(const char *input_file, const char *output_path) {
 
   calo_photons_counter->Draw("COL");
   output_file =
-  std::string(output_path) + "calo_photons_counter.root";
+  std::string(output_label) + "calo_photons_counter.root";
 
   canvas->Print(output_file.c_str());
   canvas->Clear();
@@ -206,7 +212,7 @@ void print_histograms(const char *input_file, const char *output_path) {
 
   calo_photons_counter_3->Draw("BOX");
   output_file =
-  std::string(output_path) + "calo_photons_counter_3.root";
+  std::string(output_label) + "calo_photons_counter_3.root";
 
   canvas->Print(output_file.c_str());
   canvas->Clear();

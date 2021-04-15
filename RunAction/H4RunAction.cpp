@@ -17,17 +17,11 @@ m_output_path(output_path) {
 
   G4RootAnalysisManager *analysis_manager = G4RootAnalysisManager::Instance();
 
-  // Create histograms directory.
-  analysis_manager->SetHistoDirectoryName("histograms");
-
   // Set NTuples directory.
   analysis_manager->SetNtupleDirectoryName("ntuple");
 
   // Set verbose.
   analysis_manager->SetVerboseLevel(0);
-
-  // Create histograms.
-  analysis_manager->CreateH2("Photons", "Photons", 32, 0, 17, 24, 0, 13);
 
   // Create NTuples
   analysis_manager->CreateNtuple("Photons", "Coordinates of photons");
@@ -73,14 +67,6 @@ m_output_path(output_path) {
     "Z_photons_lead",
     event_action->GetZGammaLead()
   );
-  analysis_manager->CreateNtupleIColumn(
-    "r_photons_lead",
-    event_action->GetrGammaLead()
-  );
-  analysis_manager->CreateNtupleIColumn(
-    "c_photons_lead",
-    event_action->GetcGammaLead()
-  );
 
   //<><><><><><><><><><><><><><><><><>//
   //  Counter of electrons production //
@@ -121,14 +107,6 @@ m_output_path(output_path) {
     "Z_electrons_lead",
     event_action->GetZElectronLead()
   );
-  analysis_manager->CreateNtupleIColumn(
-    "r_electrons_lead",
-    event_action->GetrElectronLead()
-  );
-  analysis_manager->CreateNtupleIColumn(
-    "c_electrons_lead",
-    event_action->GetcElectronLead()
-  );
 
   //<><><><><><><><><><><><><><><>//
   // Counter of energy deposition //
@@ -155,7 +133,7 @@ m_output_path(output_path) {
     "c_energy_scintillator",
     event_action->GetcEnergyScintillator()
   );
-  analysis_manager->CreateNtupleIColumn(
+  analysis_manager->CreateNtupleFColumn(
     "E_energy_scintillator",
     event_action->GetEEnergyScintillator()
   );
@@ -173,15 +151,7 @@ m_output_path(output_path) {
     "Z_energy_lead",
     event_action->GetZEnergyLead()
   );
-  analysis_manager->CreateNtupleIColumn(
-    "r_energy_lead",
-    event_action->GetrEnergyLead()
-  );
-  analysis_manager->CreateNtupleIColumn(
-    "c_energy_lead",
-    event_action->GetcEnergyLead()
-  );
-  analysis_manager->CreateNtupleIColumn(
+  analysis_manager->CreateNtupleFColumn(
     "E_energy_lead",
     event_action->GetEEnergyLead()
   );

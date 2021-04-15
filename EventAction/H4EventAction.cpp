@@ -8,12 +8,7 @@
 //                           //
 //***************************//
 H4EventAction::H4EventAction ()
-: G4UserEventAction(),
-m_X({}),
-m_Y({}),
-m_Z({}),
-m_r({}),
-m_c({}) { }
+: G4UserEventAction() { }
 
 //***********************************//
 // H4EventAction constructor         //
@@ -48,8 +43,6 @@ void H4EventAction::BeginOfEventAction (const G4Event *event) {
   m_XGammaLead.clear();
   m_YGammaLead.clear();
   m_ZGammaLead.clear();
-  m_rGammaLead.clear();
-  m_cGammaLead.clear();
 
   //<><><><><><><><><><><><><><><><><><><><>//
   // Clear counters of electrons production //
@@ -66,8 +59,6 @@ void H4EventAction::BeginOfEventAction (const G4Event *event) {
   m_XElectronLead.clear();
   m_YElectronLead.clear();
   m_ZElectronLead.clear();
-  m_rElectronLead.clear();
-  m_cElectronLead.clear();
 
   //<><><><><><><><><><><><><><><><><><><>//
   //  Clear counters of energy deposition //
@@ -85,8 +76,6 @@ void H4EventAction::BeginOfEventAction (const G4Event *event) {
   m_XEnergyLead.clear();
   m_YEnergyLead.clear();
   m_ZEnergyLead.clear();
-  m_rEnergyLead.clear();
-  m_cEnergyLead.clear();
   m_EEnergyLead.clear();
 
 }
@@ -103,13 +92,6 @@ void H4EventAction::EndOfEventAction (const G4Event *event) {
   G4String particle =
   event->GetPrimaryVertex()->GetPrimary()
   ->GetParticleDefinition()->GetParticleName();
-
-  G4double energy =
-  event->GetPrimaryVertex()->GetPrimary()->GetTotalEnergy();
-
-  for (int i = 0; i < m_X.size(); i++) {
-    analysis_manager->FillH2(0, 40 - m_X[0], m_Y[1] - 20);
-  }
 
   analysis_manager->FillNtupleIColumn(0, m_particlesID[particle]);
 

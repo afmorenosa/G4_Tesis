@@ -42,8 +42,6 @@ public:
   void AppendXGammaLead(int X) {m_XGammaLead.push_back(X);}
   void AppendYGammaLead(int Y) {m_YGammaLead.push_back(Y);}
   void AppendZGammaLead(int Z) {m_ZGammaLead.push_back(Z);}
-  void AppendrGammaLead(int r) {m_rGammaLead.push_back(r);}
-  void AppendcGammaLead(int c) {m_cGammaLead.push_back(c);}
 
   //<><><><><><><><><><><><><><><><><><><><><><><><><><>//
   //  Add value to the counters of electrons production //
@@ -60,8 +58,6 @@ public:
   void AppendXElectronLead(int X) {m_XElectronLead.push_back(X);}
   void AppendYElectronLead(int Y) {m_YElectronLead.push_back(Y);}
   void AppendZElectronLead(int Z) {m_ZElectronLead.push_back(Z);}
-  void AppendrElectronLead(int r) {m_rElectronLead.push_back(r);}
-  void AppendcElectronLead(int c) {m_cElectronLead.push_back(c);}
 
   //<><><><><><><><><><><><><><><><><><><><><><><><><>//
   //  Add value to the counters of energy deposition  //
@@ -79,8 +75,6 @@ public:
   void AppendXEnergyLead(int X) {m_XEnergyLead.push_back(X);}
   void AppendYEnergyLead(int Y) {m_YEnergyLead.push_back(Y);}
   void AppendZEnergyLead(int Z) {m_ZEnergyLead.push_back(Z);}
-  void AppendrEnergyLead(int r) {m_rEnergyLead.push_back(r);}
-  void AppendcEnergyLead(int c) {m_cEnergyLead.push_back(c);}
   void AppendEEnergyLead(float E) {m_EEnergyLead.push_back(E);}
 
   //<><><><><><><><><><><><><><><><><><><><>//
@@ -98,8 +92,6 @@ public:
   std::vector<int>& GetXGammaLead() {return m_XGammaLead;}
   std::vector<int>& GetYGammaLead() {return m_YGammaLead;}
   std::vector<int>& GetZGammaLead() {return m_ZGammaLead;}
-  std::vector<int>& GetrGammaLead() {return m_rGammaLead;}
-  std::vector<int>& GetcGammaLead() {return m_cGammaLead;}
 
   //<><><><><><><><><><><><><><><><><><><><><>//
   // Get the counters of electrons production //
@@ -116,8 +108,6 @@ public:
   std::vector<int>& GetXElectronLead() {return m_XElectronLead;}
   std::vector<int>& GetYElectronLead() {return m_YElectronLead;}
   std::vector<int>& GetZElectronLead() {return m_ZElectronLead;}
-  std::vector<int>& GetrElectronLead() {return m_rElectronLead;}
-  std::vector<int>& GetcElectronLead() {return m_cElectronLead;}
 
   //<><><><><><><><><><><><><><><><><><><><>//
   //  Get the counters of energy deposition //
@@ -135,8 +125,6 @@ public:
   std::vector<int>& GetXEnergyLead() {return m_XEnergyLead;}
   std::vector<int>& GetYEnergyLead() {return m_YEnergyLead;}
   std::vector<int>& GetZEnergyLead() {return m_ZEnergyLead;}
-  std::vector<int>& GetrEnergyLead() {return m_rEnergyLead;}
-  std::vector<int>& GetcEnergyLead() {return m_cEnergyLead;}
   std::vector<float>& GetEEnergyLead() {return m_EEnergyLead;}
 
 private:
@@ -146,56 +134,50 @@ private:
   //<><><><><><><><><><><><><><><><>//
 
   // Counters for scintillator plates.
-  std::vector<int> m_XGammaScintillator;
-  std::vector<int> m_YGammaScintillator;
-  std::vector<int> m_ZGammaScintillator;
-  std::vector<int> m_rGammaScintillator;
-  std::vector<int> m_cGammaScintillator;
+  std::vector<int> m_XGammaScintillator = {};
+  std::vector<int> m_YGammaScintillator = {};
+  std::vector<int> m_ZGammaScintillator = {};
+  std::vector<int> m_rGammaScintillator = {};
+  std::vector<int> m_cGammaScintillator = {};
 
   // Counters for lead plates.
-  std::vector<int> m_XGammaLead;
-  std::vector<int> m_YGammaLead;
-  std::vector<int> m_ZGammaLead;
-  std::vector<int> m_rGammaLead;
-  std::vector<int> m_cGammaLead;
+  std::vector<int> m_XGammaLead = {};
+  std::vector<int> m_YGammaLead = {};
+  std::vector<int> m_ZGammaLead = {};
 
   //<><><><><><><><><><><><><><><><><>//
   //  Counter of electrons production //
   //<><><><><><><><><><><><><><><><><>//
 
   // Counters for scintillator plates.
-  std::vector<int> m_XElectronScintillator;
-  std::vector<int> m_YElectronScintillator;
-  std::vector<int> m_ZElectronScintillator;
-  std::vector<int> m_rElectronScintillator;
-  std::vector<int> m_cElectronScintillator;
+  std::vector<int> m_XElectronScintillator = {};
+  std::vector<int> m_YElectronScintillator = {};
+  std::vector<int> m_ZElectronScintillator = {};
+  std::vector<int> m_rElectronScintillator = {};
+  std::vector<int> m_cElectronScintillator = {};
 
   // Counters for lead plates.
-  std::vector<int> m_XElectronLead;
-  std::vector<int> m_YElectronLead;
-  std::vector<int> m_ZElectronLead;
-  std::vector<int> m_rElectronLead;
-  std::vector<int> m_cElectronLead;
+  std::vector<int> m_XElectronLead = {};
+  std::vector<int> m_YElectronLead = {};
+  std::vector<int> m_ZElectronLead = {};
 
   //<><><><><><><><><><><><><><><>//
   // Counter of energy deposition //
   //<><><><><><><><><><><><><><><>//
 
   // Counters for scintillator plates.
-  std::vector<int> m_XEnergyScintillator;
-  std::vector<int> m_YEnergyScintillator;
-  std::vector<int> m_ZEnergyScintillator;
-  std::vector<int> m_rEnergyScintillator;
-  std::vector<int> m_cEnergyScintillator;
-  std::vector<float> m_EEnergyScintillator;
+  std::vector<int> m_XEnergyScintillator = {};
+  std::vector<int> m_YEnergyScintillator = {};
+  std::vector<int> m_ZEnergyScintillator = {};
+  std::vector<int> m_rEnergyScintillator = {};
+  std::vector<int> m_cEnergyScintillator = {};
+  std::vector<float> m_EEnergyScintillator = {};
 
   // Counters for lead plates.
-  std::vector<int> m_XEnergyLead;
-  std::vector<int> m_YEnergyLead;
-  std::vector<int> m_ZEnergyLead;
-  std::vector<int> m_rEnergyLead;
-  std::vector<int> m_cEnergyLead;
-  std::vector<float> m_EEnergyLead;
+  std::vector<int> m_XEnergyLead = {};
+  std::vector<int> m_YEnergyLead = {};
+  std::vector<int> m_ZEnergyLead = {};
+  std::vector<float> m_EEnergyLead = {};
 
   std::map< std::string, int > m_particlesID = {
     {"gamma", 0},

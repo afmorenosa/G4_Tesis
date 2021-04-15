@@ -28,11 +28,10 @@ H4TrackingAction::~H4TrackingAction () { }
 void H4TrackingAction::PreUserTrackingAction (const G4Track *track) {
 
   if (
-    track->GetParticleDefinition()->GetParticleName() == "gamma" &&
     std::regex_match(
       track->GetVolume()->GetName(),
       std::regex("Inner module \\([0-9]{1,2},[0-9]{1,2}\\) - "
-      "scintillator tile: [0-9]{1,2} - row: [0-9]{1,2} - col: [0-9]{1,2}")
+      "[a-z]{4,12} tile: [0-9]{1,2}.{0,}")
     )
   ) {
 
@@ -50,11 +49,47 @@ void H4TrackingAction::PreUserTrackingAction (const G4Track *track) {
       volume_name = number.suffix().str();
     }
 
-    m_event_action->AppendXVal(39 - coordinates[0]);
-    m_event_action->AppendYVal(coordinates[1] - 20);
-    m_event_action->AppendZVal(coordinates[2]);
-    m_event_action->AppendrVal(coordinates[3]);
-    m_event_action->AppendcVal(coordinates[4]);
+    if (
+      std::regex_match(
+        track->GetVolume()->GetName(),
+        std::regex("Inner module \\([0-9]{1,2},[0-9]{1,2}\\) - "
+        "scintillator tile: [0-9]{1,2} - row: [0-9]{1,2} - col: [0-9]{1,2}")
+      )
+    ) {
+
+      if ( track->GetParticleDefinition()->GetParticleName() == "gamma" ) {
+        m_event_action->AppendXGammaScintillator(39 - coordinates[0]);
+        m_event_action->AppendYGammaScintillator(coordinates[1] - 20);
+        m_event_action->AppendZGammaScintillator(coordinates[2]);
+        m_event_action->AppendrGammaScintillator(coordinates[3]);
+        m_event_action->AppendcGammaScintillator(coordinates[4]);
+      } else if ( track->GetParticleDefinition()->GetParticleName() == "e-" ) {
+        m_event_action->AppendXElectronScintillator(39 - coordinates[0]);
+        m_event_action->AppendYElectronScintillator(coordinates[1] - 20);
+        m_event_action->AppendZElectronScintillator(coordinates[2]);
+        m_event_action->AppendrElectronScintillator(coordinates[3]);
+        m_event_action->AppendcElectronScintillator(coordinates[4]);
+      }
+
+    } else if (
+      std::regex_match(
+        track->GetVolume()->GetName(),
+        std::regex("Inner module \\([0-9]{1,2},[0-9]{1,2}\\) - "
+        "lead tile: [0-9]{1,2}")
+      )
+    ) {
+
+      if ( track->GetParticleDefinition()->GetParticleName() == "gamma" ) {
+        m_event_action->AppendXGammaLead(39 - coordinates[0]);
+        m_event_action->AppendYGammaLead(coordinates[1] - 20);
+        m_event_action->AppendZGammaLead(coordinates[2]);
+      } else if ( track->GetParticleDefinition()->GetParticleName() == "e-" ) {
+        m_event_action->AppendXElectronLead(39 - coordinates[0]);
+        m_event_action->AppendYElectronLead(coordinates[1] - 20);
+        m_event_action->AppendZElectronLead(coordinates[2]);
+      }
+
+    }
 
   }
 

@@ -1,128 +1,31 @@
-#include <filesystem>
+// C++ includes.
 #include <iostream>
-#include <vector>
-#include <string>
-#include <regex>
 #include <map>
 
+// ROOT includes.
 #include "TDirectory.h"
-#include "TCanvas.h"
 #include "TTree.h"
 #include "TFile.h"
-#include "TH1.h"
-#include "TH2.h"
-#include "TH3.h"
 
-namespace fs = std::filesystem;
-
-void print_usage() {
-  std::cerr << std::endl;
-  std::cerr << " Usage: " << std::endl;
-  std::cerr << " analysis_ntuples <input_root_file> [-l label]" << std::endl;
-  std::cerr << std::endl;
-  std::cerr << "   Options:" << std::endl;
-  std::cerr << "-l, --label output_label\t Set a label for the output files. "
-  << "If none if given,\n the inputfile name will be used as label."
-  << std::endl;
-  std::cerr << "      -h, --help\t Print the usage." << std::endl;
-  std::cerr << std::endl;
-}
-
-std::map<const char *, const char *> parse_args(int argc, char *argv[]);
-void print_histograms(const char *input_dir, const char *output_label);
+// Project includes.
+#include "hist_plotter.hpp"
+#include "args_manager.hpp"
 
 int main(int argc, char *argv[]) {
 
   std::map<const char *, const char *> arguments = parse_args(argc, argv);
 
   if (arguments.find("error") != arguments.end()) {
-    std::cerr << arguments["error"] << '\n';
+    std::cerr << arguments["error"]
+    << "Use -h, --help for more information" << '\n';
     return 1;
   } else if (arguments.find("help") != arguments.end()) {
     print_usage();
     return 0;
   }
 
-  if( !fs::exists(fs::path(arguments["file"])) ) {
-    std::cerr << "\nError: input file " << arguments["file"] <<
-    " does not exist.\n" << '\n';
-    return 1;
-  }
-
-  print_histograms(arguments["file"], arguments["label"]);
-
-  return 0;
-}
-
-std::map<const char *, const char *> parse_args(int argc, char *argv[]) {
-
-  std::map<const char *, const char *> arguments;
-
-  for (int i = 1; i < argc; i++) {
-    if (
-      std::regex_match(argv[i], std::regex("-h")) ||
-      std::regex_match(argv[i], std::regex("--help"))
-    ) {
-
-      arguments["help"] = "";
-      return arguments;
-
-    } else if (
-      std::regex_match(argv[i], std::regex("^-l(=.+)?")) ||
-      std::regex_match(argv[i], std::regex("^--label(=.+)?"))
-    ) {
-
-      if (arguments.find("label") != arguments.end()) {
-        arguments["error"] = "\nError: Label already given.\n";
-        return arguments;
-      }
-
-      if (TString(argv[i]).Contains("=")) {
-        size_t pos_eq = std::string(argv[i]).find('=');
-
-        arguments["label"] = std::string(argv[i]).substr(pos_eq + 1).c_str();
-
-      } else {
-
-        if ( i+1 >= argc || std::regex_match(argv[i+1], std::regex("^-.+")) ) {
-          arguments["error"] = "\nError: No valid label given.\n";
-          return arguments;
-        }
-
-        arguments["label"] = argv[i + 1];
-        i++;
-      }
-
-    } else {
-
-      if (arguments.find("file") != arguments.end()) {
-        arguments["error"] = "\nError: Multiple input files given, just one "
-        "shuld be given.\n";
-        return arguments;
-      }
-
-      arguments["file"] = argv[i];
-
-    }
-  }
-
-  if (arguments.find("file") == arguments.end()) {
-    arguments["error"] = "\nError: No input file given.\n";
-    return arguments;
-  }
-
-  if (arguments.find("label") == arguments.end()) {
-    arguments["label"] = arguments["file"];
-  }
-
-  return arguments;
-
-}
-
-void print_histograms(const char *input_file, const char *output_label) {
-
   // Open de Root File
-  TFile *file = TFile::Open(input_file);
+  TFile *file = TFile::Open(arguments["file"]);
 
   // Get the directory of the ntuples.
   TDirectory *dir_ntup = file->GetDirectory("ntuple");
@@ -131,94 +34,7 @@ void print_histograms(const char *input_file, const char *output_label) {
   TTree *tree = (TTree*) dir_ntup->Get("Photons");
   tree->Print();
 
-  // Initialize variables.
-  Int_t primary = -1;
-  std::vector<int> *X = {};
-  std::vector<int> *Y = {};
-  std::vector<int> *Z = {};
-  std::vector<int> *r = {};
-  std::vector<int> *c = {};
+  print_histograms(tree, arguments["label"]);
 
-  tree->SetBranchAddress("primary", &primary);
-  tree->SetBranchAddress("X_photons_scintillator", &X);
-  tree->SetBranchAddress("Y_photons_scintillator", &Y);
-  tree->SetBranchAddress("Z_photons_scintillator", &Z);
-  tree->SetBranchAddress("r_photons_scintillator", &r);
-  tree->SetBranchAddress("c_photons_scintillator", &c);
-
-  // Create the canvas to plot the histograms
-  TCanvas *canvas = new TCanvas(
-    "Canvas",
-    "ECAL",
-    800,
-    600
-  );
-
-  // Create histograms.
-  TH1I *particle_counter = new TH1I(
-    "Primary poarticle",
-    "Primary",
-    5, -1, 4
-  );
-
-  TH2I *calo_photons_counter = new TH2I(
-    "Photons Counter",
-    "Photons",
-    6*3, 0, 6*3, 4*3, 0, 4*3
-  );
-
-  TH3I *calo_photons_counter_3 = new TH3I(
-    "Photons Counter",
-    "Photons",
-    6*3, 0, 6*3, 4*3, 0, 4*3, 67, 0, 67
-  );
-
-  int nentries, nbytes;
-  nentries = (Int_t)tree->GetEntries();
-
-  // Fill histograms.
-  for (int i = 0; i < nentries; i++) {
-    nbytes = tree->GetEntry(i);
-
-    particle_counter->Fill(primary);
-
-    for (size_t j = 0; j < X->size(); j++) {
-
-      calo_photons_counter->Fill(
-        3 * X->at(j) + c->at(j), 3 * Y->at(j) + r->at(j)
-      );
-      calo_photons_counter_3->Fill(
-        3 * X->at(j) + c->at(j), 3 * Y->at(j) + r->at(j), Z->at(j)
-      );
-
-    }
-
-  }
-
-  // Save histograms.
-  std::string output_file;
-
-  particle_counter->Draw();
-  output_file =
-  std::string(output_label) + "particles.root";
-
-  canvas->Print(output_file.c_str());
-  canvas->Clear();
-
-
-  calo_photons_counter->Draw("COL");
-  output_file =
-  std::string(output_label) + "calo_photons_counter.root";
-
-  canvas->Print(output_file.c_str());
-  canvas->Clear();
-
-
-  calo_photons_counter_3->Draw("BOX");
-  output_file =
-  std::string(output_label) + "calo_photons_counter_3.root";
-
-  canvas->Print(output_file.c_str());
-  canvas->Clear();
-
+  return 0;
 }

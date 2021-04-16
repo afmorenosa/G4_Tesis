@@ -40,6 +40,7 @@ add_subdirectory(SteppingAction)
 add_subdirectory(RunAction)
 add_subdirectory(Actions)
 add_subdirectory(python_scripts)
+add_subdirectory(ROOT_source)
 
 ### Add an executable.
 add_executable(calo_ECAL main.cpp)
@@ -53,14 +54,6 @@ target_link_libraries(calo_ECAL
   tracking_action
   run_action
   event_action
-)
-
-### Add an executable.
-add_executable(analysis_ntuples ROOT_source/analysis_ntuples.cpp)
-
-### Link libraries.
-target_link_libraries(analysis_ntuples
-  ${ROOT_LIBRARIES} ${ROOT_EXE_LINKER_FLAGS}
 )
 
 set(geant_scripts

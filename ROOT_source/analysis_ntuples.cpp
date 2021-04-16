@@ -18,7 +18,7 @@ namespace fs = std::filesystem;
 void print_usage() {
   std::cerr << std::endl;
   std::cerr << " Usage: " << std::endl;
-  std::cerr << " plot_histo <input_root_file> [-l label]" << std::endl;
+  std::cerr << " analysis_ntuples <input_root_file> [-l label]" << std::endl;
   std::cerr << std::endl;
   std::cerr << "   Options:" << std::endl;
   std::cerr << "-l, --label output_label\t Set a label for the output files. "

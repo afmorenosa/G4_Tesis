@@ -81,8 +81,8 @@ def get_data(files_list, nentries, x_array_file="x_temp.data",
 
             # Set a zeros matrix.
             for photon in range(len(entry.X)):
-                photons_counter[entry.X[photon] + entry.c[photon],
-                                entry.Y[photon] + entry.r[photon],
+                photons_counter[3 * entry.X[photon] + entry.c[photon],
+                                3 * entry.Y[photon] + entry.r[photon],
                                 entry.Z[photon]] += 1
 
             # Add data.
@@ -135,8 +135,8 @@ def train_data(files_list, classification_method):
 
             # Set a zeros matrix.
             for photon in range(len(entry.X)):
-                photons_counter[entry.X[photon] + entry.c[photon],
-                                entry.Y[photon] + entry.r[photon],
+                photons_counter[3 * entry.X[photon] + entry.c[photon],
+                                3 * entry.Y[photon] + entry.r[photon],
                                 entry.Z[photon]] += 1
 
             # Add data.

@@ -77,7 +77,7 @@ def get_data(files_list, nentries, x_array_file="x_temp.data",
 
             if len(entry.X) == 0:
                 continue
-            photons_counter = np.zeros((6*3, 4*3, 67))
+            photons_counter = np.zeros((6*3, 4*3, 67))  # Sc 14 472, Pb 14 256
 
             # Set a zeros matrix.
             for photon in range(len(entry.X)):

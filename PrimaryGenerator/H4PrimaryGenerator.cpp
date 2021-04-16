@@ -28,6 +28,9 @@ m_particle_gun(0) {
   // Set the position of the particle gun.
   m_particle_gun->SetParticlePosition(G4ThreeVector(0.0, 0.0, -7.0*m));
 
+  // Set the energy of the particle.
+  m_particle_gun->SetParticleEnergy(20 * GeV);
+
   // Set momentum ranges.
 
   m_px_min = 0.2424;
@@ -57,7 +60,7 @@ H4PrimaryGenerator::~H4PrimaryGenerator () {
 void H4PrimaryGenerator::GeneratePrimaries (G4Event* an_event) {
 
   // Create random indices.
-  std::vector< float > index(3, 0.0);
+  std::vector< float > index(2, 0.0);
 
   for (size_t i = 0; i < index.size(); i++) {
     index[i] = (float)rand() / (float)RAND_MAX * 0.50 + 0.25;
@@ -67,9 +70,6 @@ void H4PrimaryGenerator::GeneratePrimaries (G4Event* an_event) {
 
   px = (m_px_max - m_px_min) * index[0] + m_px_min;
   py = (-m_py_max + m_py_min) * index[1] - m_py_min;
-
-  // Set the energy of the particle.
-  m_particle_gun->SetParticleEnergy(20 * GeV);
 
   // Set the direction in which the particle will be shooted.
   m_particle_gun->SetParticleMomentumDirection(

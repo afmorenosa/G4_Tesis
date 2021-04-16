@@ -32,12 +32,13 @@ include_directories(${CMAKE_BINARY_DIR}/include)
 
 ### Add subdirectories.
 add_subdirectory(include)
-add_subdirectory(Actions)
 add_subdirectory(Detector)
 add_subdirectory(PrimaryGenerator)
-add_subdirectory(TrackingAction)
-add_subdirectory(RunAction)
 add_subdirectory(EventAction)
+add_subdirectory(TrackingAction)
+add_subdirectory(SteppingAction)
+add_subdirectory(RunAction)
+add_subdirectory(Actions)
 add_subdirectory(python_scripts)
 
 ### Add an executable.

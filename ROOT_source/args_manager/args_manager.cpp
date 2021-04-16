@@ -15,9 +15,6 @@ void print_usage() {
   std::cerr << std::endl;
 }
 
-
-
-
 std::map<const char *, const char *> parse_args(int argc, char *argv[]) {
 
   std::map<const char *, const char *> arguments;

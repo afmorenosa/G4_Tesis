@@ -185,10 +185,10 @@ void print_histograms(const char *input_file, const char *output_label) {
     for (size_t j = 0; j < X->size(); j++) {
 
       calo_photons_counter->Fill(
-        3 * X->at(j) + r->at(j), 3 * Y->at(j) + c->at(j)
+        3 * X->at(j) + c->at(j), 3 * Y->at(j) + r->at(j)
       );
       calo_photons_counter_3->Fill(
-        3 * X->at(j) + r->at(j), 3 * Y->at(j) + c->at(j), Z->at(j)
+        3 * X->at(j) + c->at(j), 3 * Y->at(j) + r->at(j), Z->at(j)
       );
 
     }

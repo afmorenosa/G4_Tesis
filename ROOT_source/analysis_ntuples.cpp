@@ -112,7 +112,7 @@ std::map<const char *, const char *> parse_args(int argc, char *argv[]) {
   }
 
   if (arguments.find("label") == arguments.end()) {
-    arguments["label"] = arguments["label"];
+    arguments["label"] = arguments["file"];
   }
 
   return arguments;
@@ -140,11 +140,11 @@ void print_histograms(const char *input_file, const char *output_label) {
   std::vector<int> *c = {};
 
   tree->SetBranchAddress("primary", &primary);
-  tree->SetBranchAddress("X", &X);
-  tree->SetBranchAddress("Y", &Y);
-  tree->SetBranchAddress("Z", &Z);
-  tree->SetBranchAddress("r", &r);
-  tree->SetBranchAddress("c", &c);
+  tree->SetBranchAddress("X_photons_scintillator", &X);
+  tree->SetBranchAddress("Y_photons_scintillator", &Y);
+  tree->SetBranchAddress("Z_photons_scintillator", &Z);
+  tree->SetBranchAddress("r_photons_scintillator", &r);
+  tree->SetBranchAddress("c_photons_scintillator", &c);
 
   // Create the canvas to plot the histograms
   TCanvas *canvas = new TCanvas(
@@ -164,13 +164,13 @@ void print_histograms(const char *input_file, const char *output_label) {
   TH2I *calo_photons_counter = new TH2I(
     "Photons Counter",
     "Photons",
-    6, 0, 6, 4, 0, 4
+    6*3, 0, 6*3, 4*3, 0, 4*3
   );
 
   TH3I *calo_photons_counter_3 = new TH3I(
     "Photons Counter",
     "Photons",
-    6, 0, 6, 4, 0, 4, 67, 0, 67
+    6*3, 0, 6*3, 4*3, 0, 4*3, 67, 0, 67
   );
 
   int nentries, nbytes;
@@ -184,8 +184,12 @@ void print_histograms(const char *input_file, const char *output_label) {
 
     for (size_t j = 0; j < X->size(); j++) {
 
-      calo_photons_counter->Fill(X->at(j), Y->at(j));
-      calo_photons_counter_3->Fill(X->at(j), Y->at(j), Z->at(j));
+      calo_photons_counter->Fill(
+        3 * X->at(j) + r->at(j), 3 * Y->at(j) + c->at(j)
+      );
+      calo_photons_counter_3->Fill(
+        3 * X->at(j) + r->at(j), 3 * Y->at(j) + c->at(j), Z->at(j)
+      );
 
     }
 

@@ -108,52 +108,60 @@ m_output_path(output_path) {
     event_action->GetZElectronLead()
   );
 
-  //<><><><><><><><><><><><><><><>//
-  // Counter of energy deposition //
-  //<><><><><><><><><><><><><><><>//
+  //<><><><><><><><><><><><><><><><><><><><><><>//
+  //  Counter of energy deposition in each step //
+  //<><><><><><><><><><><><><><><><><><><><><><>//
 
-  // Counters of the energy created in the scintillator plates.
+  // Information about energy deposited in the scintillator plates.
   analysis_manager->CreateNtupleIColumn(
-    "X_energy_scintillator",
-    event_action->GetXEnergyScintillator()
+    "X_step_scintillator",
+    event_action->GetXStepScintillator()
   );
   analysis_manager->CreateNtupleIColumn(
-    "Y_energy_scintillator",
-    event_action->GetYEnergyScintillator()
+    "Y_step_scintillator",
+    event_action->GetYStepScintillator()
   );
   analysis_manager->CreateNtupleIColumn(
-    "Z_energy_scintillator",
-    event_action->GetZEnergyScintillator()
+    "Z_step_scintillator",
+    event_action->GetZStepScintillator()
   );
   analysis_manager->CreateNtupleIColumn(
-    "r_energy_scintillator",
-    event_action->GetrEnergyScintillator()
+    "r_step_scintillator",
+    event_action->GetrStepScintillator()
   );
   analysis_manager->CreateNtupleIColumn(
-    "c_energy_scintillator",
-    event_action->GetcEnergyScintillator()
+    "c_step_scintillator",
+    event_action->GetcStepScintillator()
   );
   analysis_manager->CreateNtupleFColumn(
-    "E_energy_scintillator",
-    event_action->GetEEnergyScintillator()
-  );
-
-  // Counters of the energy created in the lead plates.
-  analysis_manager->CreateNtupleIColumn(
-    "X_energy_lead",
-    event_action->GetXEnergyLead()
-  );
-  analysis_manager->CreateNtupleIColumn(
-    "Y_energy_lead",
-    event_action->GetYEnergyLead()
-  );
-  analysis_manager->CreateNtupleIColumn(
-    "Z_energy_lead",
-    event_action->GetZEnergyLead()
+    "E_step_scintillator",
+    event_action->GetEStepScintillator()
   );
   analysis_manager->CreateNtupleFColumn(
-    "E_energy_lead",
-    event_action->GetEEnergyLead()
+    "SL_step_scintillator",
+    event_action->GetSLStepScintillator()
+  );
+
+  // Information about energy deposited in the lead plates.
+  analysis_manager->CreateNtupleIColumn(
+    "X_step_lead",
+    event_action->GetXStepLead()
+  );
+  analysis_manager->CreateNtupleIColumn(
+    "Y_step_lead",
+    event_action->GetYStepLead()
+  );
+  analysis_manager->CreateNtupleIColumn(
+    "Z_step_lead",
+    event_action->GetZStepLead()
+  );
+  analysis_manager->CreateNtupleFColumn(
+    "E_step_lead",
+    event_action->GetEStepLead()
+  );
+  analysis_manager->CreateNtupleFColumn(
+    "SL_step_lead",
+    event_action->GetSLStepLead()
   );
 
   analysis_manager->FinishNtuple();

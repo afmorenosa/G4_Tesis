@@ -51,6 +51,7 @@ void H4SteppingAction::UserSteppingAction (const G4Step *step) {
     }
 
     float energy_deposit = step->GetTotalEnergyDeposit();
+    float step_lenght = step->GetStepLength();
 
     if (
       std::regex_match(
@@ -60,12 +61,13 @@ void H4SteppingAction::UserSteppingAction (const G4Step *step) {
       )
     ) {
 
-      m_event_action->AppendXEnergyScintillator(39 - coordinates[0]);
-      m_event_action->AppendYEnergyScintillator(coordinates[1] - 20);
-      m_event_action->AppendZEnergyScintillator(coordinates[2]);
-      m_event_action->AppendrEnergyScintillator(coordinates[3]);
-      m_event_action->AppendcEnergyScintillator(coordinates[4]);
-      m_event_action->AppendEEnergyScintillator(energy_deposit);
+      m_event_action->AppendXStepScintillator(39 - coordinates[0]);
+      m_event_action->AppendYStepScintillator(coordinates[1] - 20);
+      m_event_action->AppendZStepScintillator(coordinates[2]);
+      m_event_action->AppendrStepScintillator(coordinates[3]);
+      m_event_action->AppendcStepScintillator(coordinates[4]);
+      m_event_action->AppendEStepScintillator(energy_deposit);
+      m_event_action->AppendSLStepScintillator(step_lenght);
 
     } else if (
       std::regex_match(
@@ -75,10 +77,11 @@ void H4SteppingAction::UserSteppingAction (const G4Step *step) {
       )
     ) {
 
-      m_event_action->AppendXEnergyLead(39 - coordinates[0]);
-      m_event_action->AppendYEnergyLead(coordinates[1] - 20);
-      m_event_action->AppendZEnergyLead(coordinates[2]);
-      m_event_action->AppendEEnergyLead(energy_deposit);
+      m_event_action->AppendXStepLead(39 - coordinates[0]);
+      m_event_action->AppendYStepLead(coordinates[1] - 20);
+      m_event_action->AppendZStepLead(coordinates[2]);
+      m_event_action->AppendEStepLead(energy_deposit);
+      m_event_action->AppendSLStepLead(step_lenght);
 
     }
 

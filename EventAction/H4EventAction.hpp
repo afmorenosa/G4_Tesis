@@ -64,18 +64,20 @@ public:
   //<><><><><><><><><><><><><><><><><><><><><><><><><>//
 
   // Counters for scintillator plates.
-  void AppendXEnergyScintillator(int X) {m_XEnergyScintillator.push_back(X);}
-  void AppendYEnergyScintillator(int Y) {m_YEnergyScintillator.push_back(Y);}
-  void AppendZEnergyScintillator(int Z) {m_ZEnergyScintillator.push_back(Z);}
-  void AppendrEnergyScintillator(int r) {m_rEnergyScintillator.push_back(r);}
-  void AppendcEnergyScintillator(int c) {m_cEnergyScintillator.push_back(c);}
-  void AppendEEnergyScintillator(float E) {m_EEnergyScintillator.push_back(E);}
+  void AppendXStepScintillator(int X) {m_XStepScintillator.push_back(X);}
+  void AppendYStepScintillator(int Y) {m_YStepScintillator.push_back(Y);}
+  void AppendZStepScintillator(int Z) {m_ZStepScintillator.push_back(Z);}
+  void AppendrStepScintillator(int r) {m_rStepScintillator.push_back(r);}
+  void AppendcStepScintillator(int c) {m_cStepScintillator.push_back(c);}
+  void AppendEStepScintillator(float E) {m_EStepScintillator.push_back(E);}
+  void AppendSLStepScintillator(float SL) {m_SLStepScintillator.push_back(SL);}
 
   // Counters for lead plates.
-  void AppendXEnergyLead(int X) {m_XEnergyLead.push_back(X);}
-  void AppendYEnergyLead(int Y) {m_YEnergyLead.push_back(Y);}
-  void AppendZEnergyLead(int Z) {m_ZEnergyLead.push_back(Z);}
-  void AppendEEnergyLead(float E) {m_EEnergyLead.push_back(E);}
+  void AppendXStepLead(int X) {m_XStepLead.push_back(X);}
+  void AppendYStepLead(int Y) {m_YStepLead.push_back(Y);}
+  void AppendZStepLead(int Z) {m_ZStepLead.push_back(Z);}
+  void AppendEStepLead(float E) {m_EStepLead.push_back(E);}
+  void AppendSLStepLead(float SL) {m_SLStepLead.push_back(SL);}
 
   //<><><><><><><><><><><><><><><><><><><><>//
   // Get the counters of photons production //
@@ -114,18 +116,20 @@ public:
   //<><><><><><><><><><><><><><><><><><><><>//
 
   // Counters for scintillator plates.
-  std::vector<int>& GetXEnergyScintillator() {return m_XEnergyScintillator;}
-  std::vector<int>& GetYEnergyScintillator() {return m_YEnergyScintillator;}
-  std::vector<int>& GetZEnergyScintillator() {return m_ZEnergyScintillator;}
-  std::vector<int>& GetrEnergyScintillator() {return m_rEnergyScintillator;}
-  std::vector<int>& GetcEnergyScintillator() {return m_cEnergyScintillator;}
-  std::vector<float>& GetEEnergyScintillator() {return m_EEnergyScintillator;}
+  std::vector<int>& GetXStepScintillator() {return m_XStepScintillator;}
+  std::vector<int>& GetYStepScintillator() {return m_YStepScintillator;}
+  std::vector<int>& GetZStepScintillator() {return m_ZStepScintillator;}
+  std::vector<int>& GetrStepScintillator() {return m_rStepScintillator;}
+  std::vector<int>& GetcStepScintillator() {return m_cStepScintillator;}
+  std::vector<float>& GetEStepScintillator() {return m_EStepScintillator;}
+  std::vector<float>& GetSLStepScintillator() {return m_SLStepScintillator;}
 
   // Counters for lead plates.
-  std::vector<int>& GetXEnergyLead() {return m_XEnergyLead;}
-  std::vector<int>& GetYEnergyLead() {return m_YEnergyLead;}
-  std::vector<int>& GetZEnergyLead() {return m_ZEnergyLead;}
-  std::vector<float>& GetEEnergyLead() {return m_EEnergyLead;}
+  std::vector<int>& GetXStepLead() {return m_XStepLead;}
+  std::vector<int>& GetYStepLead() {return m_YStepLead;}
+  std::vector<int>& GetZStepLead() {return m_ZStepLead;}
+  std::vector<float>& GetEStepLead() {return m_EStepLead;}
+  std::vector<float>& GetSLStepLead() {return m_SLStepLead;}
 
 private:
 
@@ -166,18 +170,20 @@ private:
   //<><><><><><><><><><><><><><><>//
 
   // Counters for scintillator plates.
-  std::vector<int> m_XEnergyScintillator = {};
-  std::vector<int> m_YEnergyScintillator = {};
-  std::vector<int> m_ZEnergyScintillator = {};
-  std::vector<int> m_rEnergyScintillator = {};
-  std::vector<int> m_cEnergyScintillator = {};
-  std::vector<float> m_EEnergyScintillator = {};
+  std::vector<int> m_XStepScintillator = {};
+  std::vector<int> m_YStepScintillator = {};
+  std::vector<int> m_ZStepScintillator = {};
+  std::vector<int> m_rStepScintillator = {};
+  std::vector<int> m_cStepScintillator = {};
+  std::vector<float> m_EStepScintillator = {};
+  std::vector<float> m_SLStepScintillator = {};
 
   // Counters for lead plates.
-  std::vector<int> m_XEnergyLead = {};
-  std::vector<int> m_YEnergyLead = {};
-  std::vector<int> m_ZEnergyLead = {};
-  std::vector<float> m_EEnergyLead = {};
+  std::vector<int> m_XStepLead = {};
+  std::vector<int> m_YStepLead = {};
+  std::vector<int> m_ZStepLead = {};
+  std::vector<float> m_EStepLead = {};
+  std::vector<float> m_SLStepLead = {};
 
   std::map< std::string, int > m_particlesID = {
     {"gamma", 0},

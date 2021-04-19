@@ -49,6 +49,7 @@ void H4TrackingAction::PreUserTrackingAction (const G4Track *track) {
       volume_name = number.suffix().str();
     }
 
+
     if (
       std::regex_match(
         track->GetVolume()->GetName(),

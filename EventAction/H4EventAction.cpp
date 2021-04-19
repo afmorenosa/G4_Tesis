@@ -65,18 +65,20 @@ void H4EventAction::BeginOfEventAction (const G4Event *event) {
   //<><><><><><><><><><><><><><><><><><><>//
 
   // Counters for scintillator plates.
-  m_XEnergyScintillator.clear();
-  m_YEnergyScintillator.clear();
-  m_ZEnergyScintillator.clear();
-  m_rEnergyScintillator.clear();
-  m_cEnergyScintillator.clear();
-  m_EEnergyScintillator.clear();
+  m_XStepScintillator.clear();
+  m_YStepScintillator.clear();
+  m_ZStepScintillator.clear();
+  m_rStepScintillator.clear();
+  m_cStepScintillator.clear();
+  m_EStepScintillator.clear();
+  m_SLStepScintillator.clear();
 
   // Counters for lead plates.
-  m_XEnergyLead.clear();
-  m_YEnergyLead.clear();
-  m_ZEnergyLead.clear();
-  m_EEnergyLead.clear();
+  m_XStepLead.clear();
+  m_YStepLead.clear();
+  m_ZStepLead.clear();
+  m_EStepLead.clear();
+  m_SLStepLead.clear();
 
 }
 

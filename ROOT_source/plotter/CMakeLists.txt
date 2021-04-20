@@ -9,5 +9,5 @@ file(GLOB SOURCES hist_plotter.cpp)
 # Add Plotter lib.
 add_library(plotter ${SOURCES})
 
-# Link the root lib.
+# Link the ROOT libs.
 target_link_libraries(plotter ${ROOT_LIBRARIES})

@@ -1,6 +1,9 @@
 #include "hist_plotter.hpp"
 
-void print_histograms(TTree *tree, const char *output_label) {
+// ***********************************************//
+// Plot the histograms for an especific variable. //
+//************************************************//
+void plot_histograms(TTree *tree, const char *output_label) {
 
   // Initialize variables.
   Int_t primary = -1;

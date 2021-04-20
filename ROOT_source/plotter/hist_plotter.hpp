@@ -12,6 +12,6 @@
 #include "TH2.h"
 #include "TH3.h"
 
-void print_histograms(TTree *tree, const char *output_label);
+void plot_histograms(TTree *tree, const char *output_label);
 
 #endif // HIST_PLOTTER

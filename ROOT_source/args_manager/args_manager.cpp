@@ -1,7 +1,11 @@
 #include "args_manager.hpp"
 
+// Use the namespace fs for filesystem lib.
 namespace fs = std::filesystem;
 
+//************************************//
+// Print the usage of the executable. //
+//************************************//
 void print_usage() {
   std::cerr << std::endl;
   std::cerr << " Usage: " << std::endl;
@@ -15,8 +19,13 @@ void print_usage() {
   std::cerr << std::endl;
 }
 
+//**********************************//
+// Parse console arguments acording //
+// the useage of the executable.    //
+//**********************************//
 std::map<const char *, const char *> parse_args(int argc, char *argv[]) {
 
+  // Create a map for the parsed arguments.
   std::map<const char *, const char *> arguments;
 
   for (int i = 1; i < argc; i++) {
@@ -24,6 +33,7 @@ std::map<const char *, const char *> parse_args(int argc, char *argv[]) {
       std::regex_match(argv[i], std::regex("-h")) ||
       std::regex_match(argv[i], std::regex("--help"))
     ) {
+      // Check if help is called. If so, return.
 
       arguments["help"] = "";
       return arguments;
@@ -32,6 +42,8 @@ std::map<const char *, const char *> parse_args(int argc, char *argv[]) {
       std::regex_match(argv[i], std::regex("^-l(=.+)?")) ||
       std::regex_match(argv[i], std::regex("^--label(=.+)?"))
     ) {
+
+      // Add argument for output label.
 
       if (arguments.find("label") != arguments.end()) {
         arguments["error"] = "\nError: Label already given.\n";

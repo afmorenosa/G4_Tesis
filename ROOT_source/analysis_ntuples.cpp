@@ -34,7 +34,7 @@ int main(int argc, char *argv[]) {
   TTree *tree = (TTree*) dir_ntup->Get("Photons");
   tree->Print();
 
-  print_histograms(tree, arguments["label"]);
+  plot_histograms(tree, arguments["label"]);
 
   return 0;
 }

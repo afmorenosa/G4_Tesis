@@ -36,7 +36,8 @@ int main(int argc, char *argv[]) {
     TTree *tree = (TTree*) dir_ntup->Get("Photons");
     tree->Print();
 
-    plot_histograms(tree, arguments["label"]);
+    plot_counter(tree, arguments["label"],
+    arguments["variable"], arguments["material"]);
   }
 
   if (arguments.find("test_file_1") != arguments.end()) {
@@ -54,29 +55,25 @@ int main(int argc, char *argv[]) {
 
     std::vector<Double_t> test_result;
 
-    if (arguments["test_variable"] == std::string("E")) {
+    if (arguments["variable"] == std::string("E")) {
 
       test_result = kolmogorov_test_energy(
-        tree_1, tree_2, arguments["test_material"]
+        tree_1, tree_2, arguments["material"]
       );
 
-    } else if (arguments["test_variable"] == std::string("SL")) {
+    } else if (arguments["variable"] == std::string("SL")) {
 
       test_result = kolmogorov_test_step_lenght(
-        tree_1, tree_2, arguments["test_material"]
+        tree_1, tree_2, arguments["material"]
       );
 
-    } else if (arguments["test_variable"] == std::string("electrons") ||
-    arguments["test_variable"] == std::string("photons")) {
+    } else if (arguments["variable"] == std::string("electrons") ||
+    arguments["variable"] == std::string("photons")) {
 
       test_result = kolmogorov_test_counter(
-        tree_1, tree_2, arguments["test_variable"], arguments["test_material"]
+        tree_1, tree_2, arguments["variable"], arguments["material"]
       );
 
-    } else {
-      std::cerr << "\nError: No valid variable given.\n"
-      << "Use -h, --help for more information\n" << '\n';
-      return 1;
     }
 
     for (size_t i = 0; i < test_result.size(); i++) {

@@ -3,7 +3,10 @@
 // ***********************************************//
 // Plot the histograms for an especific variable. //
 //************************************************//
-void plot_histograms(TTree *tree, const char *output_label) {
+void plot_counter(
+  TTree *tree, const char *output_label,
+  TString variable, TString material
+) {
 
   // Initialize variables.
   Int_t primary = -1;
@@ -14,11 +17,13 @@ void plot_histograms(TTree *tree, const char *output_label) {
   std::vector<int> *c = {};
 
   tree->SetBranchAddress("primary", &primary);
-  tree->SetBranchAddress("X_photons_scintillator", &X);
-  tree->SetBranchAddress("Y_photons_scintillator", &Y);
-  tree->SetBranchAddress("Z_photons_scintillator", &Z);
-  tree->SetBranchAddress("r_photons_scintillator", &r);
-  tree->SetBranchAddress("c_photons_scintillator", &c);
+  tree->SetBranchAddress("X_" + variable + "_" + material, &X);
+  tree->SetBranchAddress("Y_" + variable + "_" + material, &Y);
+  tree->SetBranchAddress("Z_" + variable + "_" + material, &Z);
+  if (material.EqualTo("scintillator")) {
+    tree->SetBranchAddress("r_" + variable + "_" + material, &r);
+    tree->SetBranchAddress("c_" + variable + "_" + material, &c);
+  }
 
   // Create the canvas to plot the histograms
   TCanvas *canvas = new TCanvas(
@@ -30,20 +35,20 @@ void plot_histograms(TTree *tree, const char *output_label) {
 
   // Create histograms.
   TH1I *particle_counter = new TH1I(
-    "Primary poarticle",
+    "Primary particle",
     "Primary",
     5, -1, 4
   );
 
   TH2I *calo_photons_counter = new TH2I(
-    "Photons Counter",
-    "Photons",
+    variable + " counter 2D",
+    variable,
     6*3, 0, 6*3, 4*3, 0, 4*3
   );
 
   TH3I *calo_photons_counter_3 = new TH3I(
-    "Photons Counter",
-    "Photons",
+    variable + " counter 3D",
+    variable,
     6*3, 0, 6*3, 4*3, 0, 4*3, 67, 0, 67
   );
 
@@ -58,12 +63,25 @@ void plot_histograms(TTree *tree, const char *output_label) {
 
     for (size_t j = 0; j < X->size(); j++) {
 
-      calo_photons_counter->Fill(
-        3 * X->at(j) + c->at(j), 3 * Y->at(j) + r->at(j)
-      );
-      calo_photons_counter_3->Fill(
-        3 * X->at(j) + c->at(j), 3 * Y->at(j) + r->at(j), Z->at(j)
-      );
+      if (material.EqualTo("scintillator")) {
+
+        calo_photons_counter->Fill(
+          3 * X->at(j) + c->at(j), 3 * Y->at(j) + r->at(j)
+        );
+        calo_photons_counter_3->Fill(
+          3 * X->at(j) + c->at(j), 3 * Y->at(j) + r->at(j), Z->at(j)
+        );
+
+      } else {
+
+        calo_photons_counter->Fill(
+          X->at(j), Y->at(j)
+        );
+        calo_photons_counter_3->Fill(
+          X->at(j), Y->at(j), Z->at(j)
+        );
+
+      }
 
     }
 

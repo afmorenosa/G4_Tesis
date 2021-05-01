@@ -52,7 +52,7 @@ void kolmogorov_test_counter (
 
     save_scintillator_values(
       data,
-      label + particle + "_counter_scintillatos.txt"
+      label + "_" + particle + "_counter_scintillator.txt"
     );
 
   } else {
@@ -66,7 +66,7 @@ void kolmogorov_test_counter (
 
     save_lead_values(
       data,
-      label + particle + "_counter_lead.txt"
+      label + "_" + particle + "_counter_lead.txt"
     );
 
   }
@@ -90,7 +90,7 @@ void kolmogorov_test_energy (
 
     save_scintillator_values(
       data,
-      label + "_scintillatos_E.txt"
+      label + "_scintillator_E.txt"
     );
 
   } else {
@@ -128,7 +128,7 @@ void kolmogorov_test_step_lenght (
 
     save_scintillator_values(
       data,
-      label + "_scintillatos_SL.txt"
+      label + "_scintillator_SL.txt"
     );
 
   } else {

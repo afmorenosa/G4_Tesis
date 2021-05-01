@@ -37,7 +37,8 @@ std::vector<Double_t> kolmogorov_test_counter(
   TTree *tree_a,
   TTree *tree_b,
   TString particle,
-  TString material
+  TString material,
+  TString label
 ) {
 
   if (material.EqualTo("scintillator")) {
@@ -47,7 +48,14 @@ std::vector<Double_t> kolmogorov_test_counter(
     std::vector< std::vector<double> > data_b =
     get_matrix_data_scintillator(tree_b, particle);
 
-    return kolmogorov_test(data_a, data_b);
+    std::vector<Double_t> data = kolmogorov_test(data_a, data_b);
+
+    save_scintillator_values(
+      data,
+      label + particle + "_counter_scintillatos.txt"
+    );
+
+    return data;
 
   } else {
 
@@ -56,7 +64,14 @@ std::vector<Double_t> kolmogorov_test_counter(
     std::vector< std::vector<double> > data_b =
     get_matrix_data_lead(tree_b, particle);
 
-    return kolmogorov_test(data_a, data_b);
+    std::vector<Double_t> data = kolmogorov_test(data_a, data_b);
+
+    save_lead_values(
+      data,
+      label + particle + "_counter_lead.txt"
+    );
+
+    return data;
 
   }
 }
@@ -64,7 +79,8 @@ std::vector<Double_t> kolmogorov_test_counter(
 std::vector<Double_t> kolmogorov_test_energy(
   TTree *tree_a,
   TTree *tree_b,
-  TString material
+  TString material,
+  TString label
 ) {
 
   if (material.EqualTo("scintillator")) {
@@ -74,7 +90,14 @@ std::vector<Double_t> kolmogorov_test_energy(
     std::vector< std::vector<double> > data_b =
     get_matrix_data_scintillator(tree_b, "E");
 
-    return kolmogorov_test(data_a, data_b);
+    std::vector<Double_t> data = kolmogorov_test(data_a, data_b);
+
+    save_scintillator_values(
+      data,
+      label + "_scintillatos_E.txt"
+    );
+
+    return data;
 
   } else {
 
@@ -83,7 +106,14 @@ std::vector<Double_t> kolmogorov_test_energy(
     std::vector< std::vector<double> > data_b =
     get_matrix_data_lead(tree_b, "E");
 
-    return kolmogorov_test(data_a, data_b);
+    std::vector<Double_t> data = kolmogorov_test(data_a, data_b);
+
+    save_lead_values(
+      data,
+      label + "_lead_E.txt"
+    );
+
+    return data;
 
   }
 }
@@ -91,7 +121,8 @@ std::vector<Double_t> kolmogorov_test_energy(
 std::vector<Double_t> kolmogorov_test_step_lenght(
   TTree *tree_a,
   TTree *tree_b,
-  TString material
+  TString material,
+  TString label
 ) {
 
   if (material.EqualTo("scintillator")) {
@@ -101,7 +132,14 @@ std::vector<Double_t> kolmogorov_test_step_lenght(
     std::vector< std::vector<double> > data_b =
     get_matrix_data_scintillator(tree_b, "SL");
 
-    return kolmogorov_test(data_a, data_b);
+    std::vector<Double_t> data = kolmogorov_test(data_a, data_b);
+
+    save_scintillator_values(
+      data,
+      label + "_scintillatos_SL.txt"
+    );
+
+    return data;
 
   } else {
 
@@ -110,7 +148,14 @@ std::vector<Double_t> kolmogorov_test_step_lenght(
     std::vector< std::vector<double> > data_b =
     get_matrix_data_lead(tree_b, "SL");
 
-    return kolmogorov_test(data_a, data_b);
+    std::vector<Double_t> data = kolmogorov_test(data_a, data_b);
+
+    save_lead_values(
+      data,
+      label + "_lead_SL.txt"
+    );
+
+    return data;
 
   }
 }

@@ -12,6 +12,7 @@
 
 // Project includes.
 #include "get_data.hpp"
+#include "results.hpp"
 
 std::vector<Double_t> kolmogorov_test(
   std::vector< std::vector<double> > data_a,
@@ -22,19 +23,22 @@ std::vector<Double_t> kolmogorov_test_counter(
   TTree *tree_a,
   TTree *tree_b,
   TString particle,
-  TString material
+  TString material,
+  TString label
 );
 
 std::vector<Double_t> kolmogorov_test_energy(
   TTree *tree_a,
   TTree *tree_b,
-  TString material
+  TString material,
+  TString label
 );
 
 std::vector<Double_t> kolmogorov_test_step_lenght(
   TTree *tree_a,
   TTree *tree_b,
-  TString material
+  TString material,
+  TString label
 );
 
 #endif // DATA_TEST

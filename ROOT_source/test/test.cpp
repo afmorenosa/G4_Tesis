@@ -8,8 +8,6 @@ std::vector<Double_t> kolmogorov_test(
 
   for (size_t i = 0; i < data_a.size(); i++) {
 
-    // std::cout << data_a[i].size() << '\t' << data_b[i].size() << '\n';
-
     if (data_a[i].size() <= 2 || data_b[i].size() <= 2) {
       results.push_back(-1500);
       continue;

@@ -55,8 +55,6 @@ std::vector< std::vector<double> > get_matrix_data_scintillator(
   int nentries, nbytes;
   nentries = (Int_t)tree->GetEntries();
 
-  std::cout << "Nentries: " << nentries << '\n';
-
   // Fill histograms.
   for (int i = 0; i < nentries; i++) {
     nbytes = tree->GetEntry(i);

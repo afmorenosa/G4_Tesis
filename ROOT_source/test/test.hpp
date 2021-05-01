@@ -14,12 +14,12 @@
 #include "get_data.hpp"
 #include "results.hpp"
 
-std::vector<Double_t> kolmogorov_test(
+std::vector<Double_t> kolmogorov_test (
   std::vector< std::vector<double> > data_a,
   std::vector< std::vector<double> > data_b
 );
 
-std::vector<Double_t> kolmogorov_test_counter(
+void kolmogorov_test_counter (
   TTree *tree_a,
   TTree *tree_b,
   TString particle,
@@ -27,14 +27,14 @@ std::vector<Double_t> kolmogorov_test_counter(
   TString label
 );
 
-std::vector<Double_t> kolmogorov_test_energy(
+void kolmogorov_test_energy (
   TTree *tree_a,
   TTree *tree_b,
   TString material,
   TString label
 );
 
-std::vector<Double_t> kolmogorov_test_step_lenght(
+void kolmogorov_test_step_lenght (
   TTree *tree_a,
   TTree *tree_b,
   TString material,

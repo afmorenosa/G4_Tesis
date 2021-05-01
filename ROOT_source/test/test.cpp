@@ -1,6 +1,6 @@
 #include "test.hpp"
 
-std::vector<Double_t> kolmogorov_test(
+std::vector<Double_t> kolmogorov_test (
   std::vector< std::vector<double> > data_a,
   std::vector< std::vector<double> > data_b
 ) {
@@ -33,7 +33,7 @@ std::vector<Double_t> kolmogorov_test(
   return results;
 }
 
-std::vector<Double_t> kolmogorov_test_counter(
+void kolmogorov_test_counter (
   TTree *tree_a,
   TTree *tree_b,
   TString particle,
@@ -55,8 +55,6 @@ std::vector<Double_t> kolmogorov_test_counter(
       label + particle + "_counter_scintillatos.txt"
     );
 
-    return data;
-
   } else {
 
     std::vector< std::vector<double> > data_a =
@@ -71,12 +69,10 @@ std::vector<Double_t> kolmogorov_test_counter(
       label + particle + "_counter_lead.txt"
     );
 
-    return data;
-
   }
 }
 
-std::vector<Double_t> kolmogorov_test_energy(
+void kolmogorov_test_energy (
   TTree *tree_a,
   TTree *tree_b,
   TString material,
@@ -97,8 +93,6 @@ std::vector<Double_t> kolmogorov_test_energy(
       label + "_scintillatos_E.txt"
     );
 
-    return data;
-
   } else {
 
     std::vector< std::vector<double> > data_a =
@@ -113,12 +107,10 @@ std::vector<Double_t> kolmogorov_test_energy(
       label + "_lead_E.txt"
     );
 
-    return data;
-
   }
 }
 
-std::vector<Double_t> kolmogorov_test_step_lenght(
+void kolmogorov_test_step_lenght (
   TTree *tree_a,
   TTree *tree_b,
   TString material,
@@ -139,8 +131,6 @@ std::vector<Double_t> kolmogorov_test_step_lenght(
       label + "_scintillatos_SL.txt"
     );
 
-    return data;
-
   } else {
 
     std::vector< std::vector<double> > data_a =
@@ -154,8 +144,6 @@ std::vector<Double_t> kolmogorov_test_step_lenght(
       data,
       label + "_lead_SL.txt"
     );
-
-    return data;
 
   }
 }

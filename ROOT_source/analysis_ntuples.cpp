@@ -53,18 +53,16 @@ int main(int argc, char *argv[]) {
     TTree *tree_1 = (TTree*) dir_ntup_1->Get("Photons");
     TTree *tree_2 = (TTree*) dir_ntup_2->Get("Photons");
 
-    std::vector<Double_t> test_result;
-
     if (arguments["variable"] == std::string("E")) {
 
-      test_result = kolmogorov_test_energy(
+      kolmogorov_test_energy(
         tree_1, tree_2, arguments["material"],
         arguments["label"]
       );
 
     } else if (arguments["variable"] == std::string("SL")) {
 
-      test_result = kolmogorov_test_step_lenght(
+      kolmogorov_test_step_lenght(
         tree_1, tree_2, arguments["material"],
         arguments["label"]
       );
@@ -72,21 +70,12 @@ int main(int argc, char *argv[]) {
     } else if (arguments["variable"] == std::string("electrons") ||
     arguments["variable"] == std::string("photons")) {
 
-      test_result = kolmogorov_test_counter(
+      kolmogorov_test_counter(
         tree_1, tree_2, arguments["variable"], arguments["material"],
         arguments["label"]
       );
 
     }
-
-    for (size_t i = 0; i < test_result.size(); i++) {
-
-      if (test_result[i] != -1500) {
-        std::cout << test_result[i] << '\t';
-      }
-
-    }
-    std::cout << '\n';
 
   }
 

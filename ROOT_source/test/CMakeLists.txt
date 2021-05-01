@@ -5,11 +5,6 @@ foreach(HEADER ${HEADERS})
   configure_file("${HEADER}" "${CMAKE_BINARY_DIR}/include/${HEADER}")
 endforeach()
 
-
-configure_file(test.hpp
-  ${CMAKE_BINARY_DIR}/include/test.hpp
-)
-
 # Add Data test source.
 file(GLOB SOURCES *.cpp)
 

@@ -8,13 +8,14 @@
 #include "TFile.h"
 
 // Project includes.
+#include "significative_cells.hpp"
 #include "hist_plotter.hpp"
 #include "args_manager.hpp"
 #include "test.hpp"
 
 int main(int argc, char *argv[]) {
 
-  std::map<const char *, const char *> arguments = parse_args(argc, argv);
+  std::map<std::string, const char *> arguments = parse_args(argc, argv);
 
   if (arguments.find("error") != arguments.end()) {
     std::cerr << arguments["error"]
@@ -76,6 +77,31 @@ int main(int argc, char *argv[]) {
       );
 
     }
+
+  }
+
+  if (arguments.find("scell_file_1") != arguments.end()) {
+    std::vector<TFile *> files;
+    std::vector<TTree *> trees;
+
+    int file_number = std::atoi(arguments["scell_n_files"]);
+
+    for (int file_index = 1; file_index < file_number; file_index++) {
+      std::string key_string =
+      std::string("scell_file_") +
+      std::to_string(file_index);
+
+      // Open de Root File
+      files.push_back(TFile::Open(arguments[key_string]));
+
+      // Get the directory of the ntuples.
+      TDirectory *dir_ntup = files[files.size() - 1]->GetDirectory("ntuple");
+
+      // Get the Tree from the Root File
+      trees.push_back( (TTree*) dir_ntup->Get("Photons") );
+
+    }
+    get_significative_cells(trees, arguments["label"]);
 
   }
 

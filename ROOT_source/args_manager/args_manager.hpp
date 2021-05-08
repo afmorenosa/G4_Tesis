@@ -14,6 +14,6 @@
 
 void print_usage();
 
-std::map<const char *, const char *> parse_args(int argc, char *argv[]);
+std::map<std::string, const char *> parse_args(int argc, char *argv[]);
 
 #endif // ARGS_MANAGER

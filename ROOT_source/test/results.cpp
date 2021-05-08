@@ -1,6 +1,6 @@
 #include "results.hpp"
 
-void save_scintillator_values(
+void save_scintillator_values (
   std::vector<Double_t> data, TString output_file
 ) {
 
@@ -13,7 +13,7 @@ void save_scintillator_values(
         for (size_t z = 0; z < 67; z++) {
 
           data_file << "(" << x << ", " << y << ", " << z << ")\t"
-          << data[x*4*3*66 + y*67 + z] << "\n";
+          << data[x*4*3*67 + y*67 + z] << "\n";
 
         }
       }
@@ -23,7 +23,7 @@ void save_scintillator_values(
 
 }
 
-void save_lead_values(
+void save_lead_values (
   std::vector<Double_t> data, TString output_file
 ) {
 
@@ -45,6 +45,26 @@ void save_lead_values(
   }
 
 }
+
+void save_significative_cells (
+  std::vector<TString> data,
+  TString output_file
+) {
+
+  std::ofstream data_file(output_file, std::ios::out);
+
+  if (data_file.is_open()) {
+
+    for (size_t row = 0; row < data.size(); row++) {
+      data_file << data[row] << "\n";
+    }
+
+    data_file.close();
+
+  }
+
+}
+
 
 //
 // test.cpp ends here.

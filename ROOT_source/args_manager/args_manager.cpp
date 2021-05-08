@@ -25,10 +25,10 @@ void print_usage() {
 // Parse console arguments acording //
 // the useage of the executable.    //
 //**********************************//
-std::map<const char *, const char *> parse_args(int argc, char *argv[]) {
+std::map<std::string, const char *> parse_args(int argc, char *argv[]) {
 
   // Create a map for the parsed arguments.
-  std::map<const char *, const char *> arguments;
+  std::map<std::string, const char *> arguments;
 
   for (int i = 1; i < argc; i++) {
 
@@ -135,6 +135,79 @@ std::map<const char *, const char *> parse_args(int argc, char *argv[]) {
         arguments["error"] = "Error: Invalid input file\n";
         return arguments;
       }
+
+    } else if (
+      std::regex_match(argv[i], std::regex("^-s(=.+)?")) ||
+      std::regex_match(argv[i], std::regex("^--scell(=.+)?"))
+    ) {
+
+      if (arguments.find("scell_file_1") != arguments.end()) {
+        arguments["error"] = "\nError: Multiple calls to significative cells "
+        "proccess, just one is allowed.\n";
+        return arguments;
+      }
+
+      int file_number = 1;
+
+      if (TString(argv[i]).Contains("=")) {
+        size_t pos_eq = std::string(argv[i]).find('=');
+
+        size_t pos_comma = std::string(argv[i]).find(',', pos_eq + 1);
+
+        while (pos_comma) {
+          std::string key_string =
+          std::string("scell_file_") +
+          std::to_string(file_number);
+
+          arguments[key_string] =
+          std::string(argv[i]).substr(pos_eq + 1, pos_comma - pos_eq - 1).c_str();
+
+          pos_eq = pos_comma;
+          pos_comma = std::string(argv[i]).find(',', pos_eq + 1);
+
+          file_number++;
+        }
+
+      } else {
+        if ( i+2 >= argc) {
+          arguments["error"] = "\nError: No valid arguments given.\n";
+          return arguments;
+        }
+
+        while ( !(std::regex_match(argv[i+file_number], std::regex("^-.+"))) ){
+          std::string key_string =
+          std::string("scell_file_") +
+          std::to_string(file_number);
+
+          arguments[key_string] = argv[i + file_number];
+
+          file_number++;
+        }
+
+        i += file_number - 1;
+
+      }
+
+      for (int file_index = 1; file_index < file_number; file_index++) {
+        std::string key_string =
+        std::string("scell_file_") +
+        std::to_string(file_index);
+
+
+        if( !fs::exists(fs::path(arguments[key_string])) ) {
+          std::string error_msg = "\nInput file ";
+          error_msg += std::string(arguments[key_string]);
+          error_msg += " does not exist.\n";
+
+          std::cout << error_msg;
+
+          arguments["error"] = "Error: Invalid input file\n";
+          return arguments;
+        }
+      }
+
+      const char *buffer =  std::to_string(file_number).c_str();
+      arguments["scell_n_files"] = buffer;
 
     } else if (
       std::regex_match(argv[i], std::regex("^-v(=.+)?")) ||

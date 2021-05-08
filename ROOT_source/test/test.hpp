@@ -19,26 +19,29 @@ std::vector<Double_t> kolmogorov_test (
   std::vector< std::vector<double> > data_b
 );
 
-void kolmogorov_test_counter (
+std::vector<Double_t> kolmogorov_test_counter (
   TTree *tree_a,
   TTree *tree_b,
   TString particle,
   TString material,
-  TString label
+  TString label,
+  bool save=true
 );
 
-void kolmogorov_test_energy (
+std::vector<Double_t> kolmogorov_test_energy (
   TTree *tree_a,
   TTree *tree_b,
   TString material,
-  TString label
+  TString label,
+  bool save=true
 );
 
-void kolmogorov_test_step_lenght (
+std::vector<Double_t> kolmogorov_test_step_lenght (
   TTree *tree_a,
   TTree *tree_b,
   TString material,
-  TString label
+  TString label,
+  bool save=true
 );
 
 #endif // DATA_TEST

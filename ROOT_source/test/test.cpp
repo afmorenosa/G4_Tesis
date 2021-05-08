@@ -33,13 +33,16 @@ std::vector<Double_t> kolmogorov_test (
   return results;
 }
 
-void kolmogorov_test_counter (
+std::vector<Double_t> kolmogorov_test_counter (
   TTree *tree_a,
   TTree *tree_b,
   TString particle,
   TString material,
-  TString label
+  TString label,
+  bool save
 ) {
+
+  std::vector<Double_t> data;
 
   if (material.EqualTo("scintillator")) {
 
@@ -48,12 +51,18 @@ void kolmogorov_test_counter (
     std::vector< std::vector<double> > data_b =
     get_matrix_data_scintillator(tree_b, particle);
 
-    std::vector<Double_t> data = kolmogorov_test(data_a, data_b);
+    data = kolmogorov_test(data_a, data_b);
 
-    save_scintillator_values(
-      data,
-      label + "_" + particle + "_counter_scintillator.txt"
-    );
+    if (save) {
+      save_scintillator_values(
+        data,
+        label + "_" + particle + "_counter_scintillator.txt"
+      );
+    }
+
+    // Tree reset to start new tasks
+    tree_a->ResetBranchAddresses();
+    tree_b->ResetBranchAddresses();
 
   } else {
 
@@ -62,22 +71,33 @@ void kolmogorov_test_counter (
     std::vector< std::vector<double> > data_b =
     get_matrix_data_lead(tree_b, particle);
 
-    std::vector<Double_t> data = kolmogorov_test(data_a, data_b);
+    data = kolmogorov_test(data_a, data_b);
 
-    save_lead_values(
-      data,
-      label + "_" + particle + "_counter_lead.txt"
-    );
+    if (save) {
+      save_lead_values(
+        data,
+        label + "_" + particle + "_counter_lead.txt"
+      );
+    }
+
+    // Tree reset to start new tasks
+    tree_a->ResetBranchAddresses();
+    tree_b->ResetBranchAddresses();
 
   }
+
+  return data;
 }
 
-void kolmogorov_test_energy (
+std::vector<Double_t> kolmogorov_test_energy (
   TTree *tree_a,
   TTree *tree_b,
   TString material,
-  TString label
+  TString label,
+  bool save
 ) {
+
+  std::vector<Double_t> data;
 
   if (material.EqualTo("scintillator")) {
 
@@ -86,12 +106,18 @@ void kolmogorov_test_energy (
     std::vector< std::vector<double> > data_b =
     get_matrix_data_scintillator(tree_b, "E");
 
-    std::vector<Double_t> data = kolmogorov_test(data_a, data_b);
+    data = kolmogorov_test(data_a, data_b);
 
-    save_scintillator_values(
-      data,
-      label + "_scintillator_E.txt"
-    );
+    if (save) {
+      save_scintillator_values(
+        data,
+        label + "_scintillator_E.txt"
+      );
+    }
+
+    // Tree reset to start new tasks
+    tree_a->ResetBranchAddresses();
+    tree_b->ResetBranchAddresses();
 
   } else {
 
@@ -100,22 +126,33 @@ void kolmogorov_test_energy (
     std::vector< std::vector<double> > data_b =
     get_matrix_data_lead(tree_b, "E");
 
-    std::vector<Double_t> data = kolmogorov_test(data_a, data_b);
+    data = kolmogorov_test(data_a, data_b);
 
-    save_lead_values(
-      data,
-      label + "_lead_E.txt"
-    );
+    if (save) {
+      save_lead_values(
+        data,
+        label + "_lead_E.txt"
+      );
+    }
+
+    // Tree reset to start new tasks
+    tree_a->ResetBranchAddresses();
+    tree_b->ResetBranchAddresses();
 
   }
+
+  return data;
 }
 
-void kolmogorov_test_step_lenght (
+std::vector<Double_t> kolmogorov_test_step_lenght (
   TTree *tree_a,
   TTree *tree_b,
   TString material,
-  TString label
+  TString label,
+  bool save
 ) {
+
+  std::vector<Double_t> data;
 
   if (material.EqualTo("scintillator")) {
 
@@ -124,12 +161,18 @@ void kolmogorov_test_step_lenght (
     std::vector< std::vector<double> > data_b =
     get_matrix_data_scintillator(tree_b, "SL");
 
-    std::vector<Double_t> data = kolmogorov_test(data_a, data_b);
+    data = kolmogorov_test(data_a, data_b);
 
-    save_scintillator_values(
-      data,
-      label + "_scintillator_SL.txt"
-    );
+    if (save) {
+      save_scintillator_values(
+        data,
+        label + "_scintillator_SL.txt"
+      );
+    }
+
+    // Tree reset to start new tasks
+    tree_a->ResetBranchAddresses();
+    tree_b->ResetBranchAddresses();
 
   } else {
 
@@ -138,14 +181,22 @@ void kolmogorov_test_step_lenght (
     std::vector< std::vector<double> > data_b =
     get_matrix_data_lead(tree_b, "SL");
 
-    std::vector<Double_t> data = kolmogorov_test(data_a, data_b);
+    data = kolmogorov_test(data_a, data_b);
 
-    save_lead_values(
-      data,
-      label + "_lead_SL.txt"
-    );
+    if (save) {
+      save_lead_values(
+        data,
+        label + "_lead_SL.txt"
+      );
+    }
+
+    // Tree reset to start new tasks
+    tree_a->ResetBranchAddresses();
+    tree_b->ResetBranchAddresses();
 
   }
+
+  return data;
 }
 
 //

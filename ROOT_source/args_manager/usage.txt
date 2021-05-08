@@ -1,0 +1,18 @@
+
+ Usage:
+
+ analysis_ntuples [--plot_histos file] [-t file_1 file_2]
+                  [-s file_1 file_2 [file_n ...]] [-v var]
+                  [-m mat]  [-l label]
+
+ Options:
+    --plot_histos file                           Print the histograms for the file given.
+    -t --test file_1 file_2                      Get the Kolmogorov test of the data in the two files.
+    -s, --scells file_1 file_2 [file_n ...]      Get the significative cells of the detector according to kolmogorov test within
+                                                 the files.
+    -v, --variable var                           Set the variable to be  analyzed. select between electrons, photons, E and SL.
+                                                 (Default: photons)
+    -m, --material mat                           Set the label for the analysis. Select between scintillator and lead.
+                                                 (Default: scintillator)
+    -l, --label output_label                     Set a label for the output files. (Default: 'output').
+    -h, --help                                   Print the usage.

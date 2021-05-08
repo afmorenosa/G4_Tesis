@@ -7,31 +7,19 @@ namespace fs = std::filesystem;
 // Print the usage of the executable. //
 //************************************//
 void print_usage() {
-  std::cerr << std::endl;
-  std::cerr << " Usage: " << std::endl;
-  std::cerr << " analysis_ntuples [--plot_histos file] [-t file_1 file_2] "
-  << "[-v var] \n                  [-m mat]  [-l label]" << std::endl;
-  std::cerr << std::endl;
-  std::cerr << "   Options:" << std::endl;
-  std::cerr << "      --plot_histos file      \t\t Print the histograms for "
-  << "the file given." << std::endl;
-  std::cerr << "      -t --test file_1 file_2 \t\t Get the Kolmogorov test "
-  << "of the data in the\n                              \t\t two files."
-  << std::endl;
-  std::cerr << "      -v, --variable var      \t\t Set the variable to be "
-  << "analyzed. select between\n                              \t\t electrons,"
-  << " photons, E and SL. (Default: photons)" << std::endl;
-  std::cerr << "      -m, --material mat      \t\t Set the label for the "
-  << "analysis. Select between\n                              \t\t scintillator"
-  << " and lead. (Default: scintillator)" << std::endl;
-  std::cerr << "      -l, --label output_label\t\t Set a label for the output "
-  << "files. If none if given,\n                              \t\t (Default: "
-  << "'output')." << std::endl;
-  std::cerr << "      -h, --help              \t\t Print the usage."
-  << std::endl;
-  std::cerr << std::endl;
-}
 
+  std::string line;
+
+  std::ifstream usage_file("ROOT_source/args_manager/usage.txt");
+
+  while (getline (usage_file, line)) {
+    std::cout << line << "\n";
+  }
+  std::cout << '\n';
+
+  usage_file.close();
+
+}
 
 //**********************************//
 // Parse console arguments acording //

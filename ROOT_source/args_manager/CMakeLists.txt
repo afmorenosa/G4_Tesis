@@ -8,3 +8,9 @@ file(GLOB SOURCES args_manager.cpp)
 
 # Add Arguments Manager lib.
 add_library(args_manager ${SOURCES})
+
+configure_file(
+  usage.txt
+  usage.txt
+  COPYONLY
+)

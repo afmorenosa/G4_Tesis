@@ -13,7 +13,7 @@
 #include "results.hpp"
 #include "test.hpp"
 
-std::vector<TString> get_significative_cells (
+std::vector<TString> get_significative_cells(
   std::vector<TTree *>trees,
   TString label,
   bool save=true,

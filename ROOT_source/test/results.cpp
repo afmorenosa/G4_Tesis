@@ -8,11 +8,13 @@ void save_scintillator_values (
 
   if (data_file.is_open()) {
 
+    data_file << "Coordinates" << "value";
+
     for (size_t x = 0; x < 3*6; x++) {
       for (size_t y = 0; y < 3*4; y++) {
         for (size_t z = 0; z < 67; z++) {
 
-          data_file << "(" << x << ", " << y << ", " << z << ")\t"
+          data_file << "(" << x << ", " << y << ", " << z << ");"
           << data[x*4*3*67 + y*67 + z] << "\n";
 
         }
@@ -31,11 +33,13 @@ void save_lead_values (
 
   if (data_file.is_open()) {
 
+    // Write the columns title.
+    data_file << "Coordinates" << "value";
     for (size_t x = 0; x < 6; x++) {
       for (size_t y = 0; y < 4; y++) {
         for (size_t z = 0; z < 66; z++) {
 
-          data_file << "(" << x << ", " << y << ", " << z << ")\t"
+          data_file << "\"(" << x << ", " << y << ", " << z << ")\","
           << data[x*4*66 + y*66 + z] << "\n";
 
         }

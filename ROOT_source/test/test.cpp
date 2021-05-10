@@ -56,7 +56,7 @@ std::vector<Double_t> kolmogorov_test_counter(
     if (save) {
       save_scintillator_values(
         data,
-        label + "_" + particle + "_counter_scintillator.txt"
+        label + "_" + particle + "_counter_scintillator.csv"
       );
     }
 
@@ -76,7 +76,7 @@ std::vector<Double_t> kolmogorov_test_counter(
     if (save) {
       save_lead_values(
         data,
-        label + "_" + particle + "_counter_lead.txt"
+        label + "_" + particle + "_counter_lead.csv"
       );
     }
 
@@ -111,7 +111,7 @@ std::vector<Double_t> kolmogorov_test_energy(
     if (save) {
       save_scintillator_values(
         data,
-        label + "_scintillator_E.txt"
+        label + "_scintillator_E.csv"
       );
     }
 
@@ -131,7 +131,7 @@ std::vector<Double_t> kolmogorov_test_energy(
     if (save) {
       save_lead_values(
         data,
-        label + "_lead_E.txt"
+        label + "_lead_E.csv"
       );
     }
 
@@ -166,7 +166,7 @@ std::vector<Double_t> kolmogorov_test_step_lenght(
     if (save) {
       save_scintillator_values(
         data,
-        label + "_scintillator_SL.txt"
+        label + "_scintillator_SL.csv"
       );
     }
 
@@ -186,7 +186,7 @@ std::vector<Double_t> kolmogorov_test_step_lenght(
     if (save) {
       save_lead_values(
         data,
-        label + "_lead_SL.txt"
+        label + "_lead_SL.csv"
       );
     }
 

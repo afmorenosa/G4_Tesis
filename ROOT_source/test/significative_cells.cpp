@@ -25,7 +25,7 @@ std::vector<TString> get_significative_cells(
 
   std::map< TString, std::vector<Double_t> > test_results;
   std::vector<TString> significative_cells = {
-    "material;position;photons;electrons;SL;E"
+    "material,position,photons,electrons,SL,E"
   };
 
   for (size_t tree_a = 0; tree_a < trees.size(); tree_a++) {
@@ -57,20 +57,20 @@ std::vector<TString> get_significative_cells(
               y*z_max[material_index] +
               z;
 
-              TString entry = materials[material_index] + TString(";") +
-              TString("(") + std::to_string(x).c_str() + TString(",") +
+              TString entry = materials[material_index] + TString(",") +
+              TString("\"(") + std::to_string(x).c_str() + TString(",") +
               std::to_string(y).c_str() + TString(",") +
-              std::to_string(z).c_str() + TString(");");
+              std::to_string(z).c_str() + TString(")\",");
 
               for (size_t particle_index = 0; particle_index < 2; particle_index++) {
 
                 if (test_results[particles[particle_index]][cell] < threshold) {
 
-                  entry += "True;";
+                  entry += "True,";
 
                 } else {
 
-                  entry += "False;";
+                  entry += "False,";
 
                 }
 
@@ -78,11 +78,11 @@ std::vector<TString> get_significative_cells(
 
               if (test_results["SL"][cell] < threshold) {
 
-                entry += "True;";
+                entry += "True,";
 
               } else {
 
-                entry += "False;";
+                entry += "False,";
 
               }
 
@@ -97,7 +97,6 @@ std::vector<TString> get_significative_cells(
               }
 
               significative_cells.push_back(entry);
-
             }
           }
         }

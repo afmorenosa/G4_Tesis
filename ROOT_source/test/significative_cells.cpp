@@ -49,12 +49,12 @@ std::vector<TString> get_significative_cells(
           trees[tree_a], trees[tree_b], materials[material_index], "", false
         );
 
-        for (Int_t x = 0; x < x_max[material_index]; x++) {
-          for (Int_t y = 0; y < y_max[material_index]; y++) {
-            for (Int_t z = 0; z < z_max[material_index]; z++) {
+        for (Int_t x = 0; x < x_max[materials[material_index]]; x++) {
+          for (Int_t y = 0; y < y_max[materials[material_index]]; y++) {
+            for (Int_t z = 0; z < z_max[materials[material_index]]; z++) {
               Int_t cell =
-              x*y_max[material_index]*z_max[material_index] +
-              y*z_max[material_index] +
+              x*y_max[materials[material_index]]*z_max[materials[material_index]] +
+              y*z_max[materials[material_index]] +
               z;
 
               TString entry = materials[material_index] + TString(",") +

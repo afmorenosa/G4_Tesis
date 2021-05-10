@@ -1,9 +1,9 @@
 #include "get_data.hpp"
 
 //**********************************************************//
-// Get the the histogram of the variable given.             //
+// Get the the data vector of the variable given.           //
 // If variable is a particle between photons and electrons, //
-// it will give a histograms of particle productions in     //
+// it will give a data vector of particle production in     //
 // scintillator.                                            //
 //**********************************************************//
 std::vector< std::vector<double> > get_matrix_data_scintillator(
@@ -95,9 +95,9 @@ std::vector< std::vector<double> > get_matrix_data_scintillator(
 }
 
 //**********************************************************//
-// Get the the histogram of the variable given.             //
+// Get the the data vector of the variable given.           //
 // If variable is a particle between photons and electrons, //
-// it will give a histograms of particle productions in     //
+// it will give a data vector of particle production in     //
 // lead.                                                    //
 //**********************************************************//
 std::vector< std::vector<double> > get_matrix_data_lead(

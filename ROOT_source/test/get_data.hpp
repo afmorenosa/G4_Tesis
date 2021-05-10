@@ -2,12 +2,16 @@
 #define GET_DATA
 
 // C++ includes.
-#include <vector>
 #include <iostream>
+#include <map>
 
 // ROOT includes.
 #include "TString.h"
 #include "TTree.h"
+
+std::map< TString, std::vector< std::vector<double> > > get_complete_matrix_data(
+  TTree *tree
+);
 
 std::vector< std::vector<double> > get_matrix_data_scintillator(
   TTree *tree,

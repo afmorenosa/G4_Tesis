@@ -60,10 +60,6 @@ std::vector<Double_t> kolmogorov_test_counter(
       );
     }
 
-    // Tree reset to start new tasks
-    tree_a->ResetBranchAddresses();
-    tree_b->ResetBranchAddresses();
-
   } else {
 
     std::vector< std::vector<double> > data_a =
@@ -79,10 +75,6 @@ std::vector<Double_t> kolmogorov_test_counter(
         label + "_" + particle + "_counter_lead.csv"
       );
     }
-
-    // Tree reset to start new tasks
-    tree_a->ResetBranchAddresses();
-    tree_b->ResetBranchAddresses();
 
   }
 
@@ -115,10 +107,6 @@ std::vector<Double_t> kolmogorov_test_energy(
       );
     }
 
-    // Tree reset to start new tasks
-    tree_a->ResetBranchAddresses();
-    tree_b->ResetBranchAddresses();
-
   } else {
 
     std::vector< std::vector<double> > data_a =
@@ -134,10 +122,6 @@ std::vector<Double_t> kolmogorov_test_energy(
         label + "_lead_E.csv"
       );
     }
-
-    // Tree reset to start new tasks
-    tree_a->ResetBranchAddresses();
-    tree_b->ResetBranchAddresses();
 
   }
 
@@ -170,10 +154,6 @@ std::vector<Double_t> kolmogorov_test_step_lenght(
       );
     }
 
-    // Tree reset to start new tasks
-    tree_a->ResetBranchAddresses();
-    tree_b->ResetBranchAddresses();
-
   } else {
 
     std::vector< std::vector<double> > data_a =
@@ -189,10 +169,6 @@ std::vector<Double_t> kolmogorov_test_step_lenght(
         label + "_lead_SL.csv"
       );
     }
-
-    // Tree reset to start new tasks
-    tree_a->ResetBranchAddresses();
-    tree_b->ResetBranchAddresses();
 
   }
 

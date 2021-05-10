@@ -57,6 +57,10 @@ std::vector< std::vector<double> > get_matrix_data_scintillator(
 
   // Fill matrix.
   for (int i = 0; i < nentries; i++) {
+    printf(
+      "[%.2f] Getting data from the scintillator.\r", (i + 1.0)/nentries*100
+    );
+
     nbytes = tree->GetEntry(i);
 
     // Create the vector to store the acumulative value of the variable.
@@ -82,6 +86,9 @@ std::vector< std::vector<double> > get_matrix_data_scintillator(
     }
 
   }
+
+  std::cout << "\n-- Info: " << variable << " data got from scintillator."
+  << '\n';
 
   return data;
 
@@ -134,6 +141,8 @@ std::vector< std::vector<double> > get_matrix_data_lead(
 
   // Fill matrix.
   for (int i = 0; i < nentries; i++) {
+    printf("[%.2f] Getting data from the lead.\r", (i + 1.0)/nentries*100);
+
     nbytes = tree->GetEntry(i);
 
     // Create the vector to store the acumulative value of the variable.
@@ -156,6 +165,8 @@ std::vector< std::vector<double> > get_matrix_data_lead(
     }
 
   }
+
+  std::cout << "\n-- Info: " << variable << " data got from lead." << '\n';
 
   return data;
 

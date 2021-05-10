@@ -42,6 +42,8 @@ std::vector<TString> get_significative_cells(
     "material,position,photons,electrons,SL,E"
   };
 
+  std::cout << "-- Info: Total trees compared: " << trees.size() << '\n';
+
   // Loop over the trees. The tree_b is one unit above to avoid the camporison
   // of a tree with itself.
   for (size_t tree_a = 0; tree_a < trees.size(); tree_a++) {

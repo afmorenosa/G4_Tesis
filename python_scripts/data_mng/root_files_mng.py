@@ -4,7 +4,8 @@ import numpy as np
 
 
 def get_nentries(files_list):
-    """Get the total number of entries in the root files.
+    """
+    Get the total number of entries in the root files.
 
     Args:
     ----
@@ -13,7 +14,7 @@ def get_nentries(files_list):
 
     Retrutns:
     --------
-        The total nomber of entries in the given root files.
+        The total number of entries in the given root files.
 
     """
     # Set .
@@ -36,7 +37,8 @@ def get_nentries(files_list):
 
 def get_data(files_list, nentries, x_array_file="x_temp.data",
              y_array_file="y_temp.data"):
-    """Extract data from a set of files.
+    """
+    Extract data from a set of files.
 
     Args:
     ----
@@ -97,7 +99,8 @@ def get_data(files_list, nentries, x_array_file="x_temp.data",
 
 
 def train_data(files_list, classification_method):
-    """Train a classifier over a set of files.
+    """
+    Train a classifier over a set of files.
 
     Args:
     ----

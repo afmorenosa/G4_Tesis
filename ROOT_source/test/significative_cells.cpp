@@ -33,13 +33,41 @@ std::vector<TString> get_significative_cells(
     {"lead", 66}
   };
 
+  // Create a map of bools.
+  std::map< TString, std::vector<bool> > is_significative;
+
+  // Loop over the materials.
+  for (size_t material_index = 0; material_index < 2; material_index++) {
+
+    // Match the result with the plate material and coordiantes.
+    for (Int_t x = 0; x < x_max[materials[material_index]]; x++) {
+      for (Int_t y = 0; y < y_max[materials[material_index]]; y++) {
+        for (Int_t z = 0; z < z_max[materials[material_index]]; z++) {
+          // Index of the cell.
+          Int_t cell =
+          x*y_max[materials[material_index]]*z_max[materials[material_index]] +
+          y*z_max[materials[material_index]] +
+          z;
+
+          // Create the key for the map, with the coordinates and the material.
+          TString entry = materials[material_index] + TString(",")
+          + std::to_string(x).c_str() + TString(",") +
+          std::to_string(y).c_str() + TString(",") +
+          std::to_string(z).c_str();
+
+          is_significative[entry] = std::vector<bool>(4, false);
+        }
+      }
+    }
+  }
+
   // Create a map to store the results.
   std::map< TString, std::vector<Double_t> > test_results;
 
   // Create the vectore to store the values. The values will be stored as
   // strings.
   std::vector<TString> significative_cells = {
-    "material,position,photons,electrons,SL,E"
+    "material,x,y,z,photons,electrons,SL,E"
   };
 
   std::cout << "-- Info: Total trees compared: " << trees.size() << '\n';
@@ -93,9 +121,9 @@ std::vector<TString> get_significative_cells(
               // Create the cell information, with the coordinates and the
               // material.
               TString entry = materials[material_index] + TString(",") +
-              TString("\"(") + std::to_string(x).c_str() + TString(",") +
+              std::to_string(x).c_str() + TString(",") +
               std::to_string(y).c_str() + TString(",") +
-              std::to_string(z).c_str() + TString(")\",");
+              std::to_string(z).c_str();
 
               // Add bools, if the test result is above the threshold, it adds
               // a True value, add False otherwise.
@@ -103,46 +131,82 @@ std::vector<TString> get_significative_cells(
               // Loop over the materials.
               for (size_t particle_index = 0; particle_index < 2; particle_index++) {
 
-                if (test_results[particles[particle_index]][cell] < threshold) {
+                if (test_results[particles[particle_index]][cell] < threshold &&
+                !is_significative[entry][particle_index]) {
 
-                  entry += "True,";
-
-                } else {
-
-                  entry += "False,";
+                  is_significative[entry][particle_index] = true;
 
                 }
 
               }
 
-              if (test_results["SL"][cell] < threshold) {
+              if (test_results["SL"][cell] < threshold &&
+              !is_significative[entry][2]) {
 
-                entry += "True,";
-
-              } else {
-
-                entry += "False,";
+                is_significative[entry][2] = true;
 
               }
 
-              if (test_results["E"][cell] < threshold) {
+              if (test_results["E"][cell] < threshold &&
+              !is_significative[entry][3]) {
 
-                entry += "True";
-
-              } else {
-
-                entry += "False";
+                is_significative[entry][3] = true;
 
               }
 
-              // Append the information of the plate.
-              significative_cells.push_back(entry);
             }
           }
         }
 
       }
 
+    }
+  }
+
+
+  // Loop over the materials.
+  for (size_t material_index = 0; material_index < 2; material_index++) {
+
+    // Match the result with the plate material and coordiantes.
+    for (Int_t x = 0; x < x_max[materials[material_index]]; x++) {
+      for (Int_t y = 0; y < y_max[materials[material_index]]; y++) {
+        for (Int_t z = 0; z < z_max[materials[material_index]]; z++) {
+          // Index of the cell.
+          Int_t cell =
+          x*y_max[materials[material_index]]*z_max[materials[material_index]] +
+          y*z_max[materials[material_index]] +
+          z;
+
+          // Create the key for the map, with the coordinates and the material.
+          TString key = materials[material_index] + TString(",")
+          + std::to_string(x).c_str() + TString(",") +
+          std::to_string(y).c_str() + TString(",") +
+          std::to_string(z).c_str();
+
+          TString entry = key;
+
+          // Add bools, if the test result is above the threshold, it adds
+          // a True value, add False otherwise.
+
+          // Loop over the materials.
+          for (size_t index = 0; index < 4; index++) {
+
+            if (is_significative[key][index]) {
+
+              entry += ",True";
+
+            } else {
+
+              entry += ",False";
+
+            }
+
+          }
+
+          // Append the information of the plate.
+          significative_cells.push_back(entry);
+        }
+      }
     }
   }
 

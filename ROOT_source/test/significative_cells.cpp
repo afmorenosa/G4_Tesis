@@ -131,7 +131,7 @@ std::vector<TString> get_significative_cells(
               // Loop over the materials.
               for (size_t particle_index = 0; particle_index < 2; particle_index++) {
 
-                if (test_results[particles[particle_index]][cell] < threshold &&
+                if (0 < test_results[particles[particle_index]][cell] < threshold &&
                 !is_significative[entry][particle_index]) {
 
                   is_significative[entry][particle_index] = true;
@@ -140,14 +140,14 @@ std::vector<TString> get_significative_cells(
 
               }
 
-              if (test_results["SL"][cell] < threshold &&
+              if (0 < test_results["SL"][cell] < threshold &&
               !is_significative[entry][2]) {
 
                 is_significative[entry][2] = true;
 
               }
 
-              if (test_results["E"][cell] < threshold &&
+              if (0 < test_results["E"][cell] < threshold &&
               !is_significative[entry][3]) {
 
                 is_significative[entry][3] = true;

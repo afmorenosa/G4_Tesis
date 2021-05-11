@@ -10,7 +10,7 @@
 #include "TTree.h"
 
 std::map< TString, std::vector< std::vector<double> > > get_complete_matrix_data(
-  TTree *tree
+  TTree *tree, TString material
 );
 
 std::vector< std::vector<double> > get_matrix_data_scintillator(

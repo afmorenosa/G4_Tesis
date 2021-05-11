@@ -49,35 +49,35 @@ std::vector<TString> get_significative_cells(
   for (size_t tree_a = 0; tree_a < trees.size(); tree_a++) {
     for (size_t tree_b = tree_a + 1; tree_b < trees.size(); tree_b++) {
 
-      std::map< TString, std::vector< std::vector<double> > > full_data_a =
-      get_complete_matrix_data(trees[tree_a]);
-      std::map< TString, std::vector< std::vector<double> > > full_data_b =
-      get_complete_matrix_data(trees[tree_b]);
-
       // Loop over the materials.
       for (size_t material_index = 0; material_index < 2; material_index++) {
+
+        std::map< TString, std::vector< std::vector<double> > > full_data_a =
+        get_complete_matrix_data(trees[tree_a], materials[material_index]);
+        std::map< TString, std::vector< std::vector<double> > > full_data_b =
+        get_complete_matrix_data(trees[tree_b], materials[material_index]);
 
         // Loop over the particles.
         for (size_t particle_index = 0; particle_index < 2; particle_index++) {
 
           // Get the result of the kolmogorov test for the particle counter.
           test_results[particles[particle_index]] = kolmogorov_test(
-            full_data_a[materials[material_index] + "_" + particles[particle_index]],
-            full_data_b[materials[material_index] + "_" + particles[particle_index]]
+            full_data_a[particles[particle_index]],
+            full_data_b[particles[particle_index]]
           );
 
         }
 
         // Get the result of the kolmogorov test for the step length.
         test_results["SL"] = kolmogorov_test(
-          full_data_a[materials[material_index] + "_" + "SL"],
-          full_data_b[materials[material_index] + "_" + "SL"]
+          full_data_a["SL"],
+          full_data_b["SL"]
         );
         // Get the result of the kolmogorov test for the energy deposited in
         // the detector plates.
         test_results["E"] = kolmogorov_test(
-          full_data_a[materials[material_index] + "_" + "E"],
-          full_data_b[materials[material_index] + "_" + "E"]
+          full_data_a["E"],
+          full_data_b["E"]
         );
 
         // Match the result with the plate material and coordiantes.

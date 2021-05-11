@@ -1,106 +1,87 @@
 #include "get_data.hpp"
 
 //**********************************************************//
-// Get the the data vector of the variable given.           //
-// If variable is a particle between photons and electrons, //
-// it will give a data vector of particle production in     //
-// both materials, scintillator and lead                    //
+// Get the the data vector of the matieral given.           //
 //**********************************************************//
 std::map< TString, std::vector< std::vector<double> > > get_complete_matrix_data(
-  TTree *tree
+  TTree *tree, TString material
 ) {
   // Create the map for data vectors.
   std::map< TString, std::vector< std::vector<double> > > data;
 
+  // Set the maximun values of the coordinates for each material.
+  std::map<TString, Int_t> x_max = {
+    {"scintillator", 3*6},
+    {"lead", 6}
+  };
+  std::map<TString, Int_t> y_max = {
+    {"scintillator", 3*4},
+    {"lead", 4}
+  };
+  std::map<TString, Int_t> z_max = {
+    {"scintillator", 67},
+    {"lead", 66}
+  };
+
+  int n_cells = x_max[material] + y_max[material] * z_max[material];
+
   // Create the data vectors
-  data["scintillator_E"] = std::vector< std::vector<double> >(14472);
-  data["scintillator_SL"] = std::vector< std::vector<double> >(14472);
-  data["scintillator_photons"] = std::vector< std::vector<double> >(14472);
-  data["scintillator_electrons"] = std::vector< std::vector<double> >(14472);
-  data["lead_E"] = std::vector< std::vector<double> >(1584);
-  data["lead_SL"] = std::vector< std::vector<double> >(1584);
-  data["lead_photons"] = std::vector< std::vector<double> >(1584);
-  data["lead_electrons"] = std::vector< std::vector<double> >(1584);
+  data["E"] = std::vector< std::vector<double> >(n_cells);
+  data["SL"] = std::vector< std::vector<double> >(n_cells);
+  data["photons"] = std::vector< std::vector<double> >(n_cells);
+  data["electrons"] = std::vector< std::vector<double> >(n_cells);
 
   // Initialize data variables.
 
-  // - For scintillator.
   // -- For E and S.
-  std::vector<int> *X_scintillator_step = {};
-  std::vector<int> *Y_scintillator_step = {};
-  std::vector<int> *Z_scintillator_step = {};
-  std::vector<int> *c_scintillator_step = {};
-  std::vector<int> *r_scintillator_step = {};
-  std::vector<float> *E_scintillator = {};
-  std::vector<float> *SL_scintillator = {};
+  std::vector<int> *X_step = {};
+  std::vector<int> *Y_step = {};
+  std::vector<int> *Z_step = {};
+  std::vector<int> *c_step = {};
+  std::vector<int> *r_step = {};
+  std::vector<float> *E_vec = {};
+  std::vector<float> *SL_vec = {};
   // -- For photons.
-  std::vector<int> *X_scintillator_photons = {};
-  std::vector<int> *Y_scintillator_photons = {};
-  std::vector<int> *Z_scintillator_photons = {};
-  std::vector<int> *c_scintillator_photons = {};
-  std::vector<int> *r_scintillator_photons = {};
+  std::vector<int> *X_photons = {};
+  std::vector<int> *Y_photons = {};
+  std::vector<int> *Z_photons = {};
+  std::vector<int> *c_photons = {};
+  std::vector<int> *r_photons = {};
   // -- For electrons.
-  std::vector<int> *X_scintillator_electrons = {};
-  std::vector<int> *Y_scintillator_electrons = {};
-  std::vector<int> *Z_scintillator_electrons = {};
-  std::vector<int> *c_scintillator_electrons = {};
-  std::vector<int> *r_scintillator_electrons = {};
-
-  // - For lead.
-  // -- For E and S.
-  std::vector<int> *X_lead_step = {};
-  std::vector<int> *Y_lead_step = {};
-  std::vector<int> *Z_lead_step = {};
-  std::vector<float> *E_lead = {};
-  std::vector<float> *SL_lead = {};
-  // -- For photons.
-  std::vector<int> *X_lead_photons = {};
-  std::vector<int> *Y_lead_photons = {};
-  std::vector<int> *Z_lead_photons = {};
-  // -- For electrons.
-  std::vector<int> *X_lead_electrons = {};
-  std::vector<int> *Y_lead_electrons = {};
-  std::vector<int> *Z_lead_electrons = {};
+  std::vector<int> *X_electrons = {};
+  std::vector<int> *Y_electrons = {};
+  std::vector<int> *Z_electrons = {};
+  std::vector<int> *c_electrons = {};
+  std::vector<int> *r_electrons = {};
 
   // Set memory.
 
-  // - For scintillator.
   // -- For E and SL.
-  tree->SetBranchAddress("X_step_scintillator", &X_scintillator_step);
-  tree->SetBranchAddress("Y_step_scintillator", &Y_scintillator_step);
-  tree->SetBranchAddress("Z_step_scintillator", &Z_scintillator_step);
-  tree->SetBranchAddress("c_step_scintillator", &c_scintillator_step);
-  tree->SetBranchAddress("r_step_scintillator", &r_scintillator_step);
-  tree->SetBranchAddress("E_step_scintillator", &E_scintillator);
-  tree->SetBranchAddress("SL_step_scintillator", &SL_scintillator);
+  tree->SetBranchAddress("X_step_" + material, &X_step);
+  tree->SetBranchAddress("Y_step_" + material, &Y_step);
+  tree->SetBranchAddress("Z_step_" + material, &Z_step);
+  if (material.EqualTo("scintillator")){
+    tree->SetBranchAddress("c_step_" + material, &c_step);
+    tree->SetBranchAddress("r_step_" + material, &r_step);
+  }
+  tree->SetBranchAddress("E_step_" + material, &E_vec);
+  tree->SetBranchAddress("SL_step_" + material, &SL_vec);
   // -- For photons.
-  tree->SetBranchAddress("X_photons_scintillator", &X_scintillator_photons);
-  tree->SetBranchAddress("Y_photons_scintillator", &Y_scintillator_photons);
-  tree->SetBranchAddress("Z_photons_scintillator", &Z_scintillator_photons);
-  tree->SetBranchAddress("c_photons_scintillator", &c_scintillator_photons);
-  tree->SetBranchAddress("r_photons_scintillator", &r_scintillator_photons);
+  tree->SetBranchAddress("X_photons_" + material, &X_photons);
+  tree->SetBranchAddress("Y_photons_" + material, &Y_photons);
+  tree->SetBranchAddress("Z_photons_" + material, &Z_photons);
+  if (material.EqualTo("scintillator")){
+    tree->SetBranchAddress("c_photons_" + material, &c_photons);
+    tree->SetBranchAddress("r_photons_" + material, &r_photons);
+  }
   // -- For electrons.
-  tree->SetBranchAddress("X_electrons_scintillator", &X_scintillator_electrons);
-  tree->SetBranchAddress("Y_electrons_scintillator", &Y_scintillator_electrons);
-  tree->SetBranchAddress("Z_electrons_scintillator", &Z_scintillator_electrons);
-  tree->SetBranchAddress("c_electrons_scintillator", &c_scintillator_electrons);
-  tree->SetBranchAddress("r_electrons_scintillator", &r_scintillator_electrons);
-
-  // - For lead.
-  // -- For E and SL.
-  tree->SetBranchAddress("X_step_lead", &X_lead_step);
-  tree->SetBranchAddress("Y_step_lead", &Y_lead_step);
-  tree->SetBranchAddress("Z_step_lead", &Z_lead_step);
-  tree->SetBranchAddress("E_step_lead", &E_lead);
-  tree->SetBranchAddress("SL_step_lead", &SL_lead);
-  // -- For photons.
-  tree->SetBranchAddress("X_photons_lead", &X_lead_photons);
-  tree->SetBranchAddress("Y_photons_lead", &Y_lead_photons);
-  tree->SetBranchAddress("Z_photons_lead", &Z_lead_photons);
-  // -- For electrons.
-  tree->SetBranchAddress("X_electrons_lead", &X_lead_electrons);
-  tree->SetBranchAddress("Y_electrons_lead", &Y_lead_electrons);
-  tree->SetBranchAddress("Z_electrons_lead", &Z_lead_electrons);
+  tree->SetBranchAddress("X_electrons_" + material, &X_electrons);
+  tree->SetBranchAddress("Y_electrons_" + material, &Y_electrons);
+  tree->SetBranchAddress("Z_electrons_" + material, &Z_electrons);
+  if (material.EqualTo("scintillator")){
+    tree->SetBranchAddress("c_electrons_" + material, &c_electrons);
+    tree->SetBranchAddress("r_electrons_" + material, &r_electrons);
+  }
 
   int nentries, nbytes;
   nentries = (Int_t)tree->GetEntries();
@@ -114,111 +95,87 @@ std::map< TString, std::vector< std::vector<double> > > get_complete_matrix_data
     nbytes = tree->GetEntry(i);
 
     // Create the vector to store the acumulative value of the variable.
-    std::vector<float> scintillator_E_values(14472, 0.0);
-    std::vector<float> scintillator_SL_values(14472, 0.0);
-    std::vector<int> scintillator_photons_values(14472, 0);
-    std::vector<int> scintillator_electrons_values(14472, 0);
+    std::vector<float> E_values(n_cells, 0.0);
+    std::vector<float> SL_values(n_cells, 0.0);
+    std::vector<int> photons_values(n_cells, 0);
+    std::vector<int> electrons_values(n_cells, 0);
 
-    std::vector<float> lead_E_values(1584, 0.0);
-    std::vector<float> lead_SL_values(1584, 0.0);
-    std::vector<int> lead_photons_values(1584, 0);
-    std::vector<int> lead_electrons_values(1584, 0);
+    for (size_t j = 0; j < X_step->size(); j++) {
 
-    for (size_t j = 0; j < X_scintillator_step->size(); j++) {
+      int x, y;
 
-      int coord =
-      (X_scintillator_step->at(j)*3 + c_scintillator_step->at(j))*4*3*67 +
-      (Y_scintillator_step->at(j)*3 + r_scintillator_step->at(j))*67 +
-      Z_scintillator_step->at(j);
-
-      scintillator_E_values[coord] += E_scintillator->at(i);
-      scintillator_SL_values[coord] += SL_scintillator->at(i);
-
-    }
-
-    for (size_t j = 0; j < X_scintillator_photons->size(); j++) {
+      if (material.EqualTo("scintillator")){
+        x = X_step->at(j)*3 + c_step->at(j);
+        y = Y_step->at(j)*3 + r_step->at(j);
+      } else {
+        x = X_step->at(j);
+        y = Y_step->at(j);
+      }
 
       int coord =
-      (X_scintillator_photons->at(j)*3 + c_scintillator_photons->at(j))*4*3*67 +
-      (Y_scintillator_photons->at(j)*3 + r_scintillator_photons->at(j))*67 +
-      Z_scintillator_photons->at(j);
+      x * x_max[material] +
+      y * y_max[material] +
+      Z_step->at(j);
 
-      scintillator_photons_values[coord] += 1;
+      E_values[coord] += E_vec->at(i);
+      SL_values[coord] += SL_vec->at(i);
 
     }
 
-    for (size_t j = 0; j < X_scintillator_electrons->size(); j++) {
+    for (size_t j = 0; j < X_photons->size(); j++) {
+
+      int x, y;
+
+      if (material.EqualTo("scintillator")){
+        x = X_photons->at(j)*3 + c_photons->at(j);
+        y = Y_photons->at(j)*3 + r_photons->at(j);
+      } else {
+        x = X_photons->at(j);
+        y = Y_photons->at(j);
+      }
 
       int coord =
-      (X_scintillator_electrons->at(j)*3 + c_scintillator_electrons->at(j))*4*3*67 +
-      (Y_scintillator_electrons->at(j)*3 + r_scintillator_electrons->at(j))*67 +
-      Z_scintillator_electrons->at(j);
+      x * x_max[material] +
+      y * y_max[material] +
+      Z_photons->at(j);
 
-      scintillator_electrons_values[coord] += 1;
+      photons_values[coord] += 1;
 
     }
 
-    for (size_t j = 0; j < X_lead_step->size(); j++) {
+    for (size_t j = 0; j < X_electrons->size(); j++) {
+
+      int x, y;
+
+      if (material.EqualTo("scintillator")){
+        x = X_electrons->at(j)*3 + c_electrons->at(j);
+        y = Y_electrons->at(j)*3 + r_electrons->at(j);
+      } else {
+        x = X_electrons->at(j);
+        y = Y_electrons->at(j);
+      }
 
       int coord =
-      X_lead_step->at(j)*4*66 +
-      Y_lead_step->at(j)*66 +
-      Z_lead_step->at(j);
+      x * x_max[material] +
+      y * y_max[material] +
+      Z_electrons->at(j);
 
-      lead_E_values[coord] += E_lead->at(i);
-      lead_SL_values[coord] += SL_lead->at(i);
-
-    }
-
-    for (size_t j = 0; j < X_lead_photons->size(); j++) {
-
-      int coord =
-      X_lead_photons->at(j)*4*66 +
-      Y_lead_photons->at(j)*66 +
-      Z_lead_photons->at(j);
-
-      lead_photons_values[coord] += 1;
+      electrons_values[coord] += 1;
 
     }
 
-    for (size_t j = 0; j < X_lead_electrons->size(); j++) {
-
-      int coord =
-      X_lead_electrons->at(j)*4*66 +
-      Y_lead_electrons->at(j)*66 +
-      Z_lead_electrons->at(j);
-
-      lead_electrons_values[coord] += 1;
-
-    }
-
-    for (size_t j = 0; j < 14472; j++) {
-      data["scintillator_E"][j].push_back(
-        scintillator_E_values[j]
+    for (size_t j = 0; j < n_cells; j++) {
+      data["E"][j].push_back(
+        E_values[j]
       );
-      data["scintillator_SL"][j].push_back(
-        scintillator_SL_values[j]
+      data["SL"][j].push_back(
+        SL_values[j]
       );
-      data["scintillator_photons"][j].push_back(
-        scintillator_photons_values[j]
+      data["photons"][j].push_back(
+        photons_values[j]
       );
-      data["scintillator_electrons"][j].push_back(
-        scintillator_electrons_values[j]
-      );
-    }
-
-    for (size_t j = 0; j < 1584; j++) {
-      data["lead_E"][j].push_back(
-        lead_E_values[j]
-      );
-      data["lead_SL"][j].push_back(
-        lead_SL_values[j]
-      );
-      data["lead_photons"][j].push_back(
-        lead_photons_values[j]
-      );
-      data["lead_electrons"][j].push_back(
-        lead_electrons_values[j]
+      data["electrons"][j].push_back(
+        electrons_values[j]
       );
     }
 
@@ -229,6 +186,29 @@ std::map< TString, std::vector< std::vector<double> > > get_complete_matrix_data
 
   // Reset the branch memory for new tasks.
   tree->ResetBranchAddresses();
+
+  // Free memory.
+
+  // -- For E and S.
+  delete X_step;
+  delete Y_step;
+  delete Z_step;
+  delete c_step;
+  delete r_step;
+  delete E_vec;
+  delete SL_vec;
+  // -- For photons.
+  delete X_photons;
+  delete Y_photons;
+  delete Z_photons;
+  delete c_photons;
+  delete r_photons;
+  // -- For electrons.
+  delete X_electrons;
+  delete Y_electrons;
+  delete Z_electrons;
+  delete c_electrons;
+  delete r_electrons;
 
   return data;
 

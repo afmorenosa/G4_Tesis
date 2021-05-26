@@ -8,3 +8,9 @@ foreach(PY_SCRIPT ${PY_SCRIPTS})
     COPYONLY
   )
 endforeach()
+
+configure_file(
+  significative_cells.csv
+  ${CMAKE_BINARY_DIR}/python_scripts/significative_cells.csv
+  COPYONLY
+)

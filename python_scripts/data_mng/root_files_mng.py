@@ -1,6 +1,60 @@
 """Function that manage root files."""
 from ROOT import TFile
+import pandas as pd
 import numpy as np
+
+
+def get_matrix_data(variable, X, Y, Z, c=None, r=None, val=None):
+    """
+    Get the matrix with the acoumulative value.
+
+    Args:
+    ----
+        variable: The name of the variable that will be getted.
+        X: The vector of the values for the x coordinates.
+        Y: The vector of the values for the y coordinates.
+        Z: The vector of the values for the z coordinates.
+        c: The vector of the values for the column in the module cell, if None,
+        it is understanded that is from a lead cell.
+        r: The vector of the values for the row in the module cell, if None, it
+        is understanded that is from a lead cell.
+        val: The vector of the values for the variable that will be acoumulate.
+
+    """
+    all_significative_cells = pd.read_csv("data_mng/significative_cells.csv")
+
+    if c:
+        mat_shape = (6*3, 4*3, 67)
+        significative_cells = all_significative_cells[
+            all_significative_cells.material == "scintillator"
+        ]
+    else:
+        mat_shape = (6, 4, 66)
+        significative_cells = all_significative_cells[
+            all_significative_cells.material == "lead"
+        ]
+
+    photons_counter = np.zeros(mat_shape)  # Sc 14 472, Pb 1 584
+
+    # Set a zeros matrix.
+    for step in range(len(X)):
+        if c:
+            X_val = X[step] + c[step]
+            Y_val = Y[step] + r[step]
+        else:
+            X_val = X[step]
+            Y_val = Y[step]
+
+        if val:
+            acoum = val[step]
+        else:
+            acoum = 1
+
+        photons_counter[3 * X_val,
+                        3 * Y_val,
+                        Z[step]] += acoum
+
+    return photons_counter.flatten()[significative_cells[variable]]
 
 
 def get_nentries(files_list):
@@ -29,7 +83,7 @@ def get_nentries(files_list):
 
         # Get number of non-empty entries.
         for entry in photons_branch:
-            if len(entry.X):
+            if len(entry.X_photons_scintillator):
                 nentries += 1
 
     return nentries
@@ -77,18 +131,49 @@ def get_data(files_list, nentries, x_array_file="x_temp.data",
                   f"Non-emtpy data: {index + 1}, of: {nentries}",
                   end="\r")
 
-            if len(entry.X) == 0:
-                continue
-            photons_counter = np.zeros((6*3, 4*3, 67))  # Sc 14 472, Pb 1 584
-
-            # Set a zeros matrix.
-            for photon in range(len(entry.X)):
-                photons_counter[3 * entry.X[photon] + entry.c[photon],
-                                3 * entry.Y[photon] + entry.r[photon],
-                                entry.Z[photon]] += 1
+            res_mat = get_matrix_data(
+                "photons", entry.X_photons_scintillator,
+                entry.Y_photons_scintillator, entry.Z_photons_scintillator,
+                entry.c_photons_scintillator, entry.r_photons_scintillator
+            )
+            res_mat = np.append(res_mat, get_matrix_data(
+                "electrons", entry.X_electrons_scintillator,
+                entry.Y_electrons_scintillator, entry.Z_electrons_scintillator,
+                entry.c_electrons_scintillator, entry.r_electrons_scintillator
+            ))
+            res_mat = np.append(res_mat, get_matrix_data(
+                "E", entry.X_step_scintillator,
+                entry.Y_step_scintillator, entry.Z_step_scintillator,
+                entry.c_step_scintillator, entry.r_step_scintillator,
+                entry.E_step_scintillator
+            ))
+            res_mat = np.append(res_mat, get_matrix_data(
+                "SL", entry.X_step_scintillator,
+                entry.Y_step_scintillator, entry.Z_step_scintillator,
+                entry.c_step_scintillator, entry.r_step_scintillator,
+                entry.SL_step_scintillator
+            ))
+            res_mat = np.append(res_mat, get_matrix_data(
+                "photons", entry.X_photons_lead,
+                entry.Y_photons_lead, entry.Z_photons_lead
+            ))
+            res_mat = np.append(res_mat, get_matrix_data(
+                "electrons", entry.X_electrons_lead,
+                entry.Y_electrons_lead, entry.Z_electrons_lead
+            ))
+            res_mat = np.append(res_mat, get_matrix_data(
+                "E", entry.X_step_lead,
+                entry.Y_step_lead, entry.Z_step_lead,
+                entry.E_step_lead
+            ))
+            res_mat = np.append(res_mat, get_matrix_data(
+                "SL", entry.X_step_lead,
+                entry.Y_step_lead, entry.Z_step_lead,
+                entry.SL_step_lead
+            ))
 
             # Add data.
-            X_set[index] = photons_counter.flatten()
+            X_set[index] = res_mat
             y_set[index] = entry.primary
 
             index += 1
@@ -132,18 +217,49 @@ def train_data(files_list, classification_method):
                   f"{photons_branch.GetEntries()}",
                   end="\r")
 
-            if len(entry.X) == 0:
-                continue
-            photons_counter = np.zeros((6*3, 4*3, 67))
-
-            # Set a zeros matrix.
-            for photon in range(len(entry.X)):
-                photons_counter[3 * entry.X[photon] + entry.c[photon],
-                                3 * entry.Y[photon] + entry.r[photon],
-                                entry.Z[photon]] += 1
+            res_mat = get_matrix_data(
+                "photons", entry.X_photons_scintillator,
+                entry.Y_photons_scintillator, entry.Z_photons_scintillator,
+                entry.c_photons_scintillator, entry.r_photons_scintillator
+            )
+            res_mat = np.append(res_mat, get_matrix_data(
+                "electrons", entry.X_electrons_scintillator,
+                entry.Y_electrons_scintillator, entry.Z_electrons_scintillator,
+                entry.c_electrons_scintillator, entry.r_electrons_scintillator
+            ))
+            res_mat = np.append(res_mat, get_matrix_data(
+                "E", entry.X_step_scintillator,
+                entry.Y_step_scintillator, entry.Z_step_scintillator,
+                entry.c_step_scintillator, entry.r_step_scintillator,
+                entry.E_step_scintillator
+            ))
+            res_mat = np.append(res_mat, get_matrix_data(
+                "SL", entry.X_step_scintillator,
+                entry.Y_step_scintillator, entry.Z_step_scintillator,
+                entry.c_step_scintillator, entry.r_step_scintillator,
+                entry.SL_step_scintillator
+            ))
+            res_mat = np.append(res_mat, get_matrix_data(
+                "photons", entry.X_photons_lead,
+                entry.Y_photons_lead, entry.Z_photons_lead
+            ))
+            res_mat = np.append(res_mat, get_matrix_data(
+                "electrons", entry.X_electrons_lead,
+                entry.Y_electrons_lead, entry.Z_electrons_lead
+            ))
+            res_mat = np.append(res_mat, get_matrix_data(
+                "E", entry.X_step_lead,
+                entry.Y_step_lead, entry.Z_step_lead,
+                entry.E_step_lead
+            ))
+            res_mat = np.append(res_mat, get_matrix_data(
+                "SL", entry.X_step_lead,
+                entry.Y_step_lead, entry.Z_step_lead,
+                entry.SL_step_lead
+            ))
 
             # Add data.
-            X_set.append(photons_counter.flatten())
+            X_set.append(res_mat)
             y_set.append(entry.primary)
 
         # Train the classifier.

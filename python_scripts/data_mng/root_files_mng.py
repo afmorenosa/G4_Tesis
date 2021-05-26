@@ -1,4 +1,5 @@
 """Function that manage root files."""
+from multiprocessing import Pool, cpu_count
 from ROOT import TFile
 import pandas as pd
 import numpy as np
@@ -6,7 +7,7 @@ import numpy as np
 
 def get_matrix_data(variable, X, Y, Z, c=None, r=None, val=None):
     """
-    Get the matrix with the acoumulative value.
+    Get the matrix with the accumulative value.
 
     Args:
     ----
@@ -18,7 +19,13 @@ def get_matrix_data(variable, X, Y, Z, c=None, r=None, val=None):
         it is understanded that is from a lead cell.
         r: The vector of the values for the row in the module cell, if None, it
         is understanded that is from a lead cell.
-        val: The vector of the values for the variable that will be acoumulate.
+        val: The vector of the values for the variable that will be
+        accumulated.
+
+    Returns
+    -------
+        The matrix with the accumulative value in the significative cells for a
+        given variable.
 
     """
     all_significative_cells = pd.read_csv("data_mng/significative_cells.csv")
@@ -39,8 +46,8 @@ def get_matrix_data(variable, X, Y, Z, c=None, r=None, val=None):
     # Set a zeros matrix.
     for step in range(len(X)):
         if c:
-            X_val = X[step] + c[step]
-            Y_val = Y[step] + r[step]
+            X_val = 3 * X[step] + c[step]
+            Y_val = 3 * Y[step] + r[step]
         else:
             X_val = X[step]
             Y_val = Y[step]
@@ -50,11 +57,110 @@ def get_matrix_data(variable, X, Y, Z, c=None, r=None, val=None):
         else:
             acoum = 1
 
-        photons_counter[3 * X_val,
-                        3 * Y_val,
+        photons_counter[X_val,
+                        Y_val,
                         Z[step]] += acoum
 
     return photons_counter.flatten()[significative_cells[variable]]
+
+
+def get_values_matrix(entry):
+    """
+    Get the matrix with all the accumulative significative values.
+
+    Args:
+    ----
+        entry: The entry from the TTree.
+
+    Returns
+    -------
+        The matrix with the accumulative value in the significative cells for
+        all the variables.
+
+    """
+    # Create the pool of processes.
+    pool = Pool(processes=int(cpu_count()))
+
+    photons_scintillator = pool.apply_async(
+        get_matrix_data,
+        [
+            "photons", entry.X_photons_scintillator,
+            entry.Y_photons_scintillator, entry.Z_photons_scintillator,
+            entry.c_photons_scintillator, entry.r_photons_scintillator
+        ]
+    )
+
+    electrons_scintillator = pool.apply_async(
+        get_matrix_data,
+        [
+            "electrons", entry.X_electrons_scintillator,
+            entry.Y_electrons_scintillator, entry.Z_electrons_scintillator,
+            entry.c_electrons_scintillator, entry.r_electrons_scintillator
+        ]
+    )
+
+    E_scintillator = pool.apply_async(
+        get_matrix_data,
+        [
+            "E", entry.X_step_scintillator, entry.Y_step_scintillator,
+            entry.Z_step_scintillator, entry.c_step_scintillator,
+            entry.r_step_scintillator
+        ],
+        {"val": entry.E_step_scintillator}
+    )
+
+    SL_scintillator = pool.apply_async(
+        get_matrix_data,
+        [
+            "SL", entry.X_step_scintillator, entry.Y_step_scintillator,
+            entry.Z_step_scintillator, entry.c_step_scintillator,
+            entry.r_step_scintillator
+        ],
+        {"val": entry.SL_step_scintillator}
+    )
+
+    photons_lead = pool.apply_async(
+        get_matrix_data,
+        [
+            "photons", entry.X_photons_lead, entry.Y_photons_lead,
+            entry.Z_photons_lead
+        ]
+    )
+
+    electrons_lead = pool.apply_async(
+        get_matrix_data,
+        [
+            "electrons", entry.X_electrons_lead, entry.Y_electrons_lead,
+            entry.Z_electrons_lead
+        ]
+    )
+
+    E_lead = pool.apply_async(
+        get_matrix_data,
+        [
+            "E", entry.X_step_lead, entry.Y_step_lead, entry.Z_step_lead
+        ],
+        {"val": entry.E_step_lead}
+    )
+
+    SL_lead = pool.apply_async(
+        get_matrix_data,
+        [
+            "SL", entry.X_step_lead, entry.Y_step_lead, entry.Z_step_lead
+        ],
+        {"val": entry.SL_step_lead}
+    )
+
+    res_mat = photons_scintillator.get(timeout=1000)
+    res_mat = np.append(res_mat, electrons_scintillator.get(timeout=1000))
+    res_mat = np.append(res_mat, E_scintillator.get(timeout=1000))
+    res_mat = np.append(res_mat, SL_scintillator.get(timeout=1000))
+    res_mat = np.append(res_mat, photons_lead.get(timeout=1000))
+    res_mat = np.append(res_mat, electrons_lead.get(timeout=1000))
+    res_mat = np.append(res_mat, E_lead.get(timeout=1000))
+    res_mat = np.append(res_mat, SL_lead.get(timeout=1000))
+
+    return res_mat
 
 
 def get_nentries(files_list):
@@ -131,46 +237,7 @@ def get_data(files_list, nentries, x_array_file="x_temp.data",
                   f"Non-emtpy data: {index + 1}, of: {nentries}",
                   end="\r")
 
-            res_mat = get_matrix_data(
-                "photons", entry.X_photons_scintillator,
-                entry.Y_photons_scintillator, entry.Z_photons_scintillator,
-                entry.c_photons_scintillator, entry.r_photons_scintillator
-            )
-            res_mat = np.append(res_mat, get_matrix_data(
-                "electrons", entry.X_electrons_scintillator,
-                entry.Y_electrons_scintillator, entry.Z_electrons_scintillator,
-                entry.c_electrons_scintillator, entry.r_electrons_scintillator
-            ))
-            res_mat = np.append(res_mat, get_matrix_data(
-                "E", entry.X_step_scintillator,
-                entry.Y_step_scintillator, entry.Z_step_scintillator,
-                entry.c_step_scintillator, entry.r_step_scintillator,
-                entry.E_step_scintillator
-            ))
-            res_mat = np.append(res_mat, get_matrix_data(
-                "SL", entry.X_step_scintillator,
-                entry.Y_step_scintillator, entry.Z_step_scintillator,
-                entry.c_step_scintillator, entry.r_step_scintillator,
-                entry.SL_step_scintillator
-            ))
-            res_mat = np.append(res_mat, get_matrix_data(
-                "photons", entry.X_photons_lead,
-                entry.Y_photons_lead, entry.Z_photons_lead
-            ))
-            res_mat = np.append(res_mat, get_matrix_data(
-                "electrons", entry.X_electrons_lead,
-                entry.Y_electrons_lead, entry.Z_electrons_lead
-            ))
-            res_mat = np.append(res_mat, get_matrix_data(
-                "E", entry.X_step_lead,
-                entry.Y_step_lead, entry.Z_step_lead,
-                entry.E_step_lead
-            ))
-            res_mat = np.append(res_mat, get_matrix_data(
-                "SL", entry.X_step_lead,
-                entry.Y_step_lead, entry.Z_step_lead,
-                entry.SL_step_lead
-            ))
+            res_mat = get_values_matrix(entry)
 
             # Add data.
             X_set[index] = res_mat
@@ -217,46 +284,7 @@ def train_data(files_list, classification_method):
                   f"{photons_branch.GetEntries()}",
                   end="\r")
 
-            res_mat = get_matrix_data(
-                "photons", entry.X_photons_scintillator,
-                entry.Y_photons_scintillator, entry.Z_photons_scintillator,
-                entry.c_photons_scintillator, entry.r_photons_scintillator
-            )
-            res_mat = np.append(res_mat, get_matrix_data(
-                "electrons", entry.X_electrons_scintillator,
-                entry.Y_electrons_scintillator, entry.Z_electrons_scintillator,
-                entry.c_electrons_scintillator, entry.r_electrons_scintillator
-            ))
-            res_mat = np.append(res_mat, get_matrix_data(
-                "E", entry.X_step_scintillator,
-                entry.Y_step_scintillator, entry.Z_step_scintillator,
-                entry.c_step_scintillator, entry.r_step_scintillator,
-                entry.E_step_scintillator
-            ))
-            res_mat = np.append(res_mat, get_matrix_data(
-                "SL", entry.X_step_scintillator,
-                entry.Y_step_scintillator, entry.Z_step_scintillator,
-                entry.c_step_scintillator, entry.r_step_scintillator,
-                entry.SL_step_scintillator
-            ))
-            res_mat = np.append(res_mat, get_matrix_data(
-                "photons", entry.X_photons_lead,
-                entry.Y_photons_lead, entry.Z_photons_lead
-            ))
-            res_mat = np.append(res_mat, get_matrix_data(
-                "electrons", entry.X_electrons_lead,
-                entry.Y_electrons_lead, entry.Z_electrons_lead
-            ))
-            res_mat = np.append(res_mat, get_matrix_data(
-                "E", entry.X_step_lead,
-                entry.Y_step_lead, entry.Z_step_lead,
-                entry.E_step_lead
-            ))
-            res_mat = np.append(res_mat, get_matrix_data(
-                "SL", entry.X_step_lead,
-                entry.Y_step_lead, entry.Z_step_lead,
-                entry.SL_step_lead
-            ))
+            res_mat = get_values_matrix(entry)
 
             # Add data.
             X_set.append(res_mat)

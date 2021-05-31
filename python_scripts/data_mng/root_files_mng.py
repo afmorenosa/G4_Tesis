@@ -78,87 +78,58 @@ def get_values_matrix(entry):
         all the variables.
 
     """
-    # Create the pool of processes.
-    pool = Pool(processes=int(cpu_count()))
-
-    photons_scintillator = pool.apply_async(
-        get_matrix_data,
-        [
-            "photons", entry.X_photons_scintillator,
-            entry.Y_photons_scintillator, entry.Z_photons_scintillator,
-            entry.c_photons_scintillator, entry.r_photons_scintillator
-        ]
+    photons_scintillator = get_matrix_data(
+        "photons", entry.X_photons_scintillator, entry.Y_photons_scintillator,
+        entry.Z_photons_scintillator, entry.c_photons_scintillator,
+        entry.r_photons_scintillator
     )
 
-    electrons_scintillator = pool.apply_async(
-        get_matrix_data,
-        [
-            "electrons", entry.X_electrons_scintillator,
-            entry.Y_electrons_scintillator, entry.Z_electrons_scintillator,
-            entry.c_electrons_scintillator, entry.r_electrons_scintillator
-        ]
+    electrons_scintillator = get_matrix_data(
+        "electrons", entry.X_electrons_scintillator,
+        entry.Y_electrons_scintillator, entry.Z_electrons_scintillator,
+        entry.c_electrons_scintillator, entry.r_electrons_scintillator
     )
 
-    E_scintillator = pool.apply_async(
-        get_matrix_data,
-        [
-            "E", entry.X_step_scintillator, entry.Y_step_scintillator,
-            entry.Z_step_scintillator, entry.c_step_scintillator,
-            entry.r_step_scintillator
-        ],
-        {"val": entry.E_step_scintillator}
+    E_scintillator = get_matrix_data(
+        "E", entry.X_step_scintillator, entry.Y_step_scintillator,
+        entry.Z_step_scintillator, entry.c_step_scintillator,
+        entry.r_step_scintillator, val=entry.E_step_scintillator
     )
 
-    SL_scintillator = pool.apply_async(
-        get_matrix_data,
-        [
-            "SL", entry.X_step_scintillator, entry.Y_step_scintillator,
-            entry.Z_step_scintillator, entry.c_step_scintillator,
-            entry.r_step_scintillator
-        ],
-        {"val": entry.SL_step_scintillator}
+    SL_scintillator = get_matrix_data(
+        "SL", entry.X_step_scintillator, entry.Y_step_scintillator,
+        entry.Z_step_scintillator, entry.c_step_scintillator,
+        entry.r_step_scintillator, val=entry.SL_step_scintillator
     )
 
-    photons_lead = pool.apply_async(
-        get_matrix_data,
-        [
-            "photons", entry.X_photons_lead, entry.Y_photons_lead,
-            entry.Z_photons_lead
-        ]
+    photons_lead = get_matrix_data(
+        "photons", entry.X_photons_lead, entry.Y_photons_lead,
+        entry.Z_photons_lead
     )
 
-    electrons_lead = pool.apply_async(
-        get_matrix_data,
-        [
-            "electrons", entry.X_electrons_lead, entry.Y_electrons_lead,
-            entry.Z_electrons_lead
-        ]
+    electrons_lead = get_matrix_data(
+        "electrons", entry.X_electrons_lead, entry.Y_electrons_lead,
+        entry.Z_electrons_lead
     )
 
-    E_lead = pool.apply_async(
-        get_matrix_data,
-        [
-            "E", entry.X_step_lead, entry.Y_step_lead, entry.Z_step_lead
-        ],
-        {"val": entry.E_step_lead}
+    E_lead = get_matrix_data(
+        "E", entry.X_step_lead, entry.Y_step_lead, entry.Z_step_lead,
+        val=entry.E_step_lead
     )
 
-    SL_lead = pool.apply_async(
-        get_matrix_data,
-        [
-            "SL", entry.X_step_lead, entry.Y_step_lead, entry.Z_step_lead
-        ],
-        {"val": entry.SL_step_lead}
+    SL_lead = get_matrix_data(
+        "SL", entry.X_step_lead, entry.Y_step_lead, entry.Z_step_lead,
+        val=entry.SL_step_lead
     )
 
-    res_mat = photons_scintillator.get(timeout=1000)
-    res_mat = np.append(res_mat, electrons_scintillator.get(timeout=1000))
-    res_mat = np.append(res_mat, E_scintillator.get(timeout=1000))
-    res_mat = np.append(res_mat, SL_scintillator.get(timeout=1000))
-    res_mat = np.append(res_mat, photons_lead.get(timeout=1000))
-    res_mat = np.append(res_mat, electrons_lead.get(timeout=1000))
-    res_mat = np.append(res_mat, E_lead.get(timeout=1000))
-    res_mat = np.append(res_mat, SL_lead.get(timeout=1000))
+    res_mat = photons_scintillator
+    res_mat = np.append(res_mat, electrons_scintillator)
+    res_mat = np.append(res_mat, E_scintillator)
+    res_mat = np.append(res_mat, SL_scintillator)
+    res_mat = np.append(res_mat, photons_lead)
+    res_mat = np.append(res_mat, electrons_lead)
+    res_mat = np.append(res_mat, E_lead)
+    res_mat = np.append(res_mat, SL_lead)
 
     return res_mat
 
@@ -250,6 +221,49 @@ def get_data(files_list, nentries, x_array_file="x_temp.data",
         print()
 
 
+def get_train_matrix(file_name):
+    """
+    Get the matrix for the training.
+
+    Args:
+    ----
+        file_name: The root file name.
+
+    """
+    X_set = []
+    y_set = []
+
+    # Open root file.
+    root_file = TFile.Open(file_name)
+
+    # Get Photons TTree.
+    photons_branch = root_file.GetDirectory("ntuple").Get("Photons")
+
+    i = 0
+    for entry in photons_branch:
+
+        # Fill the data of the TTree.
+        i += 1
+
+        # Print percentage of progress.
+        print(
+            f"[{i/photons_branch.GetEntries()*100:.2f}%]",
+            f"Getting data from: {file_name} - entry: {i}, of: " +
+            f"{photons_branch.GetEntries()}"
+        )
+
+        res_mat = get_values_matrix(entry)
+
+        # Add data.
+        X_set.append(res_mat)
+        y_set.append(entry.primary)
+
+    # Close root file.
+    root_file.Close()
+
+    return [X_set, y_set]
+
+
 def train_data(files_list, classification_method):
     """
     Train a classifier over a set of files.
@@ -262,37 +276,20 @@ def train_data(files_list, classification_method):
         have partial_fit method.
 
     """
-    for file_name in files_list:
-        X_set = []
-        y_set = []
+    # Create the pool of processes.
+    pool = Pool(processes=int(cpu_count()))
 
-        # Open root file.
-        root_file = TFile.Open(file_name)
+    train_matrices = [
+        pool.apply_async(get_train_matrix, [file_name])
+        for file_name in files_list
+    ]
 
-        # Get Photons TTree.
-        photons_branch = root_file.GetDirectory("ntuple").Get("Photons")
-
-        i = 0
-        for entry in photons_branch:
-
-            # Fill the data of the TTree.
-            i += 1
-
-            # Print percentage of progress.
-            print(f"[{i/photons_branch.GetEntries()*100:.2f}%]",
-                  f"Getting data from: {file_name} - entry: {i}, of: " +
-                  f"{photons_branch.GetEntries()}",
-                  end="\r")
-
-            res_mat = get_values_matrix(entry)
-
-            # Add data.
-            X_set.append(res_mat)
-            y_set.append(entry.primary)
+    for train_matrix in train_matrices:
+        res_mat = train_matrix.get(timeout=60000)
 
         # Train the classifier.
-        classification_method.partial_fit(X_set, y_set, classes=[0, 1, 2])
-
-        # Close root file.
-        root_file.Close()
-        print()
+        classification_method.partial_fit(
+            res_mat[0],
+            res_mat[1],
+            classes=[0, 1, 2]
+        )

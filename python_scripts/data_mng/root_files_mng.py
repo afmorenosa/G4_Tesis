@@ -158,10 +158,7 @@ def get_nentries(files_list):
         # Get Photons TTree.
         photons_branch = root_file.GetDirectory("ntuple").Get("Photons")
 
-        # Get number of non-empty entries.
-        for entry in photons_branch:
-            if len(entry.X_photons_scintillator):
-                nentries += 1
+        nentries += photons_branch.GetEntries()
 
     return nentries
 
@@ -182,7 +179,7 @@ def get_data(files_list, nentries, x_array_file="x_temp.data",
     """
     # Create the variables to store the data.
     X_set = np.memmap(x_array_file, mode="w+",
-                      shape=(nentries, 14472))
+                      shape=(nentries, 60501))
     y_set = np.memmap(y_array_file, mode="w+", shape=(nentries))
 
     index = 0
@@ -250,8 +247,8 @@ def get_train_matrix(file_name):
             f"[{i/photons_branch.GetEntries()*100:.2f}%]",
             f"Getting data from: {file_name} - entry: {i}, of: " +
             f"{photons_branch.GetEntries()}"
-        )
 
+        )
         res_mat = get_values_matrix(entry)
 
         # Add data.
@@ -276,6 +273,9 @@ def train_data(files_list, classification_method):
         have partial_fit method.
 
     """
+    # Print the number of cores.
+    print(f"n_cpus: {cpu_count()}")
+
     # Create the pool of processes.
     pool = Pool(processes=int(cpu_count()))
 

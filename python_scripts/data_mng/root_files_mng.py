@@ -163,6 +163,40 @@ def get_nentries(files_list):
     return nentries
 
 
+def get_test_matrix(file_name, X_set, y_set, index, nentries):
+    """."""
+    # Open root file.
+    root_file = TFile.Open(file_name)
+
+    # Get Photons TTree.
+    photons_branch = root_file.GetDirectory("ntuple").Get("Photons")
+
+    i = 0
+    for entry in photons_branch:
+
+        # Fill the data of the TTree.
+        i += 1
+
+        # Print percentage of progress.
+        print(
+            f"[{i/photons_branch.GetEntries()*100:.2f}%]",
+            f"getting data from: {file_name} - entry: {i}, of: " +
+            f"{photons_branch.GetEntries()}"
+        )
+
+        res_mat = get_values_matrix(entry)
+
+        # Add data.
+        X_set[index] = res_mat
+        y_set[index] = entry.primary
+
+        index += 1
+
+    # Close root file.
+    root_file.Close()
+    return True
+
+
 def get_data(files_list, nentries, x_array_file="x_temp.data",
              y_array_file="y_temp.data"):
     """
@@ -177,6 +211,9 @@ def get_data(files_list, nentries, x_array_file="x_temp.data",
         y_array_file: String of the file where the y data is stored.
 
     """
+    # Create the pool of processes.
+    pool = Pool(processes=int(cpu_count()))
+
     # Create the variables to store the data.
     X_set = np.memmap(x_array_file, mode="w+",
                       shape=(nentries, 60501))
@@ -184,38 +221,14 @@ def get_data(files_list, nentries, x_array_file="x_temp.data",
 
     index = 0
 
-    for file_name in files_list:
+    train_matrices = [
+        pool.apply_async(get_test_matrix, [file_name, X_set, y_set, index])
+        for file_name in files_list
+    ]
 
-        # Open root file.
-        root_file = TFile.Open(file_name)
-
-        # Get Photons TTree.
-        photons_branch = root_file.GetDirectory("ntuple").Get("Photons")
-
-        i = 0
-        for entry in photons_branch:
-
-            # Fill the data of the TTree.
-            i += 1
-
-            # Print percentage of progress.
-            print(f"[{i/photons_branch.GetEntries()*100:.2f}%]",
-                  f"getting data from: {file_name} - entry: {i}, of: " +
-                  f"{photons_branch.GetEntries()}",
-                  f"Non-emtpy data: {index + 1}, of: {nentries}",
-                  end="\r")
-
-            res_mat = get_values_matrix(entry)
-
-            # Add data.
-            X_set[index] = res_mat
-            y_set[index] = entry.primary
-
-            index += 1
-
-        # Close root file.
-        root_file.Close()
-        print()
+    for train_matrix in train_matrices:
+        if train_matrix.get(timeout=60000):
+            print("Matrix added")
 
 
 def get_train_matrix(file_name):

@@ -178,7 +178,7 @@ def get_test_matrix(file_name, X_set, y_set, index, nentries):
         i += 1
 
         # Print percentage of progress.
-        print "[{}%]".format(i/photons_branch.GetEntries()*100.0:.2f),\
+        print "[{:.2f}%]".format(i/photons_branch.GetEntries()*100.0),\
             "getting data from: {} - entry: {}, of: ".format(file_name, i) +\
             "{}".format(photons_branch.GetEntries())
 
@@ -255,7 +255,7 @@ def get_train_matrix(file_name):
         i += 1
 
         # Print percentage of progress.
-        print "[{}%]".format(i/photons_branch.GetEntries()*100:.2f),\
+        print "[{:.2f}%]".format(i/photons_branch.GetEntries()*100),\
             "Getting data from: {} - entry: {}, of: ".format(file_name, i) +\
             "{}".format(photons_branch.GetEntries())
 

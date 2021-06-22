@@ -37,6 +37,9 @@ void H4Actions::Build () const {
   // Tracking Actions.
   SetUserAction(new H4TrackingAction(event_action));
 
+  // Stepping Actions.
+  SetUserAction(new H4SteppingAction(event_action));
+
   // Run Actions.
   SetUserAction(new H4RunAction(event_action, m_output_path));
 }

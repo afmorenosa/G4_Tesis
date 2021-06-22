@@ -8,6 +8,7 @@
 // Project Headers.
 #include "H4PrimaryGenerator.hpp"
 #include "H4EventAction.hpp"
+#include "H4SteppingAction.hpp"
 #include "H4TrackingAction.hpp"
 #include "H4RunAction.hpp"
 

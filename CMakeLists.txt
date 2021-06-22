@@ -24,8 +24,6 @@ include(${Geant4_USE_FILE})
 ### Find Root Library.
 find_package(ROOT 6.22 REQUIRED COMPONENTS Core Graf3d Graf RIO Net Geom)
 
-message(${ROOT_USE_FILE})
-
 ### Include Root Use file.
 include(${ROOT_USE_FILE})
 
@@ -34,13 +32,15 @@ include_directories(${CMAKE_BINARY_DIR}/include)
 
 ### Add subdirectories.
 add_subdirectory(include)
-add_subdirectory(Actions)
 add_subdirectory(Detector)
 add_subdirectory(PrimaryGenerator)
-add_subdirectory(TrackingAction)
-add_subdirectory(RunAction)
 add_subdirectory(EventAction)
+add_subdirectory(TrackingAction)
+add_subdirectory(SteppingAction)
+add_subdirectory(RunAction)
+add_subdirectory(Actions)
 add_subdirectory(python_scripts)
+add_subdirectory(ROOT_source)
 
 ### Add an executable.
 add_executable(calo_ECAL main.cpp)
@@ -54,14 +54,6 @@ target_link_libraries(calo_ECAL
   tracking_action
   run_action
   event_action
-)
-
-### Add an executable.
-add_executable(root_Analysis ROOT_source/analysis_ntuples.cpp)
-
-### Link libraries.
-target_link_libraries(root_Analysis
-  ${ROOT_LIBRARIES} ${ROOT_EXE_LINKER_FLAGS}
 )
 
 set(geant_scripts
@@ -85,9 +77,3 @@ configure_file(
   ${PROJECT_BINARY_DIR}/bash_scripts/merge_ntuples.sh
   COPYONLY
 )
-
-# configure_file(
-#   ${PROJECT_SOURCE_DIR}/ROOT_scripts/analysis_ntuples.C
-#   ${PROJECT_BINARY_DIR}/ROOT_scripts/analysis_ntuples.C
-#   COPYONLY
-# )

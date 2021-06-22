@@ -45,13 +45,13 @@ classifiers_dict = {"MultinomialNB": MultinomialNB, "BernoulliNB": BernoulliNB,
                     "PassiveAggressiveClassifier": PassiveAggressiveClassifier}
 
 # Create the classifiers.
-print(f"\nUsing {args.classifier} classifier")
+print f"\nUsing {args.classifier} classifier"
 clf = classifiers_dict[args.classifier]()
 
 # Train the data.
-print("\nTraining")
+print "\nTraining"
 root_files_mng.train_data(args.train, clf)
-print("Trained\n")
+print "Trained\n"
 
 # Get the number of entries.
 nentries = root_files_mng.get_nentries(args.test)
@@ -62,8 +62,8 @@ X_test = np.memmap("x_temp.data", shape=(nentries, 60501))
 y_test = np.memmap("y_temp.data", shape=(nentries))
 
 # Print results of the test.
-print("\n")
-print(f"Results {clf.score(X_test, y_test)}")
+print "\n"
+print f"Results {clf.score(X_test, y_test)}"
 
 # Delete train data.
 del X_test, y_test

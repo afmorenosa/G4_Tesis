@@ -34,11 +34,11 @@ namespace {
     G4cerr << G4endl;
     G4cerr << G4endl;
     G4cerr << "   Options:" << G4endl;
-    G4cerr << "      -t, --threads [number of threads]\t Set the number of"
+    G4cerr << "      -t, --threads number of threads\t Set the number of"
     << " threads." << G4endl;
-    G4cerr << "      -d, --dir [output directory]\t Set the output directory."
+    G4cerr << "      -d, --dir output directory\t Set the output directory."
     << G4endl;
-    G4cerr << "      -l, --label [output label]\t Set the output label."
+    G4cerr << "      -l, --label output label\t Set the output label."
     << G4endl;
     G4cerr << "      -h, --help\t Print the usage." << G4endl;
     G4cerr << G4endl;

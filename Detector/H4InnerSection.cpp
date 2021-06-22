@@ -136,7 +136,7 @@ void H4InnerSection::PlaceLargePlate (
         thickness,
         rot,
         tlate + G4ThreeVector((i-1) * 4.04 * cm, (j-1) * 4.04 * cm, 0.0),
-        name + " - row: " + std::to_string(i) + " - col: " + std::to_string(j),
+        name + " - row: " + std::to_string(j) + " - col: " + std::to_string(i),
         log_name,
         mother_logical,
         many,

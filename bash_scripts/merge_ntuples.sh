@@ -2,46 +2,97 @@
 
 usage () {
   echo
-  echo "Usage: source merge_ntuples.sh <input_directory> <output_file>"
+  echo " Usage: source merge_ntuples.sh -f file [file ...] -o [output]"
+  echo
+  echo "  Options:"
+  echo "    -h, --help           Print the usage."
   echo
 }
 
-if [ -z "${1}" ] || [ -z "${2}" ]
+if [ -z "${1}" ]
 then
   usage
-  return 1
+  exit 1
 fi
 
-if [ "${1:-1:}" != "/" ]
+while test $# -gt 0
+do
+  case "${1}" in
+    -h|--help)
+    usage
+    exit 0
+    ;;
+
+    -f)
+    shift
+
+    if [ -z "${1}" ]
+    then
+      usage
+      exit 2
+    fi
+
+    valu=`echo ${1} | grep -c '^-'`
+
+    while [ "${valu}" == "0" ] && [ -n "${1}" ];
+    do
+
+      rootfiles="${rootfiles} ${1}"
+
+      shift
+      valu=`echo ${1} | grep -c '^-'`
+
+    done
+    ;;
+
+    -o)
+    shift
+
+    if [ -z "${1}" ]
+    then
+      usage
+      exit 2
+    fi
+
+    output="${1}"
+    shift
+    ;;
+
+    *)
+    usage
+    exit 3
+    ;;
+
+  esac
+done
+
+if [ -z "${rootfiles}" ] || [ -z "${output}" ]
 then
-  in_dir="${1}/"
-else
-  in_dir=${1}
+  usage
+  exit 2
 fi
 
-if [ -e ${2} ]
+if [ -e ${output} ]
 then
-
   echo
   echo "To merge the files, the output file should not exists"
 
   while [ true ]
   do
-    echo -n "Delete ${2}? ([Y]/n)"
+    echo -n "Delete ${output}? ([Y]/n)"
     read confirm
-
     if [ "${confirm}" == "n" ] || [ "${confirm}" == "N" ]
     then
       echo
-      echo "${2} not deleted"
+      echo "${output} not deleted"
       echo
-      break
+      exit 4
 
     elif [ "${confirm}" == "y" ] || [ "${confirm}" == "Y" ] || [ "${confirm}" == "" ]
     then
-      rm ${2}
+      rm ${output}
       echo
-      echo "${2} deleted"
+      echo "${output} deleted"
       echo
       break
 
@@ -51,6 +102,4 @@ then
 
 fi
 
-rootfiles="$(ls ${in_dir}*.root)"
-rootfiles="$(echo ${rootfiles})"
-hadd ${2} ${rootfiles}
+hadd ${output} ${rootfiles}

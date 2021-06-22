@@ -8,12 +8,7 @@
 //                           //
 //***************************//
 H4EventAction::H4EventAction ()
-: G4UserEventAction(),
-m_X({}),
-m_Y({}),
-m_Z({}),
-m_r({}),
-m_c({}) { }
+: G4UserEventAction() { }
 
 //***********************************//
 // H4EventAction constructor         //
@@ -33,11 +28,57 @@ H4EventAction::~H4EventAction () {
 //***************************//
 void H4EventAction::BeginOfEventAction (const G4Event *event) {
 
-  m_X.clear();
-  m_Y.clear();
-  m_Z.clear();
-  m_r.clear();
-  m_c.clear();
+  //<><><><><><><><><><><><><><><><><><><>//
+  // Clear counters of photons production //
+  //<><><><><><><><><><><><><><><><><><><>//
+
+  // Counters for scintillator plates.
+  m_XGammaScintillator.clear();
+  m_YGammaScintillator.clear();
+  m_ZGammaScintillator.clear();
+  m_rGammaScintillator.clear();
+  m_cGammaScintillator.clear();
+
+  // Counters for lead plates.
+  m_XGammaLead.clear();
+  m_YGammaLead.clear();
+  m_ZGammaLead.clear();
+
+  //<><><><><><><><><><><><><><><><><><><><>//
+  // Clear counters of electrons production //
+  //<><><><><><><><><><><><><><><><><><><><>//
+
+  // Counters for scintillator plates.
+  m_XElectronScintillator.clear();
+  m_YElectronScintillator.clear();
+  m_ZElectronScintillator.clear();
+  m_rElectronScintillator.clear();
+  m_cElectronScintillator.clear();
+
+  // Counters for lead plates.
+  m_XElectronLead.clear();
+  m_YElectronLead.clear();
+  m_ZElectronLead.clear();
+
+  //<><><><><><><><><><><><><><><><><><><>//
+  //  Clear counters of energy deposition //
+  //<><><><><><><><><><><><><><><><><><><>//
+
+  // Counters for scintillator plates.
+  m_XStepScintillator.clear();
+  m_YStepScintillator.clear();
+  m_ZStepScintillator.clear();
+  m_rStepScintillator.clear();
+  m_cStepScintillator.clear();
+  m_EStepScintillator.clear();
+  m_SLStepScintillator.clear();
+
+  // Counters for lead plates.
+  m_XStepLead.clear();
+  m_YStepLead.clear();
+  m_ZStepLead.clear();
+  m_EStepLead.clear();
+  m_SLStepLead.clear();
 
 }
 
@@ -54,11 +95,8 @@ void H4EventAction::EndOfEventAction (const G4Event *event) {
   event->GetPrimaryVertex()->GetPrimary()
   ->GetParticleDefinition()->GetParticleName();
 
-  for (int i = 0; i < m_X.size(); i++) {
-    analysis_manager->FillH2(0, 40 - m_X[0], m_Y[1] - 20);
-  }
-
   analysis_manager->FillNtupleIColumn(0, m_particlesID[particle]);
+
   // Add tupple row.
   analysis_manager->AddNtupleRow();
 

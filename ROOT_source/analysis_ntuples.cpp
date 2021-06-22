@@ -1,123 +1,110 @@
-#include <filesystem>
+// C++ includes.
 #include <iostream>
-#include <vector>
-#include <string>
+#include <map>
 
+// ROOT includes.
+#include "TDirectory.h"
 #include "TTree.h"
 #include "TFile.h"
-#include "TDirectory.h"
-#include "TCanvas.h"
-#include "TH1.h"
-#include "TH2.h"
-#include "TH3.h"
 
-namespace fs = std::filesystem;
-
-void print_histograms(char *input_dir, char *output_path);
+// Project includes.
+#include "significative_cells.hpp"
+#include "hist_plotter.hpp"
+#include "args_manager.hpp"
+#include "test.hpp"
 
 int main(int argc, char *argv[]) {
 
-  print_histograms(argv[1], argv[2]);
+  std::map<std::string, const char *> arguments = parse_args(argc, argv);
 
-  return 0;
-}
+  if (arguments.find("error") != arguments.end()) {
+    std::cerr << arguments["error"]
+    << "Use -h, --help for more information\n" << '\n';
+    return 1;
+  } else if (arguments.find("help") != arguments.end()) {
+    print_usage();
+    return 0;
+  }
 
-void print_histograms(char *input_file, char *output_path) {
+  if (arguments.find("histos_file") != arguments.end()) {
+    // Open de Root File
+    TFile *file = TFile::Open(arguments["histos_file"]);
 
-  // Open de Root File
-  TFile *file = TFile::Open(input_file);
+    // Get the directory of the ntuples.
+    TDirectory *dir_ntup = file->GetDirectory("ntuple");
 
-  // Get the directory of the ntuples.
-  TDirectory *dir_ntup = file->GetDirectory("ntuple");
+    // Get the Tree from the Root File
+    TTree *tree = (TTree*) dir_ntup->Get("Photons");
+    tree->Print();
 
-  // Get the Tree from the Root File
-  TTree *tree = (TTree*) dir_ntup->Get("Photons");
-  tree->Print();
+    plot_counter(tree, arguments["label"],
+    arguments["variable"], arguments["material"]);
+  }
 
-  // Initialize variables.
-  Int_t primary = -1;
-  std::vector<int> *X = {};
-  std::vector<int> *Y = {};
-  std::vector<int> *Z = {};
-  std::vector<int> *r = {};
-  std::vector<int> *c = {};
+  if (arguments.find("test_file_1") != arguments.end()) {
+    // Open de Root File
+    TFile *file_1 = TFile::Open(arguments["test_file_1"]);
+    TFile *file_2 = TFile::Open(arguments["test_file_2"]);
 
-  tree->SetBranchAddress("primary", &primary);
-  tree->SetBranchAddress("X", &X);
-  tree->SetBranchAddress("Y", &Y);
-  tree->SetBranchAddress("Z", &Z);
-  tree->SetBranchAddress("r", &r);
-  tree->SetBranchAddress("c", &c);
+    // Get the directory of the ntuples.
+    TDirectory *dir_ntup_1 = file_1->GetDirectory("ntuple");
+    TDirectory *dir_ntup_2 = file_2->GetDirectory("ntuple");
 
-  // Create the canvas to plot the histograms
-  TCanvas *canvas = new TCanvas(
-    "Canvas",
-    "ECAL",
-    800,
-    600
-  );
+    // Get the Tree from the Root File
+    TTree *tree_1 = (TTree*) dir_ntup_1->Get("Photons");
+    TTree *tree_2 = (TTree*) dir_ntup_2->Get("Photons");
 
-  // Create histograms.
-  TH1I *particle_counter = new TH1I(
-    "Primary poarticle",
-    "Primary",
-    5, -1, 4
-  );
+    if (arguments["variable"] == std::string("E")) {
 
-  TH2I *calo_photons_counter = new TH2I(
-    "Photons Counter",
-    "Photons",
-    6, 0, 6, 4, 0, 4
-  );
+      kolmogorov_test_energy(
+        tree_1, tree_2, arguments["material"],
+        arguments["label"]
+      );
 
-  TH3I *calo_photons_counter_3 = new TH3I(
-    "Photons Counter",
-    "Photons",
-    6, 0, 6, 4, 0, 4, 67, 0, 67
-  );
+    } else if (arguments["variable"] == std::string("SL")) {
 
-  int nentries, nbytes;
-  nentries = (Int_t)tree->GetEntries();
+      kolmogorov_test_step_lenght(
+        tree_1, tree_2, arguments["material"],
+        arguments["label"]
+      );
 
-  // Fill histograms.
-  for (int i = 0; i < nentries; i++) {
-    nbytes = tree->GetEntry(i);
+    } else if (arguments["variable"] == std::string("electrons") ||
+    arguments["variable"] == std::string("photons")) {
 
-    particle_counter->Fill(primary);
-
-    for (size_t j = 0; j < X->size(); j++) {
-
-      calo_photons_counter->Fill(X->at(j), Y->at(j));
-      calo_photons_counter_3->Fill(X->at(j), Y->at(j), Z->at(j));
+      kolmogorov_test_counter(
+        tree_1, tree_2, arguments["variable"], arguments["material"],
+        arguments["label"]
+      );
 
     }
 
   }
 
-  // Save histograms.
-  std::string output_file;
+  if (arguments.find("scell_file_1") != arguments.end()) {
+    std::vector<TFile *> files;
+    std::vector<TTree *> trees;
 
-  particle_counter->Draw();
-  output_file =
-  std::string(output_path) + "particles.root";
+    int file_number = std::atoi(arguments["scell_n_files"]);
 
-  canvas->Print(output_file.c_str());
-  canvas->Clear();
+    for (int file_index = 1; file_index < file_number; file_index++) {
+      std::string key_string =
+      std::string("scell_file_") +
+      std::to_string(file_index);
+
+      // Open de Root File
+      files.push_back(TFile::Open(arguments[key_string]));
+
+      // Get the directory of the ntuples.
+      TDirectory *dir_ntup = files[files.size() - 1]->GetDirectory("ntuple");
+
+      // Get the Tree from the Root File
+      trees.push_back( (TTree*) dir_ntup->Get("Photons") );
+
+    }
+    get_significative_cells(trees, arguments["label"]);
+
+  }
 
 
-  calo_photons_counter->Draw("COL");
-  output_file =
-  std::string(output_path) + "calo_photons_counter.root";
-
-  canvas->Print(output_file.c_str());
-  canvas->Clear();
-
-
-  calo_photons_counter_3->Draw("BOX");
-  output_file =
-  std::string(output_path) + "calo_photons_counter_3.root";
-
-  canvas->Print(output_file.c_str());
-  canvas->Clear();
-
+  return 0;
 }

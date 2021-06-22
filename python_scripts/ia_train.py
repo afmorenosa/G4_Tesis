@@ -45,7 +45,7 @@ classifiers_dict = {"MultinomialNB": MultinomialNB, "BernoulliNB": BernoulliNB,
                     "PassiveAggressiveClassifier": PassiveAggressiveClassifier}
 
 # Create the classifiers.
-print f"\nUsing {args.classifier} classifier"
+print "\nUsing {} classifier".format(args.classifier)
 clf = classifiers_dict[args.classifier]()
 
 # Train the data.
@@ -63,7 +63,7 @@ y_test = np.memmap("y_temp.data", shape=(nentries))
 
 # Print results of the test.
 print "\n"
-print f"Results {clf.score(X_test, y_test)}"
+print "Results {}".format(clf.score(X_test, y_test))
 
 # Delete train data.
 del X_test, y_test

@@ -178,9 +178,9 @@ def get_test_matrix(file_name, X_set, y_set, index, nentries):
         i += 1
 
         # Print percentage of progress.
-        print f"[{i/photons_branch.GetEntries()*100:.2f}%]",\
-            f"getting data from: {file_name} - entry: {i}, of: " +\
-            f"{photons_branch.GetEntries()}"
+        print "[{}%]".format(i/photons_branch.GetEntries()*100.0:.2f),\
+            "getting data from: {} - entry: {}, of: ".format(file_name, i) +\
+            "{}".format(photons_branch.GetEntries())
 
 
         res_mat = get_values_matrix(entry)
@@ -255,9 +255,9 @@ def get_train_matrix(file_name):
         i += 1
 
         # Print percentage of progress.
-        print f"[{i/photons_branch.GetEntries()*100:.2f}%]",\
-            f"Getting data from: {file_name} - entry: {i}, of: " +\
-            f"{photons_branch.GetEntries()}"
+        print "[{}%]".format(i/photons_branch.GetEntries()*100:.2f),\
+            "Getting data from: {} - entry: {}, of: ".format(file_name, i) +\
+            "{}".format(photons_branch.GetEntries())
 
         res_mat = get_values_matrix(entry)
 
@@ -284,7 +284,7 @@ def train_data(files_list, classification_method):
 
     """
     # Print the number of cores.
-    print f"n_cpus: {cpu_count()}"
+    print "n_cpus: {}".format(cpu_count())
 
     # Create the pool of processes.
     pool = Pool(processes=int(cpu_count()))

@@ -10,7 +10,8 @@ from sklearn.naive_bayes import BernoulliNB
 from sklearn.linear_model import Perceptron
 from sklearn.linear_model import SGDClassifier
 from sklearn.linear_model import PassiveAggressiveClassifier
-from data_mng import root_files_mng
+# from data_mng import root_files_mng
+import root_files_mng
 import numpy as np
 import argparse
 

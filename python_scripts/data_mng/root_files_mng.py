@@ -9,7 +9,7 @@ def get_matrix_data(variable, X, Y, Z, c=None, r=None, val=None):
     """
     Get the matrix with the accumulative value.
 
-    Args:
+    Arguments:
     ----
         variable: The name of the variable that will be getted.
         X: The vector of the values for the x coordinates.
@@ -68,7 +68,7 @@ def get_values_matrix(entry):
     """
     Get the matrix with all the accumulative significative values.
 
-    Args:
+    Arguments:
     ----
         entry: The entry from the TTree.
 
@@ -138,7 +138,7 @@ def get_nentries(files_list):
     """
     Get the total number of entries in the root files.
 
-    Args:
+    Arguments:
     ----
         files_list: Tupple or list with string of the paths to the
         root files.
@@ -201,7 +201,7 @@ def get_data(files_list, nentries, x_array_file="x_temp.data",
     """
     Extract data from a set of files.
 
-    Args:
+    Arguments:
     ----
         files_list: Tupple or list with string of the paths to the
         root files.
@@ -237,7 +237,7 @@ def get_train_matrix(file_name):
     """
     Get the matrix for the training.
 
-    Args:
+    Arguments:
     ----
         file_name: The root file name.
 
@@ -278,7 +278,7 @@ def train_data(files_list, classification_method):
     """
     Train a classifier over a set of files.
 
-    Args:
+    Arguments:
     ----
         files_list: Tupple or list with string of the paths to the
         root files.

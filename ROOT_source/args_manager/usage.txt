@@ -8,9 +8,9 @@
  Options:
     --plot_histos file                           Print the histograms for the file given.
     -t --test file_1 file_2                      Get the Kolmogorov test of the data in the two files.
-    -s, --scells file_1 file_2 [file_n ...]      Get the significative cells of the detector according to kolmogorov test within
+    -s, --scells file_1 file_2 [file_n ...]      Get the significative cells of the detector according to Kolmogorov test within
                                                  the files.
-    -v, --variable var                           Set the variable to be  analyzed. select between electrons, photons, E and SL.
+    -v, --variable var                           Set the variable to be  analyzed. Select between electrons, photons, E and SL.
                                                  (Default: photons)
     -m, --material mat                           Set the label for the analysis. Select between scintillator and lead.
                                                  (Default: scintillator)

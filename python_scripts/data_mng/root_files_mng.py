@@ -222,7 +222,9 @@ def get_data(files_list, nentries, x_array_file="x_temp.data",
     index = 0
 
     train_matrices = [
-        pool.apply_async(get_test_matrix, [file_name, X_set, y_set, index])
+        pool.apply_async(
+            get_test_matrix, [file_name, X_set, y_set, index, nentries]
+        )
         for file_name in files_list
     ]
 

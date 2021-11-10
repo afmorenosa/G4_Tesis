@@ -3,5 +3,6 @@ universe    = vanilla
 output      = output.out
 error       = error.err
 log         = log.log
++JobFlavour = "testmatch"
 transfer_input_files = ia_train.py,/afs/cern.ch/user/a/amorenos/private/G4_Tesis/python_scripts/data_mng/root_files_mng.py,/afs/cern.ch/user/a/amorenos/private/G4_Tesis/python_scripts/data_mng/significative_cells.csv
 queue

@@ -73,3 +73,4 @@ for res_file in res_files:
 # Print results of the test.
 print("\n")
 print(f"Results {np.mean(test_scores)}")
+print(f"Config {clf.get_params()}\n\n")

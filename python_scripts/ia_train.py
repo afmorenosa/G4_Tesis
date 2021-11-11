@@ -49,21 +49,24 @@ print(f"\nUsing {args.classifier} classifier")
 clf = classifiers_dict[args.classifier]()
 
 # Train the data.
-print("\nTraining")
+print("\nTraining\n")
 root_files_mng.train_data(args.train, clf)
-print("Trained\n")
-
-# Get the number of entries.
-nentries = root_files_mng.get_nentries(args.test)
+print("\nTrained\n")
 
 # Get the test variables.
-root_files_mng.get_data(args.test, nentries)
-X_test = np.memmap("x_temp.data", shape=(nentries, 60501))
-y_test = np.memmap("y_temp.data", shape=(nentries))
+print("\nGet test set\n")
+res_files = root_files_mng.get_data(args.test)
+print("\nTest results: \n")
 
-# Print results of the test.
-print("\n")
-print(f"Results {clf.score(X_test, y_test)}")
+for res_file in res_files:
+    X_test = np.memmap(res_file[0], shape=(res_file[2], 60501))
+    y_test = np.memmap(res_file[1], shape=(res_file[2]))
 
-# Delete train data.
-del X_test, y_test
+    print(X_test[X_test != 0])
+
+    # Print results of the test.
+    print("\n")
+    print(f"Results {clf.score(X_test, y_test)}")
+
+    # Delete train data.
+    del X_test, y_test

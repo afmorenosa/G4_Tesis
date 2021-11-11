@@ -163,42 +163,50 @@ def get_nentries(files_list):
     return nentries
 
 
-def get_test_matrix(file_name, X_set, y_set, index, nentries):
+def get_test_matrix(file_name, data_group, nentries):
     """."""
     # Open root file.
     root_file = TFile.Open(file_name)
 
+    # Create the name of the memmaps.
+    x_array_file = f"x_data_{data_group}.data"
+    y_array_file = f"y_data_{data_group}.data"
+
+    # Create the variables to store the data.
+    X_set = np.memmap(
+        x_array_file, mode="w+", shape=(nentries, 60501)
+    )
+    y_set = np.memmap(y_array_file, mode="w+", shape=(nentries))
+
     # Get Photons TTree.
     photons_branch = root_file.GetDirectory("ntuple").Get("Photons")
 
-    i = 0
+    index = 0
     for entry in photons_branch:
 
         # Fill the data of the TTree.
-        i += 1
-
-        # Print percentage of progress.
-        print(
-            f"[{i/photons_branch.GetEntries()*100:.2f}%]",
-            f"getting data from: {file_name} - entry: {i}, of: " +
-            f"{photons_branch.GetEntries()}"
-        )
+        index += 1
 
         res_mat = get_values_matrix(entry)
 
         # Add data.
-        X_set[index] = res_mat
-        y_set[index] = entry.primary
-
-        index += 1
+        X_set[index - 1] = res_mat
+        y_set[index - 1] = entry.primary
 
     # Close root file.
     root_file.Close()
-    return True
+
+    # Flush memmaps.
+    X_set.flush()
+    y_set.flush()
+
+    # Delete variables.
+    del X_set, y_set
+
+    return [x_array_file, y_array_file, nentries]
 
 
-def get_data(files_list, nentries, x_array_file="x_temp.data",
-             y_array_file="y_temp.data"):
+def get_data(files_list):
     """
     Extract data from a set of files.
 
@@ -206,31 +214,33 @@ def get_data(files_list, nentries, x_array_file="x_temp.data",
     ----
         files_list: Tupple or list with string of the paths to the
         root files.
-        nentries: Int of the total nomber of entries in the given root files.
-        x_array_file: String of the file where the X data is stored.
-        y_array_file: String of the file where the y data is stored.
 
     """
     # Create the pool of processes.
     pool = Pool(processes=int(cpu_count()))
 
-    # Create the variables to store the data.
-    X_set = np.memmap(x_array_file, mode="w+",
-                      shape=(nentries, 60501))
-    y_set = np.memmap(y_array_file, mode="w+", shape=(nentries))
+    data_group = 0
 
-    index = 0
+    train_matrices = []
 
-    train_matrices = [
-        pool.apply_async(
-            get_test_matrix, [file_name, X_set, y_set, index, nentries]
+    for file_name in files_list:
+        nentries = get_nentries([file_name])
+
+        train_matrices.append(
+            pool.apply_async(
+                get_test_matrix, [file_name, data_group, nentries]
+            )
         )
-        for file_name in files_list
-    ]
+
+        data_group += 1
+
+    file_names = []
 
     for train_matrix in train_matrices:
-        if train_matrix.get(timeout=60000):
-            print("Matrix added")
+        file_names.append(train_matrix.get(timeout=60000))
+        print("Matrix added")
+
+    return file_names
 
 
 def get_train_matrix(file_name):
@@ -257,13 +267,6 @@ def get_train_matrix(file_name):
         # Fill the data of the TTree.
         i += 1
 
-        # Print percentage of progress.
-        print(
-            f"[{i/photons_branch.GetEntries()*100:.2f}%]",
-            f"Getting data from: {file_name} - entry: {i}, of: " +
-            f"{photons_branch.GetEntries()}"
-
-        )
         res_mat = get_values_matrix(entry)
 
         # Add data.

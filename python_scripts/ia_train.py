@@ -58,15 +58,18 @@ print("\nGet test set\n")
 res_files = root_files_mng.get_data(args.test)
 print("\nTest results: \n")
 
+# The array for the scores result.
+test_scores = []
+
 for res_file in res_files:
     X_test = np.memmap(res_file[0], shape=(res_file[2], 60501))
     y_test = np.memmap(res_file[1], shape=(res_file[2]))
 
-    print(X_test[X_test != 0])
-
-    # Print results of the test.
-    print("\n")
-    print(f"Results {clf.score(X_test, y_test)}")
+    test_scores.append(clf.score(X_test, y_test))
 
     # Delete train data.
     del X_test, y_test
+
+# Print results of the test.
+print("\n")
+print(f"Results {np.mean(test_scores)}")

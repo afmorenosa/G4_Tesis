@@ -28,7 +28,7 @@ def get_matrix_data(variable, X, Y, Z, c=None, r=None, val=None):
         given variable.
 
     """
-    all_significative_cells = pd.read_csv("data_mng/significative_cells.csv")
+    all_significative_cells = pd.read_csv("significative_cells.csv")
 
     if c:
         mat_shape = (6*3, 4*3, 67)

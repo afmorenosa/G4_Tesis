@@ -1,0 +1,86 @@
+{
+  "MultinomialNB": {
+    "Results": 0.44765682501629755,
+    "Config": {
+      "alpha": 1,
+      "class_prior": "None",
+      "fit_prior": true
+    }
+  },
+  "BernoulliNB": {
+    "Results": 0.552575634905614,
+    "Config": {
+      "alpha": 1,
+      "binarize": 0,
+      "class_prior": "None",
+      "fit_prior": true
+    }
+  },
+  "Perceptron": {
+    "Results": 0.3333333333333333,
+    "Config": {
+      "alpha": 0.0001,
+      "class_weight": "None",
+      "early_stopping": false,
+      "eta0": 1,
+      "fit_intercept": true,
+      "l1_ratio": 0.15,
+      "max_iter": 1000,
+      "n_iter_no_change": 5,
+      "n_jobs": "None",
+      "penalty": "None",
+      "random_state": 0,
+      "shuffle": true,
+      "tol": 0.001,
+      "validation_fraction": 0.1,
+      "verbose": 0,
+      "warm_start": false
+    }
+  },
+  "SGDClassifier": {
+    "Results": 0.3333333333333333,
+    "Config": {
+      "alpha": 0.0001,
+      "average": false,
+      "class_weight": "None",
+      "early_stopping": false,
+      "epsilon": 0.1,
+      "eta0": 0,
+      "fit_intercept": true,
+      "l1_ratio": 0.15,
+      "learning_rate": "optimal",
+      "loss": "hinge",
+      "max_iter": 1000,
+      "n_iter_no_change": 5,
+      "n_jobs": "None",
+      "penalty": "l2",
+      "power_t": 0.5,
+      "random_state": "None",
+      "shuffle": true,
+      "tol": 0.001,
+      "validation_fraction": 0.1,
+      "verbose": 0,
+      "warm_start": false
+    }
+  },
+  "PassiveAggressiveClassifier": {
+    "Results": 0.33353468761171745,
+    "Config": {
+      "C": 1,
+      "average": false,
+      "class_weight": "None",
+      "early_stopping": false,
+      "fit_intercept": true,
+      "loss": "hinge",
+      "max_iter": 1000,
+      "n_iter_no_change": 5,
+      "n_jobs": "None",
+      "random_state": "None",
+      "shuffle": true,
+      "tol": 0.001,
+      "validation_fraction": 0.1,
+      "verbose": 0,
+      "warm_start": false
+    }
+  }
+}

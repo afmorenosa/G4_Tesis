@@ -37,12 +37,12 @@
 # /vis/scene/add/axes
 
 # "World" is transparent gray to represent air
-# /vis/geometry/set/colour World 0 0.6 0.6 1 .1
-# # /vis/geometry/set/colour Hole_Log 0 0.6 0.6 1 1
-# /vis/geometry/set/colour Lead_Plate 0 0.75 1 0.75 .7
-# /vis/geometry/set/colour Scintillator_Plate 0 0.65 0.65 0.95 .7
-# /vis/geometry/set/colour Cover_Sheet 0 0.75 0.75 0.75 .8
-# /vis/geometry/set/colour WLS 0 0.0 1.0 0.0 .8
+/vis/geometry/set/colour World 0 0.6 0.6 1 .1
+# /vis/geometry/set/colour Hole_Log 0 0.6 0.6 1 1
+/vis/geometry/set/colour Lead_Plate 0 0.75 1 0.75 .7
+/vis/geometry/set/colour Scintillator_Plate 0 0.65 0.65 0.95 .7
+/vis/geometry/set/colour Cover_Sheet 0 0.75 0.75 0.75 .8
+/vis/geometry/set/colour WLS 0 0.0 1.0 0.0 .8
 # /vis/viewer/set/styles/urface
 # /vis/viewer/set/hiddenMarker false
 # /vis/viewer/set/viewpointThetaPhi 120 150

@@ -41,7 +41,7 @@ G4VPhysicalVolume *H4Detector::Construct () {
   BuildMaterials();
 
   // Build world geometry.
-  G4Box *world_box = new G4Box("World Box", 5*m, 5*m, 8*m);
+  G4Box *world_box = new G4Box("World Box", 1*m, 1*m, 1*m);
 
   // Build world logical volumes.
   G4LogicalVolume *world_log = new G4LogicalVolume(
@@ -63,7 +63,17 @@ G4VPhysicalVolume *H4Detector::Construct () {
   );
 
   // Build the calorimeter.
-  BuildCalorimeter(world_log);
+  // BuildCalorimeter(world_log);
+
+  // Place the inner modules.
+  m_inner_section_builder->BuildModule(
+    m_aerog_mat,
+    m_wls_mat,
+    0,
+    G4ThreeVector(0.0, 0.0, 0.5*m),
+    "Inner module",
+    world_log
+  );
 
   // Add the magnetic field.
   // AddMagneticField();

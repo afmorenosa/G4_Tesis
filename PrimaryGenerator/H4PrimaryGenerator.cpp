@@ -26,7 +26,7 @@ m_particle_gun(0) {
   m_particle_gun->SetParticleDefinition(particle);
 
   // Set the position of the particle gun.
-  m_particle_gun->SetParticlePosition(G4ThreeVector(0.0, 0.0, -7.0*m));
+  m_particle_gun->SetParticlePosition(G4ThreeVector(0.0, 0.0, -0.5*m));
 
   // Set the energy of the particle.
   m_particle_gun->SetParticleEnergy(20 * GeV);
@@ -39,7 +39,7 @@ m_particle_gun(0) {
   m_px_max = 0.9696;
   m_py_max = 0.7272;
 
-  m_pz = 13;
+  m_pz = 1;
 
 }
 
@@ -73,7 +73,7 @@ void H4PrimaryGenerator::GeneratePrimaries (G4Event* an_event) {
 
   // Set the direction in which the particle will be shooted.
   m_particle_gun->SetParticleMomentumDirection(
-    G4ThreeVector(px, py, m_pz)
+    G4ThreeVector(0, 0, m_pz)
   );
 
   m_particle_gun->GeneratePrimaryVertex(an_event);

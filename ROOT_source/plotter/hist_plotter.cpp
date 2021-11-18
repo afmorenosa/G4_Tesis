@@ -36,20 +36,30 @@ void plot_counter(
   // Create histograms.
   TH1I *particle_counter = new TH1I(
     "Primary particle",
-    "Primary",
+    "Primary; Particle; Number of Events",
     5, -1, 4
   );
 
+  int x_dim, y_dim;
+
+  if (material.EqualTo("scintillator")) {
+    x_dim = 6*3;
+    y_dim = 4*3;
+  } else {
+    x_dim = 6;
+    y_dim = 4;
+  }
+
   TH2I *calo_photons_counter = new TH2I(
     variable + " counter 2D",
-    variable,
-    6*3, 0, 6*3, 4*3, 0, 4*3
+    variable + "; X; Y; Number of Events",
+    x_dim, 0, x_dim, y_dim, 0, y_dim
   );
 
   TH3I *calo_photons_counter_3 = new TH3I(
     variable + " counter 3D",
-    variable,
-    6*3, 0, 6*3, 4*3, 0, 4*3, 67, 0, 67
+    variable + "; X; Y; Z; Number of Events",
+    x_dim, 0, x_dim, y_dim, 0, y_dim, 67, 0, 67
   );
 
   int nentries, nbytes;
@@ -98,9 +108,9 @@ void plot_counter(
   canvas->Clear();
 
 
-  calo_photons_counter->Draw("COL");
+  calo_photons_counter->Draw("COLZ");
   output_file =
-  std::string(output_label) + "calo_photons_counter.root";
+  std::string(output_label) + "_calo_counter.pdf";
 
   canvas->Print(output_file.c_str());
   canvas->Clear();
@@ -108,7 +118,7 @@ void plot_counter(
 
   calo_photons_counter_3->Draw("BOX");
   output_file =
-  std::string(output_label) + "calo_photons_counter_3.root";
+  std::string(output_label) + "_calo_counter_3.pdf";
 
   canvas->Print(output_file.c_str());
   canvas->Clear();

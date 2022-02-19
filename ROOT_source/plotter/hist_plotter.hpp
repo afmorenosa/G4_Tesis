@@ -2,6 +2,7 @@
 #define HIST_PLOTTER
 
 // C++ includes.
+#include <iostream>
 #include <vector>
 #include <string>
 

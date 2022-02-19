@@ -4,7 +4,7 @@
 // Geant Headers.
 #include "GeneralG4.hpp"
 #include "G4UserEventAction.hh"
-#include "g4root.hh"
+#include "G4RootAnalysisManager.hh"
 
 // Project Headers.
 #include <regex>

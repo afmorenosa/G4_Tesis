@@ -3,7 +3,7 @@
 // Visual Interface.
 #include "G4UIExecutive.hh"
 #include "G4VisExecutive.hh"
-#include "g4root.hh"
+#include "G4RootAnalysisManager.hh"
 
 #ifdef G4MULTITHREADED
 #include "G4MTRunManager.hh"
@@ -85,7 +85,7 @@ int main(int argc, char *argv[]) {
         << G4endl << G4endl;
 
         return 1;
-      } else if (G4String(argv[arg_index + 1][0]) == "-") {
+      } else if (G4String(&argv[arg_index + 1][0]) == "-") {
 
         G4cerr << G4endl;
         G4cerr << "ERROR\t Threads: give the number of thread."
@@ -97,7 +97,7 @@ int main(int argc, char *argv[]) {
       n_threads = atoi(argv[arg_index + 1]);
 
       if ( std::regex_match(
-        G4String(argv[arg_index + 1][0]),
+        G4String(&argv[arg_index + 1][0]),
         std::regex("[^0-9]") )
        ) {
 
@@ -122,7 +122,7 @@ int main(int argc, char *argv[]) {
         << G4endl << G4endl;
 
         return 1;
-      } else if (G4String(argv[arg_index + 1][0]) == "-") {
+      } else if (G4String(&argv[arg_index + 1][0]) == "-") {
 
         G4cerr << G4endl;
         G4cerr << "ERROR\t Output Directory: give the name of the directory."
@@ -156,7 +156,7 @@ int main(int argc, char *argv[]) {
         << G4endl << G4endl;
 
         return 1;
-      } else if (G4String(argv[arg_index + 1][0]) == "-") {
+      } else if (G4String(&argv[arg_index + 1][0]) == "-") {
 
         G4cerr << G4endl;
         G4cerr << "ERROR\t Output Label: give the name of the label."

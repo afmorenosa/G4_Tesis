@@ -5,7 +5,7 @@
 #include "GeneralG4.hpp"
 #include "G4UserRunAction.hh"
 #include "G4Run.hh"
-#include "g4root.hh"
+#include "G4RootAnalysisManager.hh"
 
 // Project Headers.
 #include "H4EventAction.hpp"

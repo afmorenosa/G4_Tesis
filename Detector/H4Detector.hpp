@@ -38,6 +38,7 @@ private:
 
   // Matierals.
   G4Material *m_world_mat;
+  G4Material *m_lead_mat;
   G4Material *m_aerog_mat;
   G4Material *m_wls_mat;
 };

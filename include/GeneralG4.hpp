@@ -13,6 +13,8 @@
 #include "G4VPhysicalVolume.hh"
 #include "G4PVPlacement.hh"
 #include "G4LogicalVolumeStore.hh"
+#include "G4MultiUnion.hh"
+#include "G4SubtractionSolid.hh"
 
 // Geometry.
 #include "G4Box.hh"

@@ -288,9 +288,9 @@ int main(int argc, char *argv[]) {
 
   // Get the current pointer to the UI manager and set the verbosities.
   G4UImanager *UI = G4UImanager::GetUIpointer();
-  UI->ApplyCommand("/run/verbose 1");
-  UI->ApplyCommand("/event/verbose 1");
-  UI->ApplyCommand("/tracking/verbose 1");
+  UI->ApplyCommand("/run/verbose 0");
+  UI->ApplyCommand("/event/verbose 0");
+  UI->ApplyCommand("/tracking/verbose 0");
 
   // Get the pointer to the User Interface manager.
   G4UImanager* UImanager = G4UImanager::GetUIpointer();
@@ -321,6 +321,5 @@ int main(int argc, char *argv[]) {
   }
 
   // Job termination.
-  delete run_manager;
   return 0;
 }

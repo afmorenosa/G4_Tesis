@@ -7,11 +7,7 @@
 // Do Nothing.            //
 //                        //
 //************************//
-H4Detector::H4Detector () : G4VUserDetectorConstruction() {
-  m_inner_section_builder = new H4InnerSection();
-  m_middle_section_builder = new H4MiddleSection();
-  m_outer_section_builder = new H4OuterSection();
-}
+H4Detector::H4Detector () : G4VUserDetectorConstruction() { }
 
 //************************//
 // H4Detector destructor  //
@@ -21,6 +17,12 @@ H4Detector::H4Detector () : G4VUserDetectorConstruction() {
 //                        //
 //************************//
 H4Detector::~H4Detector () {
+
+  // Deleting modules pointers.
+  delete this->m_inner_section_builder;
+  delete this->m_middle_section_builder;
+  delete this->m_outer_section_builder;
+
 }
 
 //************************//
@@ -32,13 +34,25 @@ H4Detector::~H4Detector () {
 //                        //
 //************************//
 G4VPhysicalVolume *H4Detector::Construct () {
-  // Initialize Modules pointer.
-  m_inner_section_builder = new H4InnerSection();
-  m_middle_section_builder = new H4MiddleSection();
-  m_outer_section_builder = new H4OuterSection();
-
   // Build the materials.
   BuildMaterials();
+
+  // Initialize Modules pointer.
+  m_inner_section_builder = new H4InnerSection(
+    m_lead_mat,
+    m_aerog_mat,
+    m_wls_mat
+  );
+  m_middle_section_builder = new H4MiddleSection(
+    m_lead_mat,
+    m_aerog_mat,
+    m_wls_mat
+  );
+  m_outer_section_builder = new H4OuterSection(
+    m_lead_mat,
+    m_aerog_mat,
+    m_wls_mat
+  );
 
   // Build world geometry.
   G4Box *world_box = new G4Box("World Box", 5*m, 5*m, 8*m);
@@ -68,11 +82,6 @@ G4VPhysicalVolume *H4Detector::Construct () {
   // Add the magnetic field.
   // AddMagneticField();
 
-  // Deleting modules pointers.
-  delete m_inner_section_builder;
-  delete m_middle_section_builder;
-  delete m_outer_section_builder;
-
   // Return the world.
   return world;
 }
@@ -84,17 +93,19 @@ G4VPhysicalVolume *H4Detector::Construct () {
 //                                        //
 //----------------------------------------//
 void H4Detector::BuildMaterials () {
-
   // Manager for NIST db, for material searching.
   G4NistManager *nist = G4NistManager::Instance();
+
+  // Set the material of the world as air.
+  m_world_mat = nist->FindOrBuildMaterial("G4_Galactic");
+
+  // Get the definition of lead as a material.
+  m_lead_mat = nist->FindOrBuildMaterial("G4_Pb");
 
   // Declare needed variables for material construction.
   G4double density, a;
   std::vector<G4int> natoms;
   std::vector<G4String> elements;
-
-  // Set the material of the world as air.
-  m_world_mat = nist->FindOrBuildMaterial("G4_Galactic");
 
   // Define NIST materials for the construction of aerogel.
   G4Material *H2O  = nist->FindOrBuildMaterial("G4_WATER");
@@ -125,7 +136,6 @@ void H4Detector::BuildMaterials () {
 
   elements.clear();
   natoms.clear();
-
 }
 
 //----------------------------------------//
@@ -154,8 +164,6 @@ void H4Detector::BuildCalorimeter (G4LogicalVolume *mother_logical) {
 
         // Place the inner modules.
         m_inner_section_builder->BuildModule(
-          m_aerog_mat,
-          m_wls_mat,
           0,
           new_coords_tlate + module_position,
           "Inner module (" + std::to_string(i) + "," + std::to_string(j) + ")",
@@ -166,8 +174,6 @@ void H4Detector::BuildCalorimeter (G4LogicalVolume *mother_logical) {
 
         // Place the middle modules.
         m_middle_section_builder->BuildModule(
-          m_aerog_mat,
-          m_wls_mat,
           0,
           new_coords_tlate + module_position,
           "Middle module (" + std::to_string(i) + "," + std::to_string(j) + ")",
@@ -178,8 +184,6 @@ void H4Detector::BuildCalorimeter (G4LogicalVolume *mother_logical) {
 
         // Place the outer modules.
         m_outer_section_builder->BuildModule(
-          m_aerog_mat,
-          m_wls_mat,
           0,
           new_coords_tlate + module_position,
           "Outer module (" + std::to_string(i) + "," + std::to_string(j) + ")",

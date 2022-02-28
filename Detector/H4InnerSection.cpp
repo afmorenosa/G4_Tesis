@@ -37,24 +37,6 @@ void H4InnerSection::BuildPlates (
   G4double sc_thickness
 ) {
 
-  m_pb_hole = new G4Tubs(
-    "Lead Hole",
-    0.,
-    radius,
-    pb_thickness,
-    0.,
-    360.*deg
-  );
-
-  m_sc_hole = new G4Tubs(
-    "Scintillator_Plate Hole",
-    0.,
-    radius,
-    sc_thickness,
-    0.,
-    360.*deg
-  );
-
   // Main box.
   G4VSolid *pb_main_box = new G4Box(
     "Lead Main Box", 6.06*cm, 6.06*cm, pb_thickness

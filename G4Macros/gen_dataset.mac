@@ -1,5 +1,6 @@
 # The macro to create a dataset for the interacction with the particfles and the
 # detector.
+/tracking/verbose 0
 
 # Runs for photons.
 /gun/particle gamma

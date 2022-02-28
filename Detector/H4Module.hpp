@@ -15,12 +15,14 @@
 class H4Module {
 public:
 
-  H4Module ();
+  H4Module (
+    G4Material *lead_mat,
+    G4Material *aerog_mat,
+    G4Material *wls_mat
+  );
   virtual ~H4Module ();
 
   void BuildModule (
-    G4Material *sc_plate_mat,
-    G4Material *wls_mat,
     G4RotationMatrix *rot,
     const G4ThreeVector &tlate,
     const G4String &name,
@@ -31,7 +33,7 @@ public:
     const G4String &sc_log_name = "Scintillator_Plate",
     G4bool many = false,
     G4int copy_no = 0,
-    G4bool surf_chk = false
+    G4bool surf_chk = true
   );
 
   void PlacePbScPlates (
@@ -46,7 +48,7 @@ public:
     const G4String &sc_log_name = "Scintillator_Plate",
     G4bool many = false,
     G4int copy_no = 0,
-    G4bool surf_chk = false
+    G4bool surf_chk = true
   );
 
   void AddRecovery (
@@ -58,10 +60,26 @@ public:
     G4double sc_thickness = 2*mm,
     G4bool many = false,
     G4int copy_no = 0,
-    G4bool surf_chk = false
+    G4bool surf_chk = true
   );
 
+  G4LogicalVolume *m_pb_plate_log;
+  G4LogicalVolume *m_sc_plate_log;
+
+  G4Tubs *m_pb_hole;
+  G4Tubs *m_sc_hole;
+
+  G4Material *m_lead_mat;
+  G4Material *m_aerog_mat;
+  G4Material *m_wls_mat;
+
 private:
+
+  virtual void BuildPlates (
+    G4double radius = .6*mm,
+    G4double pb_thickness = 1*mm,
+    G4double sc_thickness = 2*mm
+  ) = 0;
 
   virtual void PlaceHolePlate (
     G4bool is_scintillator,
@@ -74,7 +92,7 @@ private:
     G4LogicalVolume *mother_logical,
     G4bool many = false,
     G4int copy_no = 0,
-    G4bool surf_chk = false
+    G4bool surf_chk = true
   ) = 0;
 
   virtual void PlaceLargePlate (
@@ -88,7 +106,7 @@ private:
     G4LogicalVolume *mother_logical,
     G4bool many = false,
     G4int copy_no = 0,
-    G4bool surf_chk = false
+    G4bool surf_chk = true
   ) = 0;
 
   virtual void AddWLS (
@@ -97,11 +115,11 @@ private:
     const G4ThreeVector &tlate,
     const G4String &name,
     G4LogicalVolume *mother_logical,
-    G4double pb_thickness,
-    G4double sc_thickness,
+    G4double pb_thickness = 1*mm,
+    G4double sc_thickness = 2*mm,
     G4bool many = false,
     G4int copy_no = 0,
-    G4bool surf_chk = false
+    G4bool surf_chk = true
   ) = 0;
 
 };

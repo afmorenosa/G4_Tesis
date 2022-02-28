@@ -7,7 +7,11 @@
 //       Do nothing.           //
 //                             //
 //*****************************//
-H4MiddleSection::H4MiddleSection () : H4Module() {}
+H4MiddleSection::H4MiddleSection (
+  G4Material *lead_mat,
+  G4Material *aerog_mat,
+  G4Material *wls_mat
+) : H4Module(lead_mat, aerog_mat, wls_mat) {}
 
 //*****************************//
 // H4MiddleSection destructor  //
@@ -17,6 +21,125 @@ H4MiddleSection::H4MiddleSection () : H4Module() {}
 //                             //
 //*****************************//
 H4MiddleSection::~H4MiddleSection () {}
+
+//*********************************//
+//                                 //
+// Build the holes for the plates. //
+//                                 //
+//*********************************//
+void H4MiddleSection::BuildPlates (
+  G4double radius,
+  G4double pb_thickness,
+  G4double sc_thickness
+) {
+//
+//   m_pb_hole = new G4Tubs(
+//     "Lead Hole",
+//     0.,
+//     radius,
+//     pb_thickness,
+//     0.,
+//     360.*deg
+//   );
+//
+//   m_sc_hole = new G4Tubs(
+//     "Scintillator_Plate Hole",
+//     0.,
+//     radius,
+//     sc_thickness,
+//     0.,
+//     360.*deg
+//   );
+//
+//   // Main box.
+//   G4Box *pd_base_box = new G4Box("Main Box", 6.06*cm, 6.06*cm, pb_thickness);
+//
+//   G4MultiUnion *pb_holes = new G4MultiUnion("Scintillator Holes");
+//
+//   for (int i = 0; i < 3; i++) {
+//     for (int j = 0; j < 3; j++) {
+//
+//       G4Transform3D transform = G4Transform3D(
+//         G4RotationMatrix(0, 0, 0),
+//         G4ThreeVector((i-1) * 4.04 * cm, (j-1) * 4.04 * cm, 0.0)
+//       );
+//
+//       pb_holes->AddNode(*m_pb_hole, transform);
+//
+//       for (int I = 0; I < 4; I++) {
+//         for (int J = 0; J < 4; J++) {
+//
+//           transform = G4Transform3D(
+//             G4RotationMatrix(0, 0, 0),
+//             G4ThreeVector((i-1) * 4.04 * cm, (j-1) * 4.04 * cm, 0.0) +
+//             G4ThreeVector(
+//               -2.02*cm + (0.5 + I) * 1.01*cm,
+//               -2.02*cm + (0.5 + J) * 1.01*cm,
+//               0
+//             )
+//           );
+//
+//           pb_holes->AddNode(*m_pb_hole, transform);
+//
+//         }
+//       }
+//     }
+//   }
+//
+//   G4VSolid *pb_main_box = new G4SubtractionSolid(
+//     "Main Box",
+//     pd_base_box,
+//     pb_holes
+//   );
+//
+//   G4LogicalVolume *pb_plate_log = new G4LogicalVolume(
+//     pb_main_box,
+//     m_lead_mat,
+//     "Lead plate"
+//   );
+//
+//   // Main box.
+//   G4Box *sc_base_box = new G4Box("Main Box", 2.02*cm, 2.02*cm, sc_thickness);
+//
+//   G4MultiUnion *sc_holes = new G4MultiUnion("Scintillator Holes");
+//
+//   G4Transform3D transform = G4Transform3D(
+//     G4RotationMatrix(0, 0, 0), G4ThreeVector(0., 0., 0.)
+//   );
+//
+//   sc_holes->AddNode(*m_sc_hole, transform);
+//
+//   for (int I = 0; I < 4; I++) {
+//     for (int J = 0; J < 4; J++) {
+//
+//       G4Transform3D transform_hole = G4Transform3D(
+//         G4RotationMatrix(0, 0, 0),
+//         G4ThreeVector(
+//           -2.02*cm + (0.5 + I) * 1.01*cm,
+//           -2.02*cm + (0.5 + J) * 1.01*cm,
+//           0
+//         )
+//       );
+//
+//       sc_holes->AddNode(*m_sc_hole, transform_hole);
+//
+//     }
+//   }
+//
+//   G4VSolid *sc_main_box = new G4SubtractionSolid(
+//     "Main Box",
+//     sc_base_box,
+//     sc_holes
+//   );
+//
+//   G4LogicalVolume *sc_plate_log = new G4LogicalVolume(
+//     sc_main_box,
+//     m_aerog_mat,
+//     "Scintillator plate"
+//   );
+//
+//
+}
 
 //***************************************//
 //                                       //

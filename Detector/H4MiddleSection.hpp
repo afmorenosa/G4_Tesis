@@ -18,10 +18,20 @@
 class H4MiddleSection : public H4Module {
 public:
 
-  H4MiddleSection ();
+  H4MiddleSection (
+    G4Material *lead_mat,
+    G4Material *aerog_mat,
+    G4Material *wls_mat
+  );
   virtual ~H4MiddleSection ();
 
 private:
+
+  void BuildPlates (
+    G4double radius = .6*mm,
+    G4double pb_thickness = 1*mm,
+    G4double sc_thickness = 2*mm
+  ) override;
 
   void PlaceHolePlate (
     G4bool is_scintillator,

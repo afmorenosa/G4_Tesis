@@ -1,5 +1,6 @@
 # Set some default verbose
 /control/verbose 0
+/tracking/verbose 0
 /control/saveHistory
 
 # Initialize kernel

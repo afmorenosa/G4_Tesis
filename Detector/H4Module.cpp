@@ -7,7 +7,18 @@
 //       Do nothing.    //
 //                      //
 //**********************//
-H4Module::H4Module () {}
+H4Module::H4Module (
+  G4Material *lead_mat,
+  G4Material *aerog_mat,
+  G4Material *wls_mat
+) {
+
+  // Get the definition of lead as a material.
+  m_lead_mat = lead_mat;
+  m_aerog_mat = aerog_mat;
+  m_wls_mat = wls_mat;
+
+}
 
 //*********************//
 // H4Module destructor //
@@ -16,7 +27,10 @@ H4Module::H4Module () {}
 //       Do nothing.   //
 //                     //
 //*********************//
-H4Module::~H4Module () {}
+H4Module::~H4Module () {
+  delete m_pb_hole;
+  delete m_sc_hole;
+}
 
 //****************************//
 //                            //
@@ -24,8 +38,6 @@ H4Module::~H4Module () {}
 //                            //
 //****************************//
 void H4Module::BuildModule (
-  G4Material *sc_plate_mat,
-  G4Material *wls_mat,
   G4RotationMatrix *rot,
   const G4ThreeVector &tlate,
   const G4String &name,
@@ -41,7 +53,7 @@ void H4Module::BuildModule (
 
   // Build plates.
   PlacePbScPlates(
-    sc_plate_mat,
+    m_aerog_mat,
     rot,
     tlate,
     name,
@@ -70,7 +82,7 @@ void H4Module::BuildModule (
 
   // Build WLS wire.
   AddWLS (
-    wls_mat,
+    m_wls_mat,
     rot,
     tlate,
     name,
@@ -105,12 +117,6 @@ void H4Module::PlacePbScPlates (
   G4bool surf_chk
 ) {
 
-  // Manager for NIST db, for material searching.
-  G4NistManager *nist = G4NistManager::Instance();
-
-  // Get the definition of lead as a material.
-  G4Material *lead_mat = nist->FindOrBuildMaterial("G4_Pb");
-
   // Place the scintillator plates, 67 in total
   for (int i = 0; i < 67; i++) {
 
@@ -139,7 +145,7 @@ void H4Module::PlacePbScPlates (
 
     PlaceLargePlate (
       false,
-      lead_mat,
+      m_lead_mat,
       pb_thickness,
       rot,
       tlate + G4ThreeVector(

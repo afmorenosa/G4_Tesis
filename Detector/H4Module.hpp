@@ -22,6 +22,12 @@ public:
   );
   virtual ~H4Module ();
 
+  void BuildHoles (
+    G4double radius = .6*mm,
+    G4double pb_thickness = 1*mm,
+    G4double sc_thickness = 2*mm
+  );
+
   void BuildModule (
     G4RotationMatrix *rot,
     const G4ThreeVector &tlate,

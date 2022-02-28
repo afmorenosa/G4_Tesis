@@ -18,6 +18,8 @@ H4Module::H4Module (
   m_aerog_mat = aerog_mat;
   m_wls_mat = wls_mat;
 
+  BuildHoles();
+
 }
 
 //*********************//
@@ -30,6 +32,37 @@ H4Module::H4Module (
 H4Module::~H4Module () {
   delete m_pb_hole;
   delete m_sc_hole;
+}
+
+//*********************************//
+//                                 //
+// Build the holes for the plates. //
+//                                 //
+//*********************************//
+void H4Module::BuildHoles (
+  G4double radius,
+  G4double pb_thickness,
+  G4double sc_thickness
+) {
+
+  m_pb_hole = new G4Tubs(
+    "Lead Hole",
+    0.,
+    radius,
+    pb_thickness,
+    0.,
+    360.*deg
+  );
+
+  m_sc_hole = new G4Tubs(
+    "Scintillator_Plate Hole",
+    0.,
+    radius,
+    sc_thickness,
+    0.,
+    360.*deg
+  );
+
 }
 
 //****************************//

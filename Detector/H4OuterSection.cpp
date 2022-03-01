@@ -108,19 +108,17 @@ void H4OuterSection::BuildPlates (
 
 }
 
-//***************************************//
-//                                       //
-// Construct a squared panel with holes. //
-//                                       //
-//***************************************//
-void H4OuterSection::PlaceHolePlate (
+//**************************************//
+//                                      //
+// Construct a squared panel of one     //
+// little hole panels                   //
+//                                      //
+//**************************************//
+void H4OuterSection::PlaceLargePlate (
   G4bool is_scintillator,
-  G4Material *plate_mat,
-  G4double thickness,
   G4RotationMatrix *rot,
   const G4ThreeVector &tlate,
   const G4String &name,
-  const G4String &log_name,
   G4LogicalVolume *mother_logical,
   G4bool many,
   G4int copy_no,
@@ -160,50 +158,12 @@ void H4OuterSection::PlaceHolePlate (
 
 }
 
-//**************************************//
-//                                      //
-// Construct a squared panel of one     //
-// little hole panels                   //
-//                                      //
-//**************************************//
-void H4OuterSection::PlaceLargePlate (
-  G4bool is_scintillator,
-  G4Material *plate_mat,
-  G4double thickness,
-  G4RotationMatrix *rot,
-  const G4ThreeVector &tlate,
-  const G4String &name,
-  const G4String &log_name,
-  G4LogicalVolume *mother_logical,
-  G4bool many,
-  G4int copy_no,
-  G4bool surf_chk
-) {
-
-  // Place the hole panels, one in total.
-  PlaceHolePlate (
-    is_scintillator,
-    plate_mat,
-    thickness,
-    rot,
-    tlate,
-    name,
-    log_name,
-    mother_logical,
-    many,
-    copy_no,
-    surf_chk
-  );
-
-}
-
 //***************//
 //               //
 // Add WLS wires //
 //               //
 //***************//
 void H4OuterSection::AddWLS (
-  G4Material *wls_mat,
   G4RotationMatrix *rot,
   const G4ThreeVector &tlate,
   const G4String &name,
@@ -222,7 +182,7 @@ void H4OuterSection::AddWLS (
   // Wire logical volume.
   G4LogicalVolume *wire_log = new G4LogicalVolume(
     wire_tube,
-    wls_mat,
+    m_wls_mat,
     "WLS"
   );
 

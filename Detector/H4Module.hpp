@@ -37,7 +37,7 @@ public:
     G4double sc_thickness = 2*mm,
     G4bool many = false,
     G4int copy_no = 0,
-    G4bool surf_chk = true
+    G4bool surf_chk = false
   );
 
   void PlacePbScPlates (

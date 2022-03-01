@@ -297,12 +297,15 @@ int main(int argc, char *argv[]) {
 
   if (is_compiled) {
 
+    std::cout << "Using compiled configuration, runing 10 events." << '\n';
+
     // Start a run.
-    int number_of_events = 5;
+    int number_of_events = 10;
     run_manager->BeamOn(number_of_events);
 
   } else if (is_graphics) {
 
+    std::cout << "Using graphic configuration." << '\n';
     // Initialize vis manager for vis commands.
     G4VisManager* vis_manager = new G4VisExecutive;
     vis_manager->Initialize();
@@ -314,6 +317,7 @@ int main(int argc, char *argv[]) {
 
   } else if (is_macro) {
 
+    std::cout << "Using macro configuration." << '\n';
     // batch mode.
     G4String command = "/control/execute ";
     UImanager->ApplyCommand(command+macro_file);

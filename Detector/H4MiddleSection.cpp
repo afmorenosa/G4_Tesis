@@ -134,26 +134,24 @@ void H4MiddleSection::BuildPlates (
   );
 }
 
-//***************************************//
-//                                       //
-// Construct a squared panel with holes. //
-//                                       //
-//***************************************//
-void H4MiddleSection::PlaceHolePlate (
+//**************************************//
+//                                      //
+// Construct a squared panel of four    //
+// little hole panels                   //
+//                                      //
+//**************************************//
+void H4MiddleSection::PlaceLargePlate (
   G4bool is_scintillator,
-  G4Material *plate_mat,
-  G4double thickness,
   G4RotationMatrix *rot,
   const G4ThreeVector &tlate,
   const G4String &name,
-  const G4String &log_name,
   G4LogicalVolume *mother_logical,
   G4bool many,
   G4int copy_no,
   G4bool surf_chk
 ) {
 
-  // Lead tile.
+  // Place the lead tile.
   if (!is_scintillator) {
 
     // Place the volume of the plate.
@@ -171,73 +169,16 @@ void H4MiddleSection::PlaceHolePlate (
     return;
   }
 
-
-  // Place the volumes of the plate.
-  new G4PVPlacement(
-    rot,
-    tlate,
-    m_sc_plate_log,
-    name,
-    mother_logical,
-    many,
-    copy_no,
-    surf_chk
-  );
-
-}
-
-//**************************************//
-//                                      //
-// Construct a squared panel of four    //
-// little hole panels                   //
-//                                      //
-//**************************************//
-void H4MiddleSection::PlaceLargePlate (
-  G4bool is_scintillator,
-  G4Material *plate_mat,
-  G4double thickness,
-  G4RotationMatrix *rot,
-  const G4ThreeVector &tlate,
-  const G4String &name,
-  const G4String &log_name,
-  G4LogicalVolume *mother_logical,
-  G4bool many,
-  G4int copy_no,
-  G4bool surf_chk
-) {
-
-  // Place the lead tile.
-  if (!is_scintillator) {
-
-    PlaceHolePlate (
-      is_scintillator,
-      plate_mat,
-      thickness,
-      rot,
-      tlate,
-      name,
-      log_name,
-      mother_logical,
-      many,
-      copy_no,
-      surf_chk
-    );
-
-    return;
-  }
-
   // Place the hole panels, four in total.
   for (int i = 0; i < 2; i++) {
     for (int j = 0; j < 2; j++) {
 
-      PlaceHolePlate (
-        is_scintillator,
-        plate_mat,
-        thickness,
+      // Place the volumes of the plate.
+      new G4PVPlacement(
         rot,
         tlate + G4ThreeVector((i-0.5) * 6.06 * cm, (j-0.5) * 6.06 * cm, 0.0),
+        m_sc_plate_log,
         name + " - row: " + std::to_string(i) + " - col: " + std::to_string(j),
-        log_name,
         mother_logical,
         many,
         copy_no,
@@ -255,7 +196,6 @@ void H4MiddleSection::PlaceLargePlate (
 //               //
 //***************//
 void H4MiddleSection::AddWLS (
-  G4Material *wls_mat,
   G4RotationMatrix *rot,
   const G4ThreeVector &tlate,
   const G4String &name,
@@ -274,7 +214,7 @@ void H4MiddleSection::AddWLS (
   // Wire logical volume.
   G4LogicalVolume *wire_log = new G4LogicalVolume(
     wire_tube,
-    wls_mat,
+    m_wls_mat,
     "WLS"
   );
 

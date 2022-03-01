@@ -77,8 +77,6 @@ void H4Module::BuildModule (
   G4LogicalVolume *mother_logical,
   G4double pb_thickness,
   G4double sc_thickness,
-  const G4String &pb_log_name,
-  const G4String &sc_log_name,
   G4bool many,
   G4int copy_no,
   G4bool surf_chk
@@ -86,15 +84,12 @@ void H4Module::BuildModule (
 
   // Build plates.
   PlacePbScPlates(
-    m_aerog_mat,
     rot,
     tlate,
     name,
     mother_logical,
     pb_thickness,
     sc_thickness,
-    pb_log_name,
-    sc_log_name,
     many,
     copy_no,
     surf_chk
@@ -115,7 +110,6 @@ void H4Module::BuildModule (
 
   // Build WLS wire.
   AddWLS (
-    m_wls_mat,
     rot,
     tlate,
     name,
@@ -136,15 +130,12 @@ void H4Module::BuildModule (
 //                                      //
 //**************************************//
 void H4Module::PlacePbScPlates (
-  G4Material *sc_plate_mat,
   G4RotationMatrix *rot,
   const G4ThreeVector &tlate,
   const G4String &name,
   G4LogicalVolume *mother_logical,
   G4double pb_thickness,
   G4double sc_thickness,
-  const G4String &pb_log_name,
-  const G4String &sc_log_name,
   G4bool many,
   G4int copy_no,
   G4bool surf_chk
@@ -155,8 +146,6 @@ void H4Module::PlacePbScPlates (
 
     PlaceLargePlate (
       true,
-      sc_plate_mat,
-      sc_thickness,
       rot,
       tlate + G4ThreeVector(
         0,
@@ -164,7 +153,6 @@ void H4Module::PlacePbScPlates (
         (i - 33) * (2 * (pb_thickness + sc_thickness))
       ),
       name + " - scintillator tile: " + std::to_string(i),
-      sc_log_name,
       mother_logical,
       many,
       copy_no,
@@ -178,8 +166,6 @@ void H4Module::PlacePbScPlates (
 
     PlaceLargePlate (
       false,
-      m_lead_mat,
-      pb_thickness,
       rot,
       tlate + G4ThreeVector(
         0,
@@ -187,7 +173,6 @@ void H4Module::PlacePbScPlates (
         (i - 33) * (2 * (pb_thickness + sc_thickness)) + sc_thickness + pb_thickness
       ),
       name + " - lead tile: " + std::to_string(i),
-      pb_log_name,
       mother_logical,
       many,
       copy_no,

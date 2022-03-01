@@ -88,6 +88,12 @@ void H4EventAction::BeginOfEventAction (const G4Event *event) {
 //                          //
 //**************************//
 void H4EventAction::EndOfEventAction (const G4Event *event) {
+  G4int eventNum = event->GetEventID();
+
+  if ((eventNum + 1)%10 == 0) {
+    std::cout << "Event: " << eventNum << '\n';
+  }
+
   // Get the analysis manager.
   G4RootAnalysisManager *analysis_manager = G4RootAnalysisManager::Instance();
 

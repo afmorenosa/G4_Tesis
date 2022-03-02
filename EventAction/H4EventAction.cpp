@@ -91,7 +91,7 @@ void H4EventAction::EndOfEventAction (const G4Event *event) {
   G4int eventNum = event->GetEventID();
 
   if ((eventNum + 1)%10 == 0) {
-    std::cout << "Event: " << eventNum << '\n';
+    std::cout << "Event: " << eventNum + 1 << '\n';
   }
 
   // Get the analysis manager.

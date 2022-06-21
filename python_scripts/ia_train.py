@@ -54,6 +54,10 @@ classifiers_dict = {
 print(f"\nUsing {args.classifier} classifier")
 clf = classifiers_dict[args.classifier]()
 
+# Get the test variables.
+print("\nGet test set\n")
+res_files = root_files_mng.get_data(args.test)
+
 if args.train:
     # Train the data.
     print("\nTraining\n")
@@ -66,24 +70,25 @@ elif args.train_parameters:
     clf.set_params(config_dict)
     print("\nConfigured\n")
 
-# Get the test variables.
-print("\nGet test set\n")
-res_files = root_files_mng.get_data(args.test)
 print("\nTest results: \n")
 
-# The array for the scores result.
+# The array for the scores result
 test_scores = []
+particle_scores = {
+    0: [],
+    1: [],
+    2: [],
+}
 
 for res_file in res_files:
-    X_test = np.memmap(res_file[0], shape=(res_file[2], 60501))
-    y_test = np.memmap(res_file[1], shape=(res_file[2]))
-
-    test_scores.append(clf.score(X_test, y_test))
-
-    # Delete train data.
-    del X_test, y_test
+    test_scores, particle_scores = root_files_mng.test_res(
+        clf, res_file, test_scores, particle_scores
+    )
 
 # Print results of the test.
 print("\n")
-print(f"Results {np.mean(test_scores)}")
-print(f"Config {clf.get_params()}\n\n")
+print(f"Results:  {np.mean(test_scores)}")
+print(f"Results gamma: {np.mean(particle_scores[0])}")
+print(f"Results pi0: {np.mean(particle_scores[1])}")
+print(f"Results electron: {np.mean(particle_scores[2])}")
+# print(f"Config {clf.get_params()}\n\n")

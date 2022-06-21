@@ -3,6 +3,12 @@ from multiprocessing import Pool, cpu_count
 from ROOT import TFile
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
+from numpy.random import MT19937
+from numpy.random import RandomState, SeedSequence
+
+rs = RandomState(MT19937(SeedSequence(19991231)))
+
 
 
 def get_matrix_data(variable, X, Y, Z, c=None, r=None, val=None):
@@ -238,7 +244,7 @@ def get_data(files_list):
 
     for train_matrix in train_matrices:
         file_names.append(train_matrix.get(timeout=60000))
-        print("Matrix added")
+        # print("Matrix added")
 
     return file_names
 
@@ -276,10 +282,10 @@ def get_train_matrix(file_name):
     # Close root file.
     root_file.Close()
 
-    return [X_set, y_set]
+    return [X_set, y_set, i]
 
 
-def train_data(files_list, classification_method):
+def train_data(files_list, res_files, classification_method, clf_name):
     """
     Train a classifier over a set of files.
 
@@ -302,8 +308,29 @@ def train_data(files_list, classification_method):
         for file_name in files_list
     ]
 
+    # The array for the scores result
+    scores = []
+    entries = []
+
+
     for train_matrix in train_matrices:
         res_mat = train_matrix.get(timeout=60000)
+
+        test_scores = []
+        particle_scores = {
+            0: [],
+            1: [],
+            2: [],
+        }
+
+        for res_file in res_files:
+            test_scores, particle_scores = root_files_mng.test_res(
+                clf, res_file, test_scores, particle_scores
+            )
+
+        score.append(np.mean(test_scores))
+
+        entries.append(res_mat[2])
 
         # Train the classifier.
         classification_method.partial_fit(
@@ -311,3 +338,21 @@ def train_data(files_list, classification_method):
             res_mat[1],
             classes=[0, 1, 2]
         )
+
+    plt.plot(entries, score)
+    plt.xlabel("Entries")
+    plt.ylabel("Classifier score")
+    plt.title(f"{clf_name}")
+    plt.save(f"{clf_name}.pdf")
+
+
+def test_res(clf, res_file, test_scores, particle_scores):
+    """."""
+    X_test = np.memmap(res_file[0], shape=(res_file[2], 60501))
+    y_test = np.memmap(res_file[1], shape=(res_file[2]))
+
+    test_scores.append(clf.score(X_test, y_test))
+    particle_scores[y_test[0]].append(clf.score(X_test, y_test))
+
+    # Delete train data.
+    del X_test, y_test

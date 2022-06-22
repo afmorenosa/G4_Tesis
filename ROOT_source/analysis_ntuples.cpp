@@ -35,7 +35,7 @@ int main(int argc, char *argv[]) {
 
     // Get the Tree from the Root File
     TTree *tree = (TTree*) dir_ntup->Get("Photons");
-    tree->Print();
+    // tree->Print();
 
     plot_counter(tree, arguments["label"],
     arguments["variable"], arguments["material"]);

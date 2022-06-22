@@ -47,6 +47,10 @@ void plot_counter(
     600
   );
 
+  canvas->SetRightMargin(0.15);
+  canvas->SetLeftMargin(0.09);
+  canvas->SetBottomMargin(0.15);
+
   // Create histograms.
   TH1I *particle_counter = new TH1I(
     "Primary particle",
@@ -90,20 +94,28 @@ void plot_counter(
     100, 0, 5
   );
 
-  int x_dim, y_dim;
+  int x_dim, y_dim, z_dim;
 
   if (material.EqualTo("scintillator")) {
     x_dim = 6*3;
     y_dim = 4*3;
+    z_dim = 67;
   } else {
     x_dim = 6;
     y_dim = 4;
+    z_dim = 66;
   }
 
   TH2I *calo_photons_counter = new TH2I(
     variable + " counter 2D",
     variable + "; X; Y; Number of Events",
     x_dim, 0, x_dim, y_dim, 0, y_dim
+  );
+
+  TH1I *calo_photons_counter_Z = new TH1I(
+    variable + " counter Z axis",
+    variable + "; Z; Number of Events",
+    z_dim, 0, z_dim
   );
 
   TH1I *calo_photons_counter_significative = new TH1I(
@@ -121,11 +133,13 @@ void plot_counter(
   TH3I *calo_photons_counter_3 = new TH3I(
     variable + " counter 3D",
     variable + "; X; Y; Z; Number of Events",
-    x_dim, 0, x_dim, y_dim, 0, y_dim, 67, 0, 67
+    x_dim, 0, x_dim, y_dim, 0, y_dim, z_dim, 0, z_dim
   );
 
   int nentries, nbytes;
   nentries = (Int_t)tree->GetEntries();
+
+  int evt_counter = 0;
 
   // Fill histograms.
   for (int i = 0; i < nentries; i++) {
@@ -135,10 +149,9 @@ void plot_counter(
 
 
     for (size_t j = 0; j < X_step->size(); j++) {
+
       energy_hist->Fill(E->at(j));
       step_lengt_hist->Fill(SL->at(j));
-
-
 
     }
 
@@ -147,11 +160,17 @@ void plot_counter(
 
     for (size_t j = 0; j < X->size(); j++) {
 
+      calo_photons_counter_Z->Fill(
+        Z->at(j)
+      );
+
       if (material.EqualTo("scintillator")) {
 
         calo_photons_counter->Fill(
           3 * X->at(j) + c->at(j), 3 * Y->at(j) + r->at(j)
         );
+
+
         calo_photons_counter_3->Fill(
           3 * X->at(j) + c->at(j), 3 * Y->at(j) + r->at(j), Z->at(j)
         );
@@ -175,6 +194,7 @@ void plot_counter(
         calo_photons_counter->Fill(
           X->at(j), Y->at(j)
         );
+
         calo_photons_counter_3->Fill(
           X->at(j), Y->at(j), Z->at(j)
         );
@@ -200,7 +220,20 @@ void plot_counter(
     calo_photons_counter_significative->Fill(significative_count);
     calo_photons_counter_not_significative->Fill(not_significative_count);
 
+    evt_counter += X->size();
+    std::cout <<
+    "Events: " << X->size() << '\t' <<
+    "Variable: " << variable << '\t' <<
+    "Material: " << material <<
+    '\n';
+
   }
+
+  std::cout <<
+  "Events_avg: " << 1. * evt_counter/ nentries<< '\t' <<
+  "Variable: " << variable << '\t' <<
+  "Material: " << material <<
+  '\n';
 
   // Save histograms.
   std::string output_file;
@@ -213,13 +246,13 @@ void plot_counter(
   canvas->Print(output_file.c_str());
   canvas->Clear();
 
+  // calo_photons_counter->SetStats(kFALSE);
   calo_photons_counter->Draw("COLZ");
   output_file =
   std::string(output_label) + "_calo_counter.pdf";
 
   canvas->Print(output_file.c_str());
   canvas->Clear();
-
 
   calo_photons_counter_3->Draw("BOX");
   output_file =
@@ -230,6 +263,14 @@ void plot_counter(
 
 
   canvas->SetLogy();
+
+  calo_photons_counter_Z->SetFillColor(kYellow);
+  calo_photons_counter_Z->Draw();
+  output_file =
+  std::string(output_label) + "_calo_counter_Z.pdf";
+
+  canvas->Print(output_file.c_str());
+  canvas->Clear();
 
   calo_photons_counter_significative->SetFillColor(kYellow);
   calo_photons_counter_significative->Draw();

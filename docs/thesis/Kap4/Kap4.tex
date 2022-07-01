@@ -14,6 +14,8 @@ material\cite{omelaenko2000lhcb}. This issue could be due to unconsidered
 material configurations in the Geant4 simulations such as optic settings, that
 should increase the number of photons created inside the material.
 
-The classifiers do not show good performance in the differentiation task, It
-could be due to the amount of variables that are considered in the input and
-the low discrepancy between theirs distributions.
+Some classifiers do not show good performance in the differentiation task,
+specially the linear classifiers. It could be due to the amount of variables
+that are considered in the input, the low discrepancy between theirs
+distributions and the no linearity between them. The best separation was found
+for BernoulliNB.

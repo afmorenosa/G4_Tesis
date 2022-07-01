@@ -34,7 +34,8 @@ deviation that can be seen in the number of events outside the central plates.
 The pion signal have a standard deviation of \((3.398, 2.183)\) being larger
 than that of electrons of \((3.266, 1.801)\) and photons of \((3.270, 1.805)\),
 highlighting that the greatest difference is in the standard deviation of the
-vertical axis.
+vertical axis. It is no clear the reason of the two bands on the sides of the
+central region.
 
 \begin{figure}[htb!]
   \centering
@@ -218,4 +219,25 @@ get a good accuracy predicting the primary particle.
 \end{table}
 
 For the other methods, it can be seen that they do not predict correctly which
-is the incident particle with the given input.
+is the incident particle with the given input. The \cref{fig:scores} show how
+the score varies with the number of events are used for the training, and it
+can be seen that just MultinomialNB, BernoulliNB improves their performance
+with more entries, and Perceptron, SGDClassifier and
+PassiveAggressiveClassifier do not change much. It could be due to that
+Perceptron, SGDClassifier and PassiveAggressiveClassifier are linear
+classifiers, and the features do not have a linear separation.
+
+\begin{figure}[htb!]
+  \centering
+
+  \subfloat[MultinomialNB]{\includegraphics[scale=0.45]{Kap3/MultinomialNB.pdf}\label{fig:scores-1}}
+  \subfloat[BernoulliNB]{\includegraphics[scale=0.45]{Kap3/BernoulliNB.pdf}\label{fig:scores-2}}
+
+  \subfloat[Perceptron]{\includegraphics[scale=0.45]{Kap3/Perceptron.pdf}\label{fig:scores-3}}
+  \subfloat[SGDClassifier]{\includegraphics[scale=0.45]{Kap3/SGDClassifier.pdf}\label{fig:scores-4}}
+
+  \subfloat[PassiveAggressiveClassifier]{\includegraphics[scale=0.45]{Kap3/PassiveAggressiveClassifier.pdf}\label{fig:scores-5}}
+
+  \caption{Prediction score for each classifiers used.}\label{fig:scores}
+
+\end{figure}

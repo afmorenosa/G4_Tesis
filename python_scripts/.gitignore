@@ -2,3 +2,7 @@ log.log
 error.err
 output.out
 *.data
+*.svg
+*.csv
+*.pdf
+!significative_cells.csv

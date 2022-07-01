@@ -27,7 +27,9 @@ correspondingly.
   \subfloat[Detector simulation from the primary creation point.]{\includegraphics[scale=0.25]{Kap2/ecal-inner-section-cropped-geometry-1.png}\label{fig:cropped-geometry-1}}\hspace{2em}
   \subfloat[Detector simulation zoomed]{\includegraphics[scale=0.25]{Kap2/ecal-inner-section-cropped-geometry-2.png}\label{fig:cropped-geometry-2}}
 
-  \caption{Front view of the detector.}\label{fig:cropped-geometry}
+  \caption{Front view of the detector. In \ref{fig:cropped-geometry-1}, the
+  white square correspond to the caolrimeter and the black is the simulated
+  void world box.}\label{fig:cropped-geometry}
 
 \end{figure}
 
@@ -70,18 +72,38 @@ performed to obtain the significant cells, which will be taken into account in
 the machine learning implementation.
 
 A Kolmogorov test were applied for the distribution of all the measured
-variables in each of the plates in the detector. Just the cells that got less
-than \(0.5\) in the Kolmogorov test were taken into account in the machine
-learning implementation.
+variables in each of the plates in the detector. This test is used to determine
+whether the two histograms are compatible with the same
+distribution\cite{root,kolmogorov}. Applying this test, the cells with similar
+distributions will be excluded from the machine learning input, since they do
+not add significant information to the classifier to separate the primary
+particles. The cells that got less than \(0.5\) in the Kolmogorov test were
+taken into account in the machine learning implementation.
 
 \subsection{Machine Learning Algorithm}
 
 The machine learning algorithm was built using the Scikit Learn library for
 python. The following five multidimensional classifiers were used:
 MultinomialNB, BernoulliNB, Perceptron, SGDClassifier,
-PassiveAggressiveClassifier. These classifiers were chosen due to the size of
-the input set, even after getting information just from significant cells, the
-arrays were too large, then it is computationally easier to partially fit the
-model with each new data vector. The data from the simulation was divided in
-two groups, \(5000\) events each one, that worked as train and test set
-respectively.
+PassiveAggressiveClassifier. MultinomialNB and BernoulliNB classifiers are both
+Naive Bayes methods, that uses the Bayes’ theorem with the assumption that
+every pair of features is independent of each other given the class
+variable\cite{zhang2004optimality,NBsklearn,scikit-learn}. The difference
+between the two algorithms is that the Bernoulli Naive Bayes method explicity
+penalizes the non-occurrence of a feature that is an indicator of a given
+class\cite{NBsklearn}.
+
+The Perceptron and the PassiveAggressiveClassifier are Linear methods, it means
+that they consider that the target class can be expressed as a lineal
+combination of the features\cite{LMsklearn,scikit-learn}. Both methods do not
+require a learning rate, but the the PassiveAggressiveClassifier includes a
+regularizatión parameter while Perceptron does not. Finally, SGDClassifier use
+the Stochastic Gradient Descent routing for fitting a linear classifier. It
+allow the use of different loss functions and penalties for
+classification\cite{SGDsklearn,scikit-learn}.
+
+These classifiers were chosen due to the size of the input set, even after
+getting information just from significant cells, the arrays were too large,
+then it is computationally easier to partially fit the model with each new data
+vector. The data from the simulation was divided in two groups, \(5000\) events
+each one, that worked as train and test set respectively.
